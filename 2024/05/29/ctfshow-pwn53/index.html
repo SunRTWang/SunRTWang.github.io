@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="WangYiHao">
   <meta name="keywords" content="">
   
     <meta name="description" content="ctfshow-pwn53-类canary爆破  我们先checksec一下：  可以发现，没有开启canary保护，可能是栈溢出，拖入IDA中：  main函数里面执行了这个函数，看来是手动放置了canary，大小为4字节，我们看看接下来的函数:  这个ctfshow函数先是循环读取，每次读取一个字节，直到读取到换行符(ascii:10 0xa)，循环读取才会结束，__isoc99_sscanf">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ctfshow-pwn53">
 <meta property="og:url" content="http://example.com/2024/05/29/ctfshow-pwn53/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="pwn二进制初研究">
 <meta property="og:description" content="ctfshow-pwn53-类canary爆破  我们先checksec一下：  可以发现，没有开启canary保护，可能是栈溢出，拖入IDA中：  main函数里面执行了这个函数，看来是手动放置了canary，大小为4字节，我们看看接下来的函数:  这个ctfshow函数先是循环读取，每次读取一个字节，直到读取到换行符(ascii:10 0xa)，循环读取才会结束，__isoc99_sscanf">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn53/1.png">
@@ -29,14 +29,14 @@
 <meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn53/4.png">
 <meta property="article:published_time" content="2024-05-29T07:14:36.000Z">
 <meta property="article:modified_time" content="2024-05-29T08:19:32.579Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="WangYiHao">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/05/29/ctfshow-pwn53/1.png">
   
   
   
-  <title>ctfshow-pwn53 - Hexo</title>
+  <title>ctfshow-pwn53 - pwn二进制初研究</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -322,7 +322,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>John Doe</div>
+          <div>WangYiHao</div>
         </div>
       
       

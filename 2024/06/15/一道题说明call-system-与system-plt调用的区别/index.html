@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="WangYiHao">
   <meta name="keywords" content="">
   
     <meta name="description" content="一道题说明call system 与system plt调用的区别  题目为：buuctf  wustctf2020_getshell_2 拿到题目，我们先checksec一下：  我们拖入IDA中：  非常明显的栈溢出，但是我们在构建payload的时候，发现了字节是不够的: 1payload &#x3D; b&quot;A&quot;*(0x18+0x4)  + p32(system_plt_addr)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一道题说明call system 与system plt调用的区别">
 <meta property="og:url" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="pwn二进制初研究">
 <meta property="og:description" content="一道题说明call system 与system plt调用的区别  题目为：buuctf  wustctf2020_getshell_2 拿到题目，我们先checksec一下：  我们拖入IDA中：  非常明显的栈溢出，但是我们在构建payload的时候，发现了字节是不够的: 1payload &#x3D; b&quot;A&quot;*(0x18+0x4)  + p32(system_plt_addr)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/1.png">
@@ -31,14 +31,14 @@
 <meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/6.png">
 <meta property="article:published_time" content="2024-06-15T15:01:53.000Z">
 <meta property="article:modified_time" content="2024-06-15T15:28:45.284Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="WangYiHao">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/1.png">
   
   
   
-  <title>一道题说明call system 与system plt调用的区别 - Hexo</title>
+  <title>一道题说明call system 与system plt调用的区别 - pwn二进制初研究</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -334,7 +334,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>John Doe</div>
+          <div>WangYiHao</div>
         </div>
       
       

@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="WangYiHao">
   <meta name="keywords" content="">
   
     <meta name="description" content="[NewStarCTF 公开赛赛道]ret2csu1  我们先checksec一下：  可能是栈溢出，题目给出了源代码，我们去看看：  前两个rax等于1,后面的rax等于0,根据系统调用号，可以判断：  链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;SUKI547&#x2F;article&#x2F;details&#x2F;103315487 前两个是write函数，最后一个是read函数，前两个函数向屏幕输出两句话，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[NewStarCTF 公开赛赛道]ret2csu1">
 <meta property="og:url" content="http://example.com/2024/06/01/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-ret2csu1/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="pwn二进制初研究">
 <meta property="og:description" content="[NewStarCTF 公开赛赛道]ret2csu1  我们先checksec一下：  可能是栈溢出，题目给出了源代码，我们去看看：  前两个rax等于1,后面的rax等于0,根据系统调用号，可以判断：  链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;SUKI547&#x2F;article&#x2F;details&#x2F;103315487 前两个是write函数，最后一个是read函数，前两个函数向屏幕输出两句话，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/06/01/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-ret2csu1/1.png">
@@ -34,14 +34,14 @@
 <meta property="og:image" content="http://example.com/2024/06/01/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-ret2csu1/10.png">
 <meta property="article:published_time" content="2024-06-01T12:26:08.000Z">
 <meta property="article:modified_time" content="2024-06-05T07:25:40.043Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="WangYiHao">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/06/01/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-ret2csu1/1.png">
   
   
   
-  <title>[NewStarCTF 公开赛赛道]ret2csu1 - Hexo</title>
+  <title>[NewStarCTF 公开赛赛道]ret2csu1 - pwn二进制初研究</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -340,7 +340,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>John Doe</div>
+          <div>WangYiHao</div>
         </div>
       
       

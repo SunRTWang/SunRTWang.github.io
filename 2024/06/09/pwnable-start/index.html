@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="WangYiHao">
   <meta name="keywords" content="">
   
     <meta name="description" content="pwnable_start  我们先checksec一下：  可以看到，什么都没开的，IDA中看一看：  反汇编，是不可能反汇编的了，读一下吧，其实也是不难的，al,bl,dl,是eax,ebx,edx寄存器的末八位（即一字节），我们可以看看32位程序的系统调用规则和系统调用号：   可以知道，第一个调用的是write函数，第二个调用的是read函数，参数也很明显，第二个参数都是esp指向的位置，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pwnable_start">
 <meta property="og:url" content="http://example.com/2024/06/09/pwnable-start/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="pwn二进制初研究">
 <meta property="og:description" content="pwnable_start  我们先checksec一下：  可以看到，什么都没开的，IDA中看一看：  反汇编，是不可能反汇编的了，读一下吧，其实也是不难的，al,bl,dl,是eax,ebx,edx寄存器的末八位（即一字节），我们可以看看32位程序的系统调用规则和系统调用号：   可以知道，第一个调用的是write函数，第二个调用的是read函数，参数也很明显，第二个参数都是esp指向的位置，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/06/09/pwnable-start/1.png">
@@ -31,14 +31,14 @@
 <meta property="og:image" content="http://example.com/2024/06/09/pwnable-start/6.png">
 <meta property="article:published_time" content="2024-06-09T07:16:51.000Z">
 <meta property="article:modified_time" content="2024-06-09T07:49:14.791Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="WangYiHao">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/06/09/pwnable-start/1.png">
   
   
   
-  <title>pwnable_start - Hexo</title>
+  <title>pwnable_start - pwn二进制初研究</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -328,7 +328,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>John Doe</div>
+          <div>WangYiHao</div>
         </div>
       
       

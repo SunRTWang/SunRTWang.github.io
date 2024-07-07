@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="WangYiHao">
   <meta name="keywords" content="">
   
     <meta name="description" content="jarvisoj_level4  拿到题目，先checksec一下：  没有栈保护，可能是栈溢出，IDA里面看看：  看来确实是，仔细算算，如果我们利用write函数泄露地址，给的0x100字节大小刚好让我们溢出并再次返回到main函数，打断点到上图函数快要结束的位置(0x804846E leave)，去确认buf的大小IDA给的对不对：   既然没问题，那就上脚本： 12345678910111">
 <meta property="og:type" content="article">
 <meta property="og:title" content="jarvisoj_level4">
 <meta property="og:url" content="http://example.com/2024/05/27/jarvisoj-level4/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="pwn二进制初研究">
 <meta property="og:description" content="jarvisoj_level4  拿到题目，先checksec一下：  没有栈保护，可能是栈溢出，IDA里面看看：  看来确实是，仔细算算，如果我们利用write函数泄露地址，给的0x100字节大小刚好让我们溢出并再次返回到main函数，打断点到上图函数快要结束的位置(0x804846E leave)，去确认buf的大小IDA给的对不对：   既然没问题，那就上脚本： 12345678910111">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/05/27/jarvisoj-level4/1.png">
@@ -29,14 +29,14 @@
 <meta property="og:image" content="http://example.com/2024/05/27/jarvisoj-level4/5.png">
 <meta property="article:published_time" content="2024-05-27T08:42:49.000Z">
 <meta property="article:modified_time" content="2024-05-27T08:55:39.159Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="WangYiHao">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/05/27/jarvisoj-level4/1.png">
   
   
   
-  <title>jarvisoj_level4 - Hexo</title>
+  <title>jarvisoj_level4 - pwn二进制初研究</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -321,7 +321,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>John Doe</div>
+          <div>WangYiHao</div>
         </div>
       
       

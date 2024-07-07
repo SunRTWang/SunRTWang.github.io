@@ -13,27 +13,27 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="WangYiHao">
   <meta name="keywords" content="">
   
     <meta name="description" content="ret2csu学习  在栈溢出的时候，64位程序的参数，都是要存在寄存器上的，有时我们直接去控制寄存器的汇编指令并不多（因为程序大多数都是动态链接），但是，动态链接的elf文件，一定存在一个这样的函数:__libc_csu_init：  我们要利用的就是下面这两段（loc_400710和loc_400726），我们先利用loc_400726，但是，我们并不从头开始，而是从pop rbx开始，我们溢">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ret2csu学习">
 <meta property="og:url" content="http://example.com/2024/06/01/ret2csu%E5%AD%A6%E4%B9%A0/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="pwn二进制初研究">
 <meta property="og:description" content="ret2csu学习  在栈溢出的时候，64位程序的参数，都是要存在寄存器上的，有时我们直接去控制寄存器的汇编指令并不多（因为程序大多数都是动态链接），但是，动态链接的elf文件，一定存在一个这样的函数:__libc_csu_init：  我们要利用的就是下面这两段（loc_400710和loc_400726），我们先利用loc_400726，但是，我们并不从头开始，而是从pop rbx开始，我们溢">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/06/01/ret2csu%E5%AD%A6%E4%B9%A0/1.png">
 <meta property="article:published_time" content="2024-06-01T11:12:18.000Z">
 <meta property="article:modified_time" content="2024-06-27T12:15:29.344Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="WangYiHao">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/06/01/ret2csu%E5%AD%A6%E4%B9%A0/1.png">
   
   
   
-  <title>ret2csu学习 - Hexo</title>
+  <title>ret2csu学习 - pwn二进制初研究</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -316,7 +316,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>John Doe</div>
+          <div>WangYiHao</div>
         </div>
       
       

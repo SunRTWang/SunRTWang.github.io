@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="WangYiHao">
   <meta name="keywords" content="">
   
     <meta name="description" content="ctfshow pwn52  我们先checksec一下：  那么可能就是栈溢出漏洞，拖入IDA中看看：  程序我已经动态调试，这里IDA给的s变量的大小是没错的，就是0x6c，我们看看有无其他的函数：  flag函数可以打印flag，但是有条件，a1&#x3D;&#x3D;876且a2&#x3D;&#x3D;877，a1与a2是我们调用函数时传入的参数，对于32位程序，参数就放在栈上，那就简单了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ctfshow pwn52">
 <meta property="og:url" content="http://example.com/2024/05/29/ctfshow-pwn52/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="pwn二进制初研究">
 <meta property="og:description" content="ctfshow pwn52  我们先checksec一下：  那么可能就是栈溢出漏洞，拖入IDA中看看：  程序我已经动态调试，这里IDA给的s变量的大小是没错的，就是0x6c，我们看看有无其他的函数：  flag函数可以打印flag，但是有条件，a1&#x3D;&#x3D;876且a2&#x3D;&#x3D;877，a1与a2是我们调用函数时传入的参数，对于32位程序，参数就放在栈上，那就简单了">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn52/1.png">
@@ -28,14 +28,14 @@
 <meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn52/3.png">
 <meta property="article:published_time" content="2024-05-29T02:47:14.000Z">
 <meta property="article:modified_time" content="2024-05-29T03:03:38.720Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="WangYiHao">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/05/29/ctfshow-pwn52/1.png">
   
   
   
-  <title>ctfshow pwn52 - Hexo</title>
+  <title>ctfshow pwn52 - pwn二进制初研究</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -319,7 +319,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>John Doe</div>
+          <div>WangYiHao</div>
         </div>
       
       
