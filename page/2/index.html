@@ -224,6 +224,46 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/07/30/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Not-Bad/" target="_self">
+          [极客大挑战 2019]Not Bad
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/30/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Not-Bad/" target="_self">
+        <div>
+          [极客大挑战 2019]Not Bad  先看一下文件吧：  没啥保护，也有可读可写可执行的段落，猜测是栈段：  有用的就这两个函数，mmap这一段也是可写可执行的：  看来是可以栈溢出的，但是给的空间不是很多，这是一个问题，给的空间不够我们执行别的函数，那shellcode肯定是写到mmap的空间中，但是如何跳转是一个问题，我们也无法泄露栈上的地址：   而且这道题还开了沙箱，看下面这几个函数就
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-30 15:26" pubdate>
+              2024-07-30
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/orw/">#orw</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/07/14/gyctf-2020-borrowstack%E6%A0%88%E8%BF%81%E7%A7%BB/" target="_self">
           gyctf_2020_borrowstack栈迁移
         </a>
@@ -562,46 +602,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-06-03 20:29" pubdate>
               2024-06-03
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">#栈溢出</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/" target="_self">
-          [NewStarCTF 公开赛赛道]shellcode-revenge
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/" target="_self">
-        <div>
-          [NewStarCTF 公开赛赛道]shellcode-revenge  我们先checksec一下：  其实开启PIE就挺恶心的了，拖入IDA中：  看到prctl函数了吧，应该是开启了沙箱的，禁用了一些系统调用，看到了mmap函数了吧，这个函数把从0x233000起始处，往后0x1000字节都赋予了可读可写可执行的权限：  我们可以从最后一个read函数溢出到buf的起始地址，因为该段为可读可
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-06-02 21:17" pubdate>
-              2024-06-02
             </time>
           </div>
         

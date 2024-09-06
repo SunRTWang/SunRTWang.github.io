@@ -224,6 +224,46 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/05/27/jarvisoj-level4/" target="_self">
+          jarvisoj_level4
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/27/jarvisoj-level4/" target="_self">
+        <div>
+          jarvisoj_level4  拿到题目，先checksec一下：  没有栈保护，可能是栈溢出，IDA里面看看：  看来确实是，仔细算算，如果我们利用write函数泄露地址，给的0x100字节大小刚好让我们溢出并再次返回到main函数，打断点到上图函数快要结束的位置(0x804846E leave)，去确认buf的大小IDA给的对不对：   既然没问题，那就上脚本： 12345678910111
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-05-27 16:42" pubdate>
+              2024-05-27
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">#栈溢出</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/05/27/level3-x64-%E6%99%AE%E9%80%9A%E6%A0%88%E6%BA%A2%E5%87%BA/" target="_self">
           level3_x64(普通栈溢出)
         </a>
