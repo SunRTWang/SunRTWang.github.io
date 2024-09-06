@@ -224,6 +224,46 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/05/27/level3-x64-%E6%99%AE%E9%80%9A%E6%A0%88%E6%BA%A2%E5%87%BA/" target="_self">
+          level3_x64(普通栈溢出)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/27/level3-x64-%E6%99%AE%E9%80%9A%E6%A0%88%E6%BA%A2%E5%87%BA/" target="_self">
+        <div>
+          level3_x64  拿到题目，我们先checksec一下：  明显发现，没有开启栈保护，所以很有可能是栈溢出题目，IDA反汇编后：  看来确实是栈溢出，我们将断点打在vulnerable_function函数快要结束的地方(leave 0x400618):  查看此时的栈空间排布：  开来buf大小确实是0x80，接下来我们可以快乐的写脚本了，可以肯定的是libc的泄露，我们可以使用write
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-05-27 15:00" pubdate>
+              2024-05-27
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">#栈溢出</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/05/26/bjdctf-2020-babystack2-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" target="_self">
           bjdctf_2020_babystack2(整数溢出)
         </a>

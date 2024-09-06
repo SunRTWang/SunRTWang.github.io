@@ -224,6 +224,46 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/06/01/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-ret2csu1/" target="_self">
+          [NewStarCTF 公开赛赛道]ret2csu1
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/06/01/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-ret2csu1/" target="_self">
+        <div>
+          [NewStarCTF 公开赛赛道]ret2csu1  我们先checksec一下：  可能是栈溢出，题目给出了源代码，我们去看看：  前两个rax等于1,后面的rax等于0,根据系统调用号，可以判断：  链接：https://blog.csdn.net/SUKI547/article/details/103315487 前两个是write函数，最后一个是read函数，前两个函数向屏幕输出两句话，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-01 20:26" pubdate>
+              2024-06-01
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">#栈溢出</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/06/01/ret2csu%E5%AD%A6%E4%B9%A0/" target="_self">
           ret2csu学习
         </a>
@@ -561,46 +601,6 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2024-05-27 16:42" pubdate>
-              2024-05-27
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/">#栈溢出</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/05/27/level3-x64-%E6%99%AE%E9%80%9A%E6%A0%88%E6%BA%A2%E5%87%BA/" target="_self">
-          level3_x64(普通栈溢出)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/27/level3-x64-%E6%99%AE%E9%80%9A%E6%A0%88%E6%BA%A2%E5%87%BA/" target="_self">
-        <div>
-          level3_x64  拿到题目，我们先checksec一下：  明显发现，没有开启栈保护，所以很有可能是栈溢出题目，IDA反汇编后：  看来确实是栈溢出，我们将断点打在vulnerable_function函数快要结束的地方(leave 0x400618):  查看此时的栈空间排布：  开来buf大小确实是0x80，接下来我们可以快乐的写脚本了，可以肯定的是libc的泄露，我们可以使用write
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-27 15:00" pubdate>
               2024-05-27
             </time>
           </div>
