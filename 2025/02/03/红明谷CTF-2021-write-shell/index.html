@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="[红明谷CTF 2021]write_shell  123456789101112131415161718192021222324252627282930313233343536&lt;?phperror_reporting(0);highlight_file(__FILE__);function check($input)&#123;    if(preg_match(&quot;&#x2F;&#x27;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[红明谷CTF 2021]write_shell">
+<meta property="og:url" content="http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="[红明谷CTF 2021]write_shell  123456789101112131415161718192021222324252627282930313233343536&lt;?phperror_reporting(0);highlight_file(__FILE__);function check($input)&#123;    if(preg_match(&quot;&#x2F;&#x27;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/1.png">
+<meta property="og:image" content="http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/2.png">
+<meta property="og:image" content="http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/3.png">
+<meta property="og:image" content="http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/4.png">
+<meta property="article:published_time" content="2025-02-02T16:33:45.000Z">
+<meta property="article:modified_time" content="2025-02-02T16:45:31.989Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="WEB-CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>[红明谷CTF 2021]write_shell</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2025/02/03/b01lers2020-Welcome-to-Earth/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2025/02/02/watevrCTF-2019-Cookie-Store/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&text=[红明谷CTF 2021]write_shell"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&is_video=false&description=[红明谷CTF 2021]write_shell"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[红明谷CTF 2021]write_shell&body=Check out this article: http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&name=[红明谷CTF 2021]write_shell&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&t=[红明谷CTF 2021]write_shell"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">[红明谷CTF 2021]write_shell</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        [红明谷CTF 2021]write_shell
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-02-02T16:33:45.000Z" itemprop="datePublished">2025-02-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/WEB-CTF/" rel="tag">WEB-CTF</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">[红明谷CTF 2021]write_shell</h1>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params"><span class="variable">$input</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/&#x27;| |_|php|;|~|\\^|\\+|eval|&#123;|&#125;/i&quot;</span>,<span class="variable">$input</span>))&#123;</span><br><span class="line">        <span class="comment">// if(preg_match(&quot;/&#x27;| |_|=|php/&quot;,$input))&#123;</span></span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;hacker!!!&#x27;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$input</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waf</span>(<span class="params"><span class="variable">$input</span></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="title function_ invoke__">is_array</span>(<span class="variable">$input</span>))&#123;</span><br><span class="line">      <span class="keyword">foreach</span>(<span class="variable">$input</span> <span class="keyword">as</span> <span class="variable">$key</span>=&gt;<span class="variable">$output</span>)&#123;</span><br><span class="line">          <span class="variable">$input</span>[<span class="variable">$key</span>] = <span class="title function_ invoke__">waf</span>(<span class="variable">$output</span>);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="variable">$input</span> = <span class="title function_ invoke__">check</span>(<span class="variable">$input</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$dir</span> = <span class="string">&#x27;sandbox/&#x27;</span> . <span class="title function_ invoke__">md5</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]) . <span class="string">&#x27;/&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(<span class="variable">$dir</span>))&#123;</span><br><span class="line">    <span class="title function_ invoke__">mkdir</span>(<span class="variable">$dir</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">switch</span>(<span class="variable">$_GET</span>[<span class="string">&quot;action&quot;</span>] ?? <span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;pwd&#x27;</span>:</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$dir</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;upload&#x27;</span>:</span><br><span class="line">        <span class="variable">$data</span> = <span class="variable">$_GET</span>[<span class="string">&quot;data&quot;</span>] ?? <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="title function_ invoke__">waf</span>(<span class="variable">$data</span>);</span><br><span class="line">        <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;<span class="subst">$dir</span>&quot;</span> . <span class="string">&quot;index.php&quot;</span>, <span class="variable">$data</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>可以看到，对我们做了很多的过滤，但是没过滤反引号,但是system函数是可用的，所以反引号的用处不大，我们先去获取路径</strong></p>
+<p><img src="/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/1.png" alt="1"></p>
+<p><strong>我们直接构造payload如下<code>&lt;?=system(&quot;ls&quot;)?&gt;</code>，这个非常好理解</strong></p>
+<p><img src="/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/2.png" alt="2"></p>
+<p><img src="/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/3.png" alt="3"></p>
+<p><strong>我们继续查看根目录的文件，但是这里空格是被过滤的，我们无法写入的而且如果想用&amp;{IFS}也因为{}的过滤而无法实现，而用$IFS代替空格也失败了，这里我用的是制表符，即tab，%09，相当于4个空格</strong></p>
+<p><img src="/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/4.png" alt="4"></p>
+<p><strong>最后，<code>&lt;?=system(&quot;cat%09flllllll1112222222lag&quot;)?&gt;</code>就可以了</strong></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">[红明谷CTF 2021]write_shell</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&text=[红明谷CTF 2021]write_shell"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&is_video=false&description=[红明谷CTF 2021]write_shell"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[红明谷CTF 2021]write_shell&body=Check out this article: http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&title=[红明谷CTF 2021]write_shell"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&name=[红明谷CTF 2021]write_shell&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/02/03/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/&t=[红明谷CTF 2021]write_shell"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
