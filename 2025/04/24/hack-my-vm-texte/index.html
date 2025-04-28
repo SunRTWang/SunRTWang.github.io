@@ -85,12 +85,16 @@
           <li><a href="/tags/Vulhub">VHub</a></li>
          
           <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+         
+          <li><a href="/tags/%E5%BA%94%E6%80%A5">应急响应</a></li>
         
       </ul>
     </span>
     <br/>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" href="/2025/04/28/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-webshell%E6%9F%A5%E6%9D%80/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2025/04/23/hack-my-vm-attack/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -228,6 +232,8 @@
           <li><a href="/tags/Vulhub">VHub</a></li>
          
           <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+         
+          <li><a href="/tags/%E5%BA%94%E6%80%A5">应急响应</a></li>
         
       </ul>
     </div>
@@ -291,6 +297,8 @@
           <li><a href="/tags/Vulhub">VHub</a></li>
          
           <li><a href="/tags/WEB-%E5%AE%89%E5%85%A8">WEB-安全</a></li>
+         
+          <li><a href="/tags/%E5%BA%94%E6%80%A5">应急响应</a></li>
         
       </ul>
     </nav>
@@ -321,7 +329,7 @@
   <script type="text/javascript">
   $(function() {
     // copy-btn HTML
-    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"In die Zwischenablage kopiert!\">";
     btn += '<i class="far fa-clone"></i>';
     btn += '</span>'; 
     // mount it!
@@ -332,7 +340,7 @@
       }
     });
     clip.on('success', function(e) {
-      e.trigger.setAttribute('aria-label', "Copied!");
+      e.trigger.setAttribute('aria-label', "Kopiert!");
       e.clearSelection();
     })
   })
